@@ -9,7 +9,7 @@ def _stringifyIterable(i):
         return str(i)
 
 
-    class MyTestCase(RealTestCase):
+class MyTestCase(RealTestCase):
 
     def _compareIndexables(self, actual, expected, message):
         if len(actual) != len(expected):
