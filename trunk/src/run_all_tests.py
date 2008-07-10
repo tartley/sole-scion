@@ -17,8 +17,9 @@ def run_all_tests():
     runner = TextTestRunner(verbosity=2)
     suite = combine(
         AcceptanceTest_test,
-        TestCase_test,
         Gameloop_test,
+        World_test,
+        TestCase_test,
         Renderer_test,
         AT001_app_opens_a_fullscreen_window,
     )

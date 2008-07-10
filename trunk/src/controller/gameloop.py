@@ -15,6 +15,10 @@ class Gameloop(object):
         self.renderer = Renderer(self.window)
 
 
+    def dispose(self):
+        self.window.close()
+
+
     def run(self):
         while not self.window.has_exit:
             self.dt = clock.tick()
@@ -22,4 +26,5 @@ class Gameloop(object):
             self.window.dispatch_events()
             self.renderer.draw()
             self.window.flip()
+        self.dispose()
 
