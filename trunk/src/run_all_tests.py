@@ -5,6 +5,8 @@ from testutils.testcase import combine
 
 from acceptancetests.tests.acceptancetest_test import AcceptanceTest_test
 from controller.tests.gameloop_test import Gameloop_test
+from model.tests.entity_test import Entity_test
+from model.tests.room_test import Room_test
 from model.tests.world_test import World_test
 from testutils.tests.testcase_test import TestCase_test
 from view.tests.renderer_test import Renderer_test
@@ -18,6 +20,8 @@ def run_all_tests():
     suite = combine(
         AcceptanceTest_test,
         Gameloop_test,
+        Entity_test,
+        Room_test,
         World_test,
         TestCase_test,
         Renderer_test,

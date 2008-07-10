@@ -11,22 +11,33 @@ def _stringifyIterable(i):
 
 class MyTestCase(RealTestCase):
 
-    def _compareIndexables(self, actual, expected, message):
+    def _compareLengths(self, actual, expected, message):
         if len(actual) != len(expected):
             actualStr = _stringifyIterable(actual)
             expectedStr = _stringifyIterable(expected)
             msg = (
-                "not equal. lengths differ:\n"
-                "  len=%d %s\n"
-                "  len=%d %s\n" %
-                (len(actual), actualStr, len(expected), expectedStr))
+                "not equal, lengths differ: %d != %d\n"
+                "  %s\n"
+                "  %s\n"
+                "%s" %
+                (len(actual), len(expected), actualStr, expectedStr, message)
+            )
             raise AssertionError(msg)
+
+    def _compareIndexables(self, actual, expected, message):
+        self._compareLengths(actual, expected, message)
         for index in range(len(actual)):
             if actual[index] != expected[index]:
                 actualStr = _stringifyIterable(actual)
                 expectedStr = _stringifyIterable(expected)
-                msg = "not equal at index %d:\n  %s\n  %s\n" % \
-                    (index, actualStr, expectedStr)
+                msg = (
+                    "not equal at index %d: %s != %s\n"
+                    "  %s\n"
+                    "  %s\n"
+                    "%s" %
+                    (index, actual[index], expected[index],
+                        actualStr, expectedStr, message)
+                )
                 self.fail(msg)
 
 
@@ -50,7 +61,7 @@ class MyTestCase(RealTestCase):
 
         else:
             if actual != expected:
-                msg = "%s != %s %s" % (actual, expected, message)
+                msg = "%s != %s\n  %s" % (actual, expected, message)
                 raise AssertionError(msg)
 
 
@@ -69,17 +80,13 @@ class MyTestCase(RealTestCase):
 
         if not arg1IsCallable or not arg2IsExcClass:
             msg += (
-              "warning: assertRaises() in testutils/testcase.py has new sig:\n"
-              "  assertRaises(fn, excType, excMsg=None, desc=None, *args, "
-              "*kwargs)")
+            "warning: assertRaises() in testutils/testcase.py has new sig:\n"
+            "  assertRaises(self, fn, expectedType, expectedMessage=None)")
             raise TypeError(msg)
 
 
     def assertRaises( \
-        self, fn, expectedException, expectedMessage=None, description=None):
-
-        if description == None:
-            description = ""
+        self, fn, expectedException, expectedMessage=None):
 
         self._assertRaises_test_args(fn, expectedException)
 
@@ -87,15 +94,15 @@ class MyTestCase(RealTestCase):
             fn()
         except expectedException, e:
             if expectedMessage is not None and e.message != expectedMessage:
-                msg = "raised exception with wrong message:\n  %s\n  %s\n%s" % \
-                    (e.message, expectedMessage, description)
+                msg = "raised exception with wrong message:\n  %s\n  %s\n" % \
+                    (e.message, expectedMessage)
                 self.fail(msg)
         except Exception, e:
-            msg = 'raised wrong exception type:\n  %s("%s")\n  %s\n%s' % \
-                (type(e), e.message, expectedException, description)
+            msg = 'raised wrong exception type:\n  %s("%s")\n  %s' % \
+                (type(e), e.message, expectedException)
             self.fail(msg)
         else:
-            self.fail("didn't raise\n%s" % description)
+            self.fail("didn't raise")
         return e
 
 

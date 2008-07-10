@@ -6,6 +6,7 @@ import fix_pythonpath
 from testutils.testcase import MyTestCase, run_test
 
 from controller.gameloop import Gameloop
+from model.world import World
 from view.renderer import Renderer
 
 
@@ -25,6 +26,8 @@ class Gameloop_test(MyTestCase):
         self.assertEquals(clock.get_fps_limit(), 30.0, "should set fps limit")
         self.assertEquals(self.gameloop.dt, None, "should set current frame time")
         self.assertEquals(self.gameloop.ticks, [], "should set ticks")
+        self.assertEquals(type(self.gameloop.world), World,
+            "should create world")
         self.assertEquals(type(self.gameloop.window), Window,
             "should create window")
         self.assertTrue(self.gameloop.window.fullscreen,

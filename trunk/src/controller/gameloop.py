@@ -1,6 +1,7 @@
 from pyglet import clock
 from pyglet.window import Window
 
+from model.world import World
 from view.renderer import Renderer
 
 
@@ -11,6 +12,7 @@ class Gameloop(object):
         clock.set_fps_limit(self.fps_limit)
         self.dt = None
         self.ticks = []
+        self.world = World()
         self.window = Window(fullscreen=True, vsync=True)
         self.renderer = Renderer(self.window)
 
