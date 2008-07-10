@@ -9,7 +9,7 @@ from model.tests.world_test import World_test
 from testutils.tests.testcase_test import TestCase_test
 from view.tests.renderer_test import Renderer_test
 
-from acceptance_tests.AT001_app_opens_a_fullscreen_window import \
+from acceptancetests.AT001_app_opens_a_fullscreen_window import \
     AT001_app_opens_a_fullscreen_window
 
 
