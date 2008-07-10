@@ -23,7 +23,7 @@ class TestCase_assertEquals_test(RealTestCase):
 
     def testAssertEquals_shows_values_in_exception_message(self):
         assertion = lambda: self.mytestcase.assertEquals(2, 3, "desc")
-        expectedMsg = "2 != 3 desc"
+        expectedMsg = "2 != 3\n  desc"
         self.mytestcase.assertRaises(assertion, AssertionError, expectedMsg)
 
 
@@ -45,9 +45,9 @@ class TestCase_assertEquals_test(RealTestCase):
         assertion = lambda: self.mytestcase.assertEquals(
             [1, 2, 3], [1, 2, 3, 4])
         expectedMsg = (
-            "not equal. lengths differ:\n"
-            "  len=3 [1, 2, 3]\n"
-            "  len=4 [1, 2, 3, 4]\n")
+            "not equal, lengths differ: 3 != 4\n"
+            "  [1, 2, 3]\n"
+            "  [1, 2, 3, 4]\n")
         self.mytestcase.assertRaises(assertion, AssertionError, expectedMsg)
 
     def testAssertEquals_ctypes_arrays_same(self):
@@ -61,9 +61,9 @@ class TestCase_assertEquals_test(RealTestCase):
         shorter = (GLint * 3)(*[1, 2, 3])
         assertion = lambda: self.mytestcase.assertEquals(one, shorter)
         expectedMsg = (
-            "not equal. lengths differ:\n"
-            "  len=4 Array(1, 2, 3, 4)\n"
-            "  len=3 Array(1, 2, 3)\n")
+            "not equal, lengths differ: 4 != 3\n"
+            "  Array(1, 2, 3, 4)\n"
+            "  Array(1, 2, 3)\n")
         self.mytestcase.assertRaises(assertion, AssertionError, expectedMsg)
 
 
@@ -72,9 +72,9 @@ class TestCase_assertEquals_test(RealTestCase):
         longer = (GLint * 5)(*[1, 2, 3, 4, 5])
         assertion = lambda: self.mytestcase.assertEquals(one, longer)
         expectedMsg = (
-            "not equal. lengths differ:\n"
-            "  len=4 Array(1, 2, 3, 4)\n"
-            "  len=5 Array(1, 2, 3, 4, 5)\n")
+            "not equal, lengths differ: 4 != 5\n"
+            "  Array(1, 2, 3, 4)\n"
+            "  Array(1, 2, 3, 4, 5)\n")
         self.mytestcase.assertRaises(assertion, AssertionError, expectedMsg)
 
 
@@ -83,10 +83,36 @@ class TestCase_assertEquals_test(RealTestCase):
         different = (GLint * 4)(*[1, 2, 3, 5])
         assertion = lambda: self.mytestcase.assertEquals(one, different)
         expectedMsg = (
-            "not equal at index 3:\n"
+            "not equal at index 3: 4 != 5\n"
             "  Array(1, 2, 3, 4)\n"
             "  Array(1, 2, 3, 5)\n")
         self.mytestcase.assertRaises(assertion, AssertionError, expectedMsg)
+
+
+    def testAssertEquals_sets(self):
+        self.mytestcase.assertEquals(set(), set(), "empty sets should pass")
+
+        one = set([2, 4, 6])
+        two = set([6, 4, 2])
+        self.mytestcase.assertEquals(one, two, "similar sets should pass")
+
+        three = set([2, 4, 6, 8])
+        self.mytestcase.assertRaises(
+            lambda: self.mytestcase.assertEquals(one, three, "desc"),
+            AssertionError,
+            "set([2, 4, 6]) != set([8, 2, 4, 6])\n  desc")
+
+        four = set([2, 4])
+        self.mytestcase.assertRaises(
+            lambda: self.mytestcase.assertEquals(one, four, "desc"),
+            AssertionError,
+            "set([2, 4, 6]) != set([2, 4])\n  desc")
+
+        five = set([2, 4, 99])
+        self.mytestcase.assertRaises(
+            lambda: self.mytestcase.assertEquals(one, five, "desc"),
+            AssertionError,
+            "set([2, 4, 6]) != set([2, 99, 4])\n  desc")
 
 
 
@@ -103,16 +129,14 @@ class TestCase_assertRaises_test(RealTestCase):
 
         self.mytestcase.assertRaises(
             raiseCorrectly, ZeroDivisionError, "actual message")
-        self.mytestcase.assertRaises(
-            raiseCorrectly, ZeroDivisionError, "actual message", "doesntmatter")
 
 
     def assertFailureModeOfAssertRaises( \
-        self, fn, expectedMsgIn, expectedMsgOut, desc=None):
+        self, fn, expectedMsgIn, expectedMsgOut):
 
         try:
             self.mytestcase.assertRaises(
-                fn, ZeroDivisionError, expectedMsgIn, desc)
+                fn, ZeroDivisionError, expectedMsgIn)
 
         except AssertionError, e:
             if e.message != expectedMsgOut:
@@ -121,7 +145,7 @@ class TestCase_assertRaises_test(RealTestCase):
                     "--actual message:----\n" + \
                     e.message + "\n" + \
                     "--expected message:----\n" + \
-                    expectedMsgOut
+                    expectedMsgOut + "\n"
                 self.fail(message)
 
         except Exception, e:
@@ -145,23 +169,15 @@ class TestCase_assertRaises_test(RealTestCase):
         self.assertFailureModeOfAssertRaises(
             raiseBadMessage, "expected message", expectedMsgOut)
 
-        expectedMsgOut += "desc"
-        self.assertFailureModeOfAssertRaises(
-            raiseBadMessage, "expected message", expectedMsgOut, "desc")
-
 
     def testAssertRaises_for_fn_that_doesnt_raise(self):
 
         def raiseNothing():
             pass
 
-        expectedMsgOut = "didn't raise\n"
+        expectedMsgOut = "didn't raise"
         self.assertFailureModeOfAssertRaises( \
             raiseNothing, "expected message", expectedMsgOut)
-
-        expectedMsgOut += "desc"
-        self.assertFailureModeOfAssertRaises( \
-            raiseNothing, "expected message", expectedMsgOut, "desc")
 
 
     def testAssertRaises_for_fn_that_raises_wrong_exception_type(self):
@@ -172,13 +188,9 @@ class TestCase_assertRaises_test(RealTestCase):
         expectedMsgOut = \
             "raised wrong exception type:\n" + \
             "  <type 'exceptions.TypeError'>(\"doesnt matter\")\n" + \
-            "  <type 'exceptions.ZeroDivisionError'>\n"
+            "  <type 'exceptions.ZeroDivisionError'>"
         self.assertFailureModeOfAssertRaises(
             raiseWrongType, "expected message", expectedMsgOut)
-
-        expectedMsgOut += "desc"
-        self.assertFailureModeOfAssertRaises(
-            raiseWrongType, "expected message", expectedMsgOut, "desc")
 
 
     def testAssertRaises_returns_the_exception(self):
@@ -195,13 +207,12 @@ class TestCase_assertRaises_test(RealTestCase):
     def assert_warns_on_bad_args(self, fn, excClass, expectedPrefix):
 
         assertion = lambda: self.mytestcase.assertRaises(
-            fn, excClass, "warning")
+            fn, excClass, "WARNING")
 
         expectedMessage = (
             "%s" % expectedPrefix +
             "warning: assertRaises() in testutils/testcase.py has new sig:\n"
-            "  assertRaises(fn, excType, excMsg=None, desc=None, *args, "
-            "*kwargs)")
+            "  assertRaises(self, fn, expectedType, expectedMessage=None)")
         try:
             assertion()
         except Exception, e:
