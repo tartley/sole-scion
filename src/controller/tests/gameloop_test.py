@@ -23,11 +23,17 @@ class Gameloop_test(MyTestCase):
     def testConstructor(self):
         self.assertEquals(self.gameloop.fps_limit, 30,
             "should define fps_limit")
-        self.assertEquals(clock.get_fps_limit(), 30.0, "should set fps limit")
-        self.assertEquals(self.gameloop.dt, None, "should set current frame time")
+        self.assertEquals(clock.get_fps_limit(), 30.0,
+            "should set fps limit")
+        self.assertEquals(self.gameloop.dt, None,
+            "should set current frame time")
         self.assertEquals(self.gameloop.ticks, [], "should set ticks")
+
         self.assertEquals(type(self.gameloop.world), World,
             "should create world")
+        self.assertEquals(len(self.gameloop.world.rooms), 1,
+            "should create world with one room")
+
         self.assertEquals(type(self.gameloop.window), Window,
             "should create window")
         self.assertTrue(self.gameloop.window.fullscreen,

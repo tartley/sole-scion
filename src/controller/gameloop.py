@@ -13,8 +13,9 @@ class Gameloop(object):
         self.dt = None
         self.ticks = []
         self.world = World()
+        self.world.populate()
         self.window = Window(fullscreen=True, vsync=True)
-        self.renderer = Renderer(self.window)
+        self.renderer = Renderer(self.world, self.window)
 
 
     def dispose(self):
