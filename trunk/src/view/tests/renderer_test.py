@@ -1,7 +1,7 @@
 from pyglet.window import Window
 from pyglet.gl import (
     glClear, glClearColor, glGetFloatv, glReadBuffer, glReadPixels,
-    GLfloat, GLubyte, 
+    GLfloat, GLubyte,
     GL_BACK, GL_COLOR_BUFFER_BIT, GL_COLOR_CLEAR_VALUE, GL_RGB,
     GL_UNSIGNED_BYTE,
 )
@@ -32,10 +32,12 @@ class Renderer_test(MyTestCase):
 
     def testConstructor(self):
         window = object()
-        renderer = Renderer(window)
+        world = object()
+        renderer = Renderer(world, window)
+        self.assertTrue(renderer.world is world, "should store model")
         self.assertTrue(renderer.window is window, "should store window")
         self.assertEquals(renderer.clearColor, (0.0, 0.0, 1.0, 1.0),
-            "should init clearColor to blue")
+            "clearColor should default to blue")
 
 
     def assertRgbArrayIsEntirely(self, rgbs, expectedRgb, message=None):
@@ -50,18 +52,22 @@ class Renderer_test(MyTestCase):
     def assertRgbArrayContains(self, rgbs, expectedRgb, message=None):
         if message is None:
             message = ""
+        found = set()
         for idx in range(0, len(rgbs), 3):
             r, g, b = rgbs[idx], rgbs[idx+1], rgbs[idx+2]
             if (r, g, b) == expectedRgb:
                 return
-            self.fail("did not contain %s\n%s" % (expectedRgb, message))
+            found.add((r, g, b))
+            msg = "did not contain %s\ndid contain: %s\n%s" % \
+                (expectedRgb, found, message)
+            self.fail(msg)
 
 
     def testDraw_should_clear_hidden_buffer(self):
         width, height = 20, 10
         win = Window(width=width, height=height)
         try:
-            renderer = Renderer(win)
+            renderer = Renderer(World(), win)
 
             # sanity check: after glClear, the surface should be clearColor
             win.dispatch_events()
@@ -84,9 +90,10 @@ class Renderer_test(MyTestCase):
     def testDraw_should_render_the_room(self):
         width, height = 400, 300
         world = World()
+        world.populate()
         win = Window(width=width, height=height)
         try:
-            renderer = Renderer(win)
+            renderer = Renderer(World(), win)
             win.dispatch_events()
 
             renderer.draw()
@@ -96,7 +103,7 @@ class Renderer_test(MyTestCase):
             self.assertRgbArrayContains(rgbs, expectedRgb,
                 "should contains some clearColor")
 
-            room = world.rooms.pop()
+            room = [room for room in world.rooms][0]
             expectedRgb = floats_to_ubytes(room.color)
             self.assertRgbArrayContains(rgbs, expectedRgb,
                 "should draw some room color")

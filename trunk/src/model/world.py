@@ -3,9 +3,7 @@ from model.room import Room
 class World(object):
 
     def __init__(self):
-        self.entities = set()
         self.rooms = set()
-        self.populate()
 
 
     def populate(self):

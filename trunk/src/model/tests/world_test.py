@@ -10,21 +10,16 @@ class World_test(MyTestCase):
 
     def testConstructor(self):
         world = World()
-        self.assertEquals(world.entities, set(),
-            "should start with no entities")
-
-        self.assertEquals(len(world.rooms), 1,
-            "should start with one room")
-
-        room = [room for room in world.rooms][0]
-        self.assertEquals(len(room.verts), 5,
-            "first room should be a pentagon")
+        self.assertEquals(world.rooms, set(),
+            "should have empty room collection")
 
 
-    def testSpawn(self):
+    def testPopulate(self):
         world = World()
-        entity = Entity()
-        world.entities.add(Entity())
+        world.populate()
+        self.assertEquals(len(world.rooms), 1, "should create one room")
+        room = world.rooms.pop()
+        self.assertEquals(len(room.verts), 5, "room should be a pentagon")
 
 
 if __name__ == "__main__":
