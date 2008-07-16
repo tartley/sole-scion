@@ -12,14 +12,13 @@ class Renderer(object):
         self.world = world
         self.window = window
         self.clockDisplay = clock.ClockDisplay()
-        self.clearColor = (0.0, 0.0, 1.0, 1.0)
 
 
     def draw(self):
-        glClearColor(*self.clearColor)
+        glClearColor(*self.world.backColor)
         glClear(GL_COLOR_BUFFER_BIT)
 
-        # TOOD: untested, mostly
+        # TODO: not well tested
         glLoadIdentity()
         for room in self.world.rooms:
             glColor3f(*room.color)

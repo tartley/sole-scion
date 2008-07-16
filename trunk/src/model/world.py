@@ -4,6 +4,7 @@ class World(object):
 
     def __init__(self):
         self.rooms = set()
+        self.backColor = (0.0, 0.0, 1.0, 1.0)
 
 
     def populate(self):

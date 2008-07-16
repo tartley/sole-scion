@@ -36,8 +36,6 @@ class Renderer_test(MyTestCase):
         renderer = Renderer(world, window)
         self.assertTrue(renderer.world is world, "should store model")
         self.assertTrue(renderer.window is window, "should store window")
-        self.assertEquals(renderer.clearColor, (0.0, 0.0, 1.0, 1.0),
-            "clearColor should default to blue")
 
 
     def assertRgbArrayIsEntirely(self, rgbs, expectedRgb, message=None):
@@ -55,53 +53,48 @@ class Renderer_test(MyTestCase):
         found = set()
         for idx in range(0, len(rgbs), 3):
             r, g, b = rgbs[idx], rgbs[idx+1], rgbs[idx+2]
+            found.add((r, g, b))
             if (r, g, b) == expectedRgb:
                 return
-            found.add((r, g, b))
-            msg = "did not contain %s\ndid contain: %s\n%s" % \
-                (expectedRgb, found, message)
-            self.fail(msg)
+        msg = "did not contain %s\ndid contain: %s\n%s" % \
+            (expectedRgb, found, message)
+        self.fail(msg)
 
 
     def testDraw_should_clear_hidden_buffer(self):
         width, height = 20, 10
+        world = World()
+        world.backColor = (0.9, 0.8, 0.7, 1.0)
         win = Window(width=width, height=height)
         try:
-            renderer = Renderer(World(), win)
+            renderer = Renderer(world, win)
 
-            # sanity check: after glClear, the surface should be clearColor
-            win.dispatch_events()
-            glClearColor(0.5, 0.5, 0.5, 1.0)
-            glClear(GL_COLOR_BUFFER_BIT)
-            rgbs = getRgbArray(win, GL_BACK)
-            self.assertRgbArrayIsEntirely(rgbs, (127, 127, 127), "sanity check")
-
-            renderer.clearColor = (0.9, 0.8, 0.7, 1.0)
             renderer.draw()
 
             rgbs = getRgbArray(win, GL_BACK)
-            expectedRgb = floats_to_ubytes(renderer.clearColor[:3])
+            expectedRgb = floats_to_ubytes(world.backColor[:3])
             self.assertRgbArrayIsEntirely(rgbs, expectedRgb,
-                "draw should clear to clearColor")
+                "draw should clear to backColor")
         finally:
             win.close()
 
 
     def testDraw_should_render_the_room(self):
-        width, height = 400, 300
+        width, height = 20, 10
         world = World()
         world.populate()
         win = Window(width=width, height=height)
         try:
-            renderer = Renderer(World(), win)
+            renderer = Renderer(world, win)
+
             win.dispatch_events()
 
             renderer.draw()
 
             rgbs = getRgbArray(win, GL_BACK)
-            expectedRgb = floats_to_ubytes(renderer.clearColor[:3])
+            expectedRgb = floats_to_ubytes(world.backColor[:3])
             self.assertRgbArrayContains(rgbs, expectedRgb,
-                "should contains some clearColor")
+                "should contain some backColor")
 
             room = [room for room in world.rooms][0]
             expectedRgb = floats_to_ubytes(room.color)
