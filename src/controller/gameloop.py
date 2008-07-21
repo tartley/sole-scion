@@ -2,7 +2,7 @@ from pyglet import clock
 from pyglet.window import Window
 
 from model.world import World
-from view.renderer import Renderer
+from view.camera import Camera
 
 
 class Gameloop(object):
@@ -15,7 +15,7 @@ class Gameloop(object):
         self.world = World()
         self.world.populate()
         self.window = Window(fullscreen=True, vsync=True)
-        self.renderer = Renderer(self.world, self.window)
+        self.camera = Camera(self.world, self.window)
 
 
     def dispose(self):
@@ -27,7 +27,7 @@ class Gameloop(object):
             self.dt = clock.tick()
             self.ticks.append(self.dt)
             self.window.dispatch_events()
-            self.renderer.draw()
+            self.camera.draw()
             self.window.flip()
         self.dispose()
 

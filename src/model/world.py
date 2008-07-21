@@ -8,6 +8,7 @@ class World(object):
 
 
     def populate(self):
+        color = (0.1, 0.2, 0.3)
         verts = [
             (-10, 0),
             (0, -1),
@@ -15,6 +16,6 @@ class World(object):
             (+8, 5),
             (-8, 6),
         ]
-        self.rooms.add(Room(verts))
+        self.rooms.add(Room(color, verts))
 
 

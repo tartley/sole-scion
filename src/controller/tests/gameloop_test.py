@@ -1,13 +1,15 @@
+#!/usr/bin/python -O
+
 from pyglet import clock
 from pyglet.window import Window
 
-import fix_pythonpath
+import fixpath
 
 from testutils.testcase import MyTestCase, run_test
 
 from controller.gameloop import Gameloop
 from model.world import World
-from view.renderer import Renderer
+from view.camera import Camera
 
 
 class Gameloop_test(MyTestCase):
@@ -40,10 +42,10 @@ class Gameloop_test(MyTestCase):
             "window should be fullscreen")
         self.assertTrue(self.gameloop.window.vsync,
             "window should be vsync")
-        self.assertEquals(type(self.gameloop.renderer), Renderer,
-            "should create renderer")
-        self.assertTrue(self.gameloop.renderer.window is self.gameloop.window,
-            "should create renderer with our window")
+        self.assertEquals(type(self.gameloop.camera), Camera,
+            "should create camera")
+        self.assertTrue(self.gameloop.camera.window is self.gameloop.window,
+            "should create camera with our window")
 
 
     def testRunShouldLoopUntilDone(self):
@@ -90,7 +92,7 @@ class Gameloop_test(MyTestCase):
 
         self.gameloop.window.dispatch_events = \
             lambda *args: recordCall("dispatch", args)
-        self.gameloop.renderer.draw = \
+        self.gameloop.camera.draw = \
             lambda *args: recordCall("draw", args)
         self.gameloop.window.flip = \
             lambda *args: recordCall("flip", args)

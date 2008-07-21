@@ -1,4 +1,6 @@
-import fix_pythonpath
+#!/usr/bin/python -O
+
+import fixpath
 
 from testutils.testcase import MyTestCase, run_test
 

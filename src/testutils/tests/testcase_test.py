@@ -1,8 +1,9 @@
+#!/usr/bin/python -O
 from unittest import (
     main, TestLoader, TestCase as RealTestCase, TestSuite, TextTestRunner)
 from pyglet.gl import GLint
 
-import fix_pythonpath
+import fixpath
 
 from testutils.testcase import combine, MyTestCase
 

@@ -1,7 +1,9 @@
+#!/usr/bin/python -O
 from __future__ import division
 from unittest import main as run_test, TestCase
 
-import fix_pythonpath
+import fixpath
+
 from acceptancetest import AcceptanceTest
 
 from sole_scion import main as run_sole_scion
