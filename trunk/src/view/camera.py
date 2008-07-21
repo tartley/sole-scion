@@ -6,7 +6,7 @@ from pyglet.gl import (
 )
 
 
-class Renderer(object):
+class Camera(object):
 
     def __init__(self, world, window):
         self.world = world
@@ -18,7 +18,6 @@ class Renderer(object):
         glClearColor(*self.world.backColor)
         glClear(GL_COLOR_BUFFER_BIT)
 
-        # TODO: not well tested
         glLoadIdentity()
         for room in self.world.rooms:
             glColor3f(*room.color)

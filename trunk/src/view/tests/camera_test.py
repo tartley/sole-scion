@@ -1,3 +1,5 @@
+#!/usr/bin/python -O
+
 from pyglet.window import Window
 from pyglet.gl import (
     glClear, glClearColor, glGetFloatv, glReadBuffer, glReadPixels,
@@ -6,12 +8,12 @@ from pyglet.gl import (
     GL_UNSIGNED_BYTE,
 )
 
-import fix_pythonpath
+import fixpath
 
 from testutils.testcase import MyTestCase, run_test
 
-from model.world import World
-from view.renderer import Renderer
+from model.world import Room, World
+from view.camera import Camera
 
 
 def getRgbArray(win, buff):
@@ -28,14 +30,14 @@ def floats_to_ubytes(sequence):
     return retType(ubytes)
 
 
-class Renderer_test(MyTestCase):
+class Camera_test(MyTestCase):
 
     def testConstructor(self):
         window = object()
         world = object()
-        renderer = Renderer(world, window)
-        self.assertTrue(renderer.world is world, "should store model")
-        self.assertTrue(renderer.window is window, "should store window")
+        camera = Camera(world, window)
+        self.assertTrue(camera.world is world, "should store model")
+        self.assertTrue(camera.window is window, "should store window")
 
 
     def assertRgbArrayIsEntirely(self, rgbs, expectedRgb, message=None):
@@ -67,9 +69,9 @@ class Renderer_test(MyTestCase):
         world.backColor = (0.9, 0.8, 0.7, 1.0)
         win = Window(width=width, height=height)
         try:
-            renderer = Renderer(world, win)
+            camera = Camera(world, win)
 
-            renderer.draw()
+            camera.draw()
 
             rgbs = getRgbArray(win, GL_BACK)
             expectedRgb = floats_to_ubytes(world.backColor[:3])
@@ -79,17 +81,16 @@ class Renderer_test(MyTestCase):
             win.close()
 
 
-    def testDraw_should_render_the_room(self):
+    def testDraw_should_render_the_room_color(self):
         width, height = 20, 10
         world = World()
         world.populate()
         win = Window(width=width, height=height)
         try:
-            renderer = Renderer(world, win)
-
+            camera = Camera(world, win)
             win.dispatch_events()
 
-            renderer.draw()
+            camera.draw()
 
             rgbs = getRgbArray(win, GL_BACK)
             expectedRgb = floats_to_ubytes(world.backColor[:3])
@@ -100,6 +101,25 @@ class Renderer_test(MyTestCase):
             expectedRgb = floats_to_ubytes(room.color)
             self.assertRgbArrayContains(rgbs, expectedRgb,
                 "should draw some room color")
+        finally:
+            win.close()
+
+
+    def testDraw_should_render_rooms_correctly(self):
+        width, height = 100, 100
+        world = World()
+        color = (0.0, 1.0, 0.0)
+        verts = [(-10, -20), (-10, -30), (-30, -30), (-30, -20)]
+        world.rooms = set([Room(color, verts)])
+        win = Window(width=width, height=height)
+        try:
+            camera = Camera(world, win)
+            win.dispatch_events()
+
+            camera.draw()
+
+            self.fail("test not complete")
+
         finally:
             win.close()
 

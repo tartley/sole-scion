@@ -9,7 +9,7 @@ from model.tests.entity_test import Entity_test
 from model.tests.room_test import Room_test
 from model.tests.world_test import World_test
 from testutils.tests.testcase_test import TestCase_test
-from view.tests.renderer_test import Renderer_test
+from view.tests.camera_test import Camera_test
 
 from acceptancetests.AT001_app_opens_a_fullscreen_window import \
     AT001_app_opens_a_fullscreen_window
@@ -24,7 +24,7 @@ def run_all_tests():
         Room_test,
         World_test,
         TestCase_test,
-        Renderer_test,
+        Camera_test,
         AT001_app_opens_a_fullscreen_window,
     )
     runner.run(suite)
