@@ -17,7 +17,7 @@ class Room_test(MyTestCase):
         self.assertEquals(room.verts, verts, "should store verts")
 
 
-    def testConstructor_needs_at_least_three_vertices(self):
+    def testConstructor_rejects_less_than_three_vertices(self):
         expectedMsg = '__init__() takes exactly 3 arguments (1 given)'
         self.assertRaises(lambda: Room(), TypeError, expectedMsg)
 
@@ -34,11 +34,11 @@ class Room_test(MyTestCase):
         self.assertRaises(lambda: Room(color, verts), TypeError, expectedMsg)
 
 
-    def testConstructor_vertices_must_be_convex(self):
+    def testConstructor_rejects_nonconvex_vertices(self):
         self.fail("test not written")
 
 
-    def testConstructor_needs_3_component_color(self):
+    def testConstructor_rejects_bad_color(self):
         verts = [(-1, -2), (3, 4), (-5, 6)]
 
         color = object()
