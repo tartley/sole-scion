@@ -4,11 +4,11 @@ class World(object):
 
     def __init__(self):
         self.rooms = set()
-        self.backColor = (0, 0, 255)
+        self.backColor = (150, 100, 50)
 
 
     def populate(self):
-        color = (150, 100, 50)
+        color = (0, 50, 100)
         verts = [
             (-10, 0),
             (0, -1),

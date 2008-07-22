@@ -5,7 +5,7 @@ from pyglet.window import Window
 from pyglet.gl import (
     glClear, glClearColor, glGetFloatv, glReadBuffer, glReadPixels,
     GLfloat, GLubyte,
-    GL_BACK, GL_COLOR_BUFFER_BIT, GL_COLOR_CLEAR_VALUE, GL_RGB,
+    GL_BACK, GL_COLOR_BUFFER_BIT, GL_COLOR_CLEAR_VALUE, GL_FRONT, GL_RGB,
     GL_UNSIGNED_BYTE,
 )
 
@@ -26,7 +26,7 @@ class Image(object):
         self.pixeldata = (GLubyte * numBytes)(*(0 for _ in range(numBytes)))
 
     @staticmethod
-    def from_buffer(win, buff=GL_BACK):
+    def from_buffer(win, buff=GL_FRONT):
         image = Image(win.width, win.height)
         glReadBuffer(buff)
         glReadPixels(
@@ -108,7 +108,7 @@ class Camera_test(MyTestCase):
 
     def testConstructor(self):
         world = World()
-        window = Window(caption="Camera.testConstructor")
+        window = Window(width=200, height=100, caption="Camera.testConstructor")
         try:
             camera = Camera(world, window, 123.0)
             self.assertTrue(camera.world is world, "should store model")
@@ -120,13 +120,14 @@ class Camera_test(MyTestCase):
 
     def testDraw_should_clear_buffer_with_world_backcolor(self):
         world = World()
-        world.backColor = (50, 100, 150)
-        win = Window(width=20, height=10, caption="Camera.testDraw_scbwwb")
+        world.backColor = (250, 100, 150)
+        win = Window(width=200, height=100, caption="Camera.testDraw_scbwwb")
         try:
             win.dispatch_events()
             camera = Camera(world, win, 1)
 
             camera.draw()
+            win.flip()
 
             image = Image.from_buffer(win)
             image.assert_entirely(world.backColor, "should clear to backColor")
@@ -135,16 +136,17 @@ class Camera_test(MyTestCase):
 
 
     def testDraw_should_draw_the_room_color(self):
-        verts = [(0, -10), (0, +10), (-20, 0)]
+        verts = [(-10, -10), (-10, +10), (+10, 0)]
         room = Room((150, 100, 50), verts)
         world = World()
         world.rooms = set([room])
-        win = Window(width=20, height=10, caption="Camera.testDraw_sdtrc")
+        win = Window(width=200, height=100, caption="Camera.testDraw_sdtrc")
         try:
             win.dispatch_events()
-            camera = Camera(world, win, 1)
+            camera = Camera(world, win, 10)
 
             camera.draw()
+            win.flip()
 
             image = Image.from_buffer(win)
             image.assert_contains(room.color, "should draw some room color")
@@ -168,6 +170,7 @@ class Camera_test(MyTestCase):
             camera.rot = camRot
 
             camera.draw()
+            win.flip()
 
             image = Image.from_buffer(win)
             left = win.width/2 + expectedEdges[0]
@@ -181,7 +184,7 @@ class Camera_test(MyTestCase):
             win.close()
 
 
-    def testDraw_should_draw_room_verts(self):
+    def testDraw_xforms_room_verts_by_camera_scale(self):
         roomVerts = [(-20, -10), (-20, 30), (40, 30), (40, -10)]
         camScale = 50
         expectedEdges = [-20, -10, +40, +30]
@@ -191,7 +194,7 @@ class Camera_test(MyTestCase):
             expectedEdges)
 
 
-    def testDraw_should_draw_translated_room_verts(self):
+    def testDraw_xforms_room_verts_by_cam_scale_and_xy(self):
         roomVerts = [(-20, -10), (-20, 30), (40, 30), (40, -10)]
         camFocus = 40, 30
         camScale = 100
@@ -202,7 +205,7 @@ class Camera_test(MyTestCase):
             expectedEdges)
 
 
-    def testDraw_should_draw_translated_rotated_room_verts(self):
+    def testDraw_xforms_room_verts_by_cam_scale_xy_and_rot(self):
         r2 = sqrt(2) * 10
         roomVerts = [
             (+40 -5*r2, +30 +r2),
