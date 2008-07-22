@@ -7,15 +7,15 @@ from view.camera import Camera
 
 class Gameloop(object):
 
-    def __init__(self):
+    def __init__(self, caption):
         self.fps_limit = 30
         clock.set_fps_limit(self.fps_limit)
         self.dt = None
         self.ticks = []
         self.world = World()
         self.world.populate()
-        self.window = Window(fullscreen=True, vsync=True)
-        self.camera = Camera(self.world, self.window)
+        self.window = Window(fullscreen=True, vsync=True, caption=caption)
+        self.camera = Camera(self.world, self.window, 100)
 
 
     def dispose(self):
@@ -23,11 +23,13 @@ class Gameloop(object):
 
 
     def run(self):
-        while not self.window.has_exit:
-            self.dt = clock.tick()
-            self.ticks.append(self.dt)
-            self.window.dispatch_events()
-            self.camera.draw()
-            self.window.flip()
-        self.dispose()
+        try:
+            while not self.window.has_exit:
+                self.dt = clock.tick()
+                self.ticks.append(self.dt)
+                self.window.dispatch_events()
+                self.camera.draw()
+                self.window.flip()
+        finally:
+            self.dispose()
 

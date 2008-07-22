@@ -14,7 +14,7 @@ class World_test(MyTestCase):
         world = World()
         self.assertEquals(world.rooms, set(),
             "should have empty room collection")
-        self.assertEquals(world.backColor, (0.0, 0.0, 1.0, 1.0),
+        self.assertEquals(world.backColor, (0, 0, 255),
             "should set backcolor")
 
 
@@ -24,6 +24,8 @@ class World_test(MyTestCase):
         self.assertEquals(len(world.rooms), 1, "should create one room")
         room = world.rooms.pop()
         self.assertEquals(len(room.verts), 5, "room should be a pentagon")
+        self.assertEquals(room.color, (150, 100, 50),
+            "room should be brown")
 
 
 if __name__ == "__main__":
