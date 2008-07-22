@@ -53,7 +53,14 @@ class AcceptanceTest(MyTestCase):
         windows = self.get_windows()
         if len(windows) == 1:
             return windows[0]
-        return None
+        elif len(windows) == 0:
+            return None
+        else:
+            msg = (
+                "%d windows open:\n  " + \
+                '\n  '.join(win.caption for win in windows)) \
+                % (len(windows),)
+            raise AssertionError(msg)
 
 
     def terminate(self):

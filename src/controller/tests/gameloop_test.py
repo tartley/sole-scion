@@ -15,11 +15,11 @@ from view.camera import Camera
 class Gameloop_test(MyTestCase):
 
     def setUp(self):
-        self.gameloop = Gameloop()
+        self.gameloop = Gameloop("Gameloop.setUp")
 
 
     def tearDown(self):
-        self.gameloop.dispose()
+        self.gameloop.window.close()
 
 
     def testConstructor(self):
@@ -48,7 +48,7 @@ class Gameloop_test(MyTestCase):
             "should create camera with our window")
 
 
-    def testRunShouldLoopUntilDone(self):
+    def testRun_loops_until_done(self):
         calls = []
         self.callsLeft = 3
 
@@ -63,7 +63,7 @@ class Gameloop_test(MyTestCase):
         self.assertEquals(calls, [3, 2, 1], "run should iterate thrice")
 
 
-    def testRunShouldSetDt(self):
+    def testRun_sets_dt(self):
         def setHasExit():
             self.gameloop.window.has_exit = True
 
@@ -83,7 +83,7 @@ class Gameloop_test(MyTestCase):
             "run should append dt to ticks")
 
 
-    def testRunShouldCallSomeFunctions(self):
+    def testRun_calls_some_functions(self):
         calls = []
 
         def recordCall(*args):
@@ -105,6 +105,28 @@ class Gameloop_test(MyTestCase):
             ('flip', ()),
         ]
         self.assertEquals(calls, expected, "run should call some functions")
+
+
+    def testRun_closes_the_window_on_exception(self):
+
+        self.closeCalled = False
+        origClose = self.gameloop.window.close
+
+        def raisePlease():
+            raise ZeroDivisionError("msg")
+
+        def closeWindow():
+            self.gameloop.window.close = origClose
+            self.gameloop.window.close()
+            self.closeCalled = True
+
+        self.gameloop.window.dispatch_events = raisePlease
+        self.gameloop.window.close = closeWindow
+        self.assertRaises(
+            self.gameloop.run,
+            ZeroDivisionError,
+            "msg")
+        self.assertTrue(self.closeCalled, "window should be closed")
 
 
 if __name__ == "__main__":
