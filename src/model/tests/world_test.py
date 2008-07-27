@@ -14,7 +14,7 @@ class World_test(MyTestCase):
         world = World()
         self.assertEquals(world.rooms, set(),
             "should have empty room collection")
-        self.assertEquals(world.backColor, (100, 50, 0),
+        self.assertEquals(world.backColor, (150, 100, 50),
             "should set backcolor")
 
 
