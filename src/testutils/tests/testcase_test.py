@@ -1,11 +1,51 @@
 #!/usr/bin/python -O
 from unittest import (
     main, TestLoader, TestCase as RealTestCase, TestSuite, TextTestRunner)
+from ctypes import Array
+
 from pyglet.gl import GLint
 
 import fixpath
 
-from testutils.testcase import combine, MyTestCase
+from testutils.testcase import combine, _is_int_indexable, _tostr, MyTestCase
+
+
+class TestCase_module_functions_test(MyTestCase):
+
+    def test_is_int_indexable(self):
+        self.assertTrue(_is_int_indexable([]), "list")
+        self.assertTrue(_is_int_indexable(()), "tuple")
+        self.assertTrue(_is_int_indexable((GLint * 1)(*[1])), "Array1")
+        self.assertTrue(_is_int_indexable('a'), "str")
+
+        # TODO: probably dicts and sets should pretty printed too
+        self.assertFalse(_is_int_indexable({}), "dict")
+        self.assertFalse(_is_int_indexable(set()), "set")
+        self.assertFalse(_is_int_indexable(1), "int")
+        self.assertFalse(_is_int_indexable(1.1), "float")
+
+
+    def test_tostr(self):
+        items = [
+            1, 1.2, 'abc',
+            [1, 2, 3], (1, 2, 3), set([1, 2, 3]),
+            {'a':1, 'b':2, 'c':3},
+        ]
+        for i in items:
+            self.assertEquals(_tostr(i), str(i),
+                'tostr() for %s' % str(type(i)))
+
+        array = (GLint * 3)(*[1, 2, 3])
+        self.assertEqual(_tostr(array), "Array(1, 2, 3)", "Array")
+
+
+    def test_compare_lengths(self):
+        self.fail("not tested")
+
+
+    def test_compare_indexables(self):
+        self.fail("not tested")
+
 
 
 
@@ -15,11 +55,36 @@ class ClassUnderTest(MyTestCase):
         pass
 
 
-
 class TestCase_assertEquals_test(RealTestCase):
 
     def setUp(self):
         self.mytestcase = ClassUnderTest("testAlwaysPasses")
+
+
+    def testAssertNone(self):
+        self.mytestcase.assertNone(None)
+        self.mytestcase.assertNone(None, 'msg')
+
+        assertion = lambda: self.mytestcase.assertNone(0)
+        expectedMsg = "not None: 0\n  "
+        self.mytestcase.assertRaises(assertion, AssertionError, expectedMsg)
+
+        assertion = lambda: self.mytestcase.assertNone(0, 'msg')
+        expectedMsg = "not None: 0\n  msg"
+        self.mytestcase.assertRaises(assertion, AssertionError, expectedMsg)
+
+
+    def testAssertNotNone(self):
+        self.mytestcase.assertNotNone(0)
+        self.mytestcase.assertNotNone(0, 'msg')
+
+        assertion = lambda: self.mytestcase.assertNotNone(None)
+        expectedMsg = "is None\n  "
+        self.mytestcase.assertRaises(assertion, AssertionError, expectedMsg)
+
+        assertion = lambda: self.mytestcase.assertNotNone(None, 'msg')
+        expectedMsg = "is None\n  msg"
+        self.mytestcase.assertRaises(assertion, AssertionError, expectedMsg)
 
 
     def testAssertEquals_shows_values_in_exception_message(self):
@@ -50,6 +115,7 @@ class TestCase_assertEquals_test(RealTestCase):
             "  [1, 2, 3]\n"
             "  [1, 2, 3, 4]\n")
         self.mytestcase.assertRaises(assertion, AssertionError, expectedMsg)
+
 
     def testAssertEquals_ctypes_arrays_same(self):
         one = (GLint * 4)(*[1, 2, 3, 4])
@@ -84,7 +150,7 @@ class TestCase_assertEquals_test(RealTestCase):
         different = (GLint * 4)(*[1, 2, 3, 5])
         assertion = lambda: self.mytestcase.assertEquals(one, different)
         expectedMsg = (
-            "not equal at index 3: 4 != 5\n"
+            "4 != 5 at index 3\n"
             "  Array(1, 2, 3, 4)\n"
             "  Array(1, 2, 3, 5)\n")
         self.mytestcase.assertRaises(assertion, AssertionError, expectedMsg)
@@ -176,7 +242,8 @@ class TestCase_assertRaises_test(RealTestCase):
         def raiseNothing():
             pass
 
-        expectedMsgOut = "didn't raise"
+        expectedMsgOut = "didn't raise.\n" \
+            "  Expected ZeroDivisionError(\"expected message\")"
         self.assertFailureModeOfAssertRaises( \
             raiseNothing, "expected message", expectedMsgOut)
 
@@ -304,6 +371,7 @@ class combine_test(RealTestCase):
 TestCase_test = combine(
     TestCase_assertEquals_test,
     TestCase_assertRaises_test,
+    TestCase_module_functions_test,
     combine_test,
 )
 
