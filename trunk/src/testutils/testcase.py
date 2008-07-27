@@ -2,43 +2,66 @@ from unittest import TestCase as RealTestCase, TestLoader, TestSuite, main
 from ctypes import Array
 
 
-def _stringifyIterable(i):
+def _is_int_indexable(item):
+    return (
+        type(item) is not dict and
+        hasattr(item, "__len__") and
+        hasattr(item, "__getitem__")
+    )
+
+
+def _tostr(i):
     if isinstance(i, Array):
         return "Array(%s)" % ", ".join(str(x) for x in i)
     else:
         return str(i)
 
 
-class MyTestCase(RealTestCase):
+def _compare_lengths(actual, expected, message):
+    if len(actual) != len(expected):
+        actualStr = _tostr(actual)
+        expectedStr = _tostr(expected)
+        msg = (
+            "not equal, lengths differ: %d != %d\n"
+            "  %s\n"
+            "  %s\n"
+            "%s" %
+            (len(actual), len(expected), actualStr, expectedStr, message)
+        )
+        raise AssertionError(msg)
 
-    def _compareLengths(self, actual, expected, message):
-        if len(actual) != len(expected):
-            actualStr = _stringifyIterable(actual)
-            expectedStr = _stringifyIterable(expected)
+
+def _compare_indexables(actual, expected, message):
+    _compare_lengths(actual, expected, message)
+    for index in range(len(actual)):
+        if actual[index] != expected[index]:
+            actualStr = _tostr(actual)
+            expectedStr = _tostr(expected)
             msg = (
-                "not equal, lengths differ: %d != %d\n"
+                "%s != %s at index %d\n"
                 "  %s\n"
                 "  %s\n"
                 "%s" %
-                (len(actual), len(expected), actualStr, expectedStr, message)
+                (actual[index], expected[index], index,
+                    actualStr, expectedStr, message)
             )
             raise AssertionError(msg)
 
-    def _compareIndexables(self, actual, expected, message):
-        self._compareLengths(actual, expected, message)
-        for index in range(len(actual)):
-            if actual[index] != expected[index]:
-                actualStr = _stringifyIterable(actual)
-                expectedStr = _stringifyIterable(expected)
-                msg = (
-                    "not equal at index %d: %s != %s\n"
-                    "  %s\n"
-                    "  %s\n"
-                    "%s" %
-                    (index, actual[index], expected[index],
-                        actualStr, expectedStr, message)
-                )
-                self.fail(msg)
+
+class MyTestCase(RealTestCase):
+
+    def assertNone(self, item, message=None):
+        if not item is None:
+            if message is None:
+                message = ""
+            raise AssertionError("not None: %s\n  %s" % (item, message))
+
+
+    def assertNotNone(self, item, message=None):
+        if item is None:
+            if message is None:
+                message = ""
+            raise AssertionError("is None\n  %s" % (message))
 
 
     def assertEquals(self, actual, expected, message=None):
@@ -53,14 +76,10 @@ class MyTestCase(RealTestCase):
                     (type(actual), actual, type(expected), expected, message)
                 raise AssertionError(msg)
 
-        def isIndexable(item):
-            return hasattr(actual, "__len__") and hasattr(actual, "__getitem__")
-
-        if isIndexable(actual) and isIndexable(expected):
-            self._compareIndexables(actual, expected, message)
-
-        else:
-            if actual != expected:
+        if actual != expected:
+            if _is_int_indexable(actual):
+                _compare_indexables(actual, expected, message)
+            else:
                 msg = "%s != %s\n  %s" % (actual, expected, message)
                 raise AssertionError(msg)
 
@@ -102,7 +121,9 @@ class MyTestCase(RealTestCase):
                 (type(e), e.message, expectedException)
             self.fail(msg)
         else:
-            self.fail("didn't raise")
+            msg = "didn't raise.\n  Expected %s(\"%s\")" % \
+                (expectedException.__name__, expectedMessage)
+            self.fail(msg)
         return e
 
 
