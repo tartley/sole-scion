@@ -143,4 +143,3 @@ def combine(*args):
 
 def run_test():
     main()
-

@@ -10,7 +10,7 @@ import fixpath
 from testutils.testcase import combine, MyTestCase, run_test
 
 from testutils.testimage import (
-    _imagedata_from_window, assert_contains, assert_entirely,
+    assert_contains, assert_entirely,
     assert_rectangle_at, image_from_window, save_to_tempfile
 )
 
@@ -46,38 +46,6 @@ class TestImage_from_window_test(MyTestCase):
         gl.glEnd()
 
 
-    def assert_pixelcolors(self, getpixel):
-        for x in range(window.width):
-            for y in range(window.height):
-                rgb = getpixel(x, y)
-                self.assertEquals(rgb, self.pixCols[(x, y)],
-                    "bad color at %d,%d" % (x, y))
-
-
-    def test_imagedata_from_window(self):
-        global window
-
-        imagedata = _imagedata_from_window(window)
-
-        self.assertEquals(imagedata.width, window.width,
-            "image width wrong")
-        self.assertEquals(imagedata.height, window.height,
-            "image height wrong")
-        self.assertEquals(imagedata.format, 'RGBA', "image format wrong")
-
-        data = imagedata.get_data('RGB', -window.width*3)
-        self.assertEquals(len(data), 18, "pixeldata length wrong")
-
-        def getpixel(x, y):
-            offset = (x + (window.height - 1 - y) * window.width) * 3
-            return (
-                ord(data[offset]),
-                ord(data[offset+1]),
-                ord(data[offset+2]))
-
-        self.assert_pixelcolors(getpixel)
-
-
     def test_image_from_window(self):
         global window
         image = image_from_window(window)
@@ -85,8 +53,11 @@ class TestImage_from_window_test(MyTestCase):
         self.assertEquals(image.size, (window.width, window.height),
             "image size wrong")
 
-        getpixel = lambda x,y: image.getpixel((x, window.height - 1 - y))
-        self.assert_pixelcolors(getpixel)
+        for x in range(window.width):
+            for y in range(window.height):
+                rgb = image.getpixel((x, window.height - 1 - y))[:3]
+                self.assertEquals(rgb, self.pixCols[(x, y)],
+                    "bad color at %d,%d" % (x, y))
 
 
     def test_image_from_window_returned_img_raises_on_bad_getpixel(self):
@@ -122,6 +93,12 @@ class TestImage_assert_test(MyTestCase):
         self.assertRaises(assertion, AssertionError, expectedMsg)
 
 
+    def test_assert_entirely_with_rgba(self):
+        backCol = (111, 22, 3)
+        image = Image.new('RGBA', (20, 10), backCol)
+        assert_entirely(image, backCol)
+
+
     def test_assert_contains(self):
         backCol = (111, 22, 3)
         image = Image.new('RGB', (20, 10), backCol)
@@ -140,6 +117,12 @@ class TestImage_assert_test(MyTestCase):
 
         image.putpixel((10, 5), newCol)
         assert_contains(image, newCol)
+
+
+    def test_assert_contains_with_rgba(self):
+        backCol = (111, 22, 3)
+        image = Image.new('RGBA', (20, 10), backCol)
+        assert_contains(image, backCol)
 
 
     def test_assert_rectangle_at_fails_if_degenerate(self):
@@ -178,7 +161,7 @@ class TestImage_assert_test(MyTestCase):
         for ords in window_ords:
             assertion = lambda: assert_rectangle_at(
                 image, ords[0], ords[1], ords[2], ords[3], rectCol, backCol)
-            expectedMsg = "rect %d,%d %d,%d touches window edge. " \
+            expectedMsg = "rect %d,%d %d,%d touches edge of (20, 10). " \
                 "Broken test?" % ords
             self.assertRaises(assertion, AssertionError, expectedMsg)
 
@@ -245,6 +228,14 @@ class TestImage_assert_test(MyTestCase):
             e = self.assertRaises(assertion, AssertionError)
             self.assertTrue(e.message.startswith(expectedMsg), \
                 'assert_rectange_at raised with bad message')
+
+
+    def test_assert_rectangle_at_with_rgba(self):
+        backCol = (123, 45, 6)
+        rectCol = (234, 56, 7)
+        image = Image.new('RGBA', (20, 10), backCol)
+        draw_rectangle(image, 2, 2, 17, 7, rectCol)
+        assert_rectangle_at(image, 2, 2, 17, 7, rectCol, backCol)
 
 
 TestImage_test = combine(
