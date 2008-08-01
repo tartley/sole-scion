@@ -24,28 +24,25 @@ from model.world import Room, World
 from view.camera import Camera
 
 
-window = Window(
-    visible=False,
-    caption="Camera test",
-)
-
 class Camera_test(MyTestCase):
 
     def setUp(self):
-        global window
-        window = window
-        window.set_size(200, 100)
-        window.dispatch_events()
+        self.window = Window(visible=False, caption="Camera_test setup")
+        self.window.set_size(200, 100)
+        self.window.dispatch_events()
         glClearColor(0, 0, 0, 1)
-        window.clear()
+        self.window.clear()
         self.world = World()
-        self.camera = Camera(self.world, window)
+        self.camera = Camera(self.world, self.window)
+
+
+    def tearDown(self):
+        self.window.close()
 
 
     def test_constructor(self):
-        global window
         self.assertTrue(self.camera.world is self.world, "should store world")
-        self.assertTrue(self.camera.window is window, "should store win")
+        self.assertTrue(self.camera.window is self.window, "should store win")
         self.assertEquals(self.camera.x, 0.0, "should init x")
         self.assertEquals(self.camera.y, 0.0, "should init y")
         self.assertEquals(self.camera.scale, 1.0, "should init scale")
@@ -53,11 +50,10 @@ class Camera_test(MyTestCase):
 
 
     def test_clear_fills_back_buffer_with_color(self):
-        global window
-        window.dispatch_events()
+        self.window.dispatch_events()
         color = (100, 150, 200)
         self.camera.clear(color)
-        image = image_from_window(window)
+        image = image_from_window(self.window)
         assert_entirely(image, color, "should fill with given color")
 
 
@@ -75,7 +71,7 @@ class Camera_test(MyTestCase):
             backColor[1]/255,
             backColor[2]/255,
             1.0)
-        window.clear()
+        self.window.clear()
 
         verts = [
             (left, bottom),
@@ -91,14 +87,12 @@ class Camera_test(MyTestCase):
 
 
     def assert_world_projection(self, drawnRect, expectedRect):
-        global window
-
         self.camera.world_projection()
 
         backColor = (0, 0, 255)
         polyColor = (255, 255, 0)
         self._draw_rect(backColor, polyColor, *drawnRect)
-        image = image_from_window(window)
+        image = image_from_window(self.window)
         left, bottom, right, top = expectedRect
         assert_rectangle_at(
             image,
@@ -115,9 +109,9 @@ class Camera_test(MyTestCase):
 
 
     def test_defect_pyglet_get_color_buffer_for_resized_windows(self):
-        window.set_size(100, 200)
+        self.window.set_size(100, 200)
         mgr = get_buffer_manager()
-        window.switch_to()
+        self.window.switch_to()
         col_buf = mgr.get_color_buffer()
         col_buf_size = col_buf.width, col_buf.height
         self.assertEquals(col_buf_size, (200, 100), \
@@ -127,9 +121,8 @@ class Camera_test(MyTestCase):
     # disabled due to pyglet bug: get_color_buffer() for resized window
     # returns a buffer of the old window size.
     def DONTtest_world_projection_strange_aspect(self):
-        global window
-        window.set_size(100, 200)
-        window.dispatch_events()
+        self.window.set_size(100, 200)
+        self.window.dispatch_events()
         rect = (-0.2, -0.4, +0.6, +0.8)
         expectedRect = (40, 60, 79, 119)
         self.fail("get_color_buffer() for resized windows is broke"

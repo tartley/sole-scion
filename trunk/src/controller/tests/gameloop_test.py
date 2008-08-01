@@ -19,7 +19,7 @@ class Gameloop_test(MyTestCase):
 
 
     def tearDown(self):
-        self.gameloop.window.close()
+        self.gameloop.dispose()
 
 
     def test_constructor(self):
@@ -38,6 +38,8 @@ class Gameloop_test(MyTestCase):
 
         self.assertEquals(type(self.gameloop.window), Window,
             "should create window")
+        self.assertFalse(self.gameloop.window.visible,
+            "window should be not visible")
         self.assertTrue(self.gameloop.window.fullscreen,
             "window should be fullscreen")
         self.assertTrue(self.gameloop.window.vsync,
@@ -46,6 +48,15 @@ class Gameloop_test(MyTestCase):
             "should create camera")
         self.assertTrue(self.gameloop.camera.window is self.gameloop.window,
             "should create camera with our window")
+
+
+    def test_run_shows_window(self):
+        def setHasExit():
+            self.assertTrue(self.gameloop.window.visible, \
+                "run should set visible=True")
+            self.gameloop.window.has_exit = True
+        self.gameloop.window.flip = setHasExit
+        self.gameloop.run()
 
 
     def test_run_loops_until_done(self):
@@ -116,9 +127,9 @@ class Gameloop_test(MyTestCase):
             raise ZeroDivisionError("msg")
 
         def closeWindow():
+            self.closeCalled = True
             self.gameloop.window.close = origClose
             self.gameloop.window.close()
-            self.closeCalled = True
 
         self.gameloop.window.dispatch_events = raisePlease
         self.gameloop.window.close = closeWindow
