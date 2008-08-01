@@ -15,9 +15,6 @@ from testutils.testimage import (
 )
 
 
-window = Window(width=3, height=2)
-
-
 def draw_rectangle(image, left, bottom, right, top, rectCol):
     for x in range(left, right+1):
         for y in range(bottom, top+1):
@@ -27,7 +24,7 @@ def draw_rectangle(image, left, bottom, right, top, rectCol):
 class TestImage_from_window_test(MyTestCase):
 
     def setUp(self):
-        global window
+        self.window = Window(width=30, height=20, visible=False)
         self.pixCols = {
             (0, 0): ( 0,    0,  40),
             (0, 1): ( 0,  200,  80),
@@ -37,7 +34,7 @@ class TestImage_from_window_test(MyTestCase):
             (2, 1): (200, 200, 240),
         }
 
-        window.dispatch_events()
+        self.window.dispatch_events()
 
         gl.glBegin(gl.GL_POINTS)
         for loc, color in self.pixCols.iteritems():
@@ -46,28 +43,28 @@ class TestImage_from_window_test(MyTestCase):
         gl.glEnd()
 
 
-    def test_image_from_window(self):
-        global window
-        image = image_from_window(window)
+    def tearDown(self):
+        self.window.close()
 
-        self.assertEquals(image.size, (window.width, window.height),
+
+    def test_image_from_window(self):
+        image = image_from_window(self.window)
+
+        self.assertEquals(image.size, (self.window.width, self.window.height),
             "image size wrong")
 
-        for x in range(window.width):
-            for y in range(window.height):
-                rgb = image.getpixel((x, window.height - 1 - y))[:3]
-                self.assertEquals(rgb, self.pixCols[(x, y)],
-                    "bad color at %d,%d" % (x, y))
+        for (x, y), col in self.pixCols.iteritems():
+            rgb = image.getpixel((x, self.window.height - 1 - y))[:3]
+            self.assertEquals(rgb, col, "bad color at %d,%d" % (x, y))
 
 
     def test_image_from_window_returned_img_raises_on_bad_getpixel(self):
-        global window
-        image = image_from_window(window)
+        image = image_from_window(self.window)
 
-        invalidGet = lambda: image.getpixel((window.width+1, 0))
+        invalidGet = lambda: image.getpixel((self.window.width+1, 0))
         self.assertRaises(invalidGet, IndexError)
 
-        invalidGet = lambda: image.getpixel((0, window.height+1))
+        invalidGet = lambda: image.getpixel((0, self.window.height+1))
         self.assertRaises(invalidGet, IndexError)
 
 

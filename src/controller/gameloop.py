@@ -14,7 +14,8 @@ class Gameloop(object):
         self.ticks = []
         self.world = World()
         self.world.populate()
-        self.window = Window(fullscreen=True, vsync=True, caption=caption)
+        self.window = Window( \
+            fullscreen=True, vsync=True, caption=caption, visible=False)
         self.camera = Camera(self.world, self.window)
 
 
@@ -23,6 +24,7 @@ class Gameloop(object):
 
 
     def run(self):
+        self.window.set_visible(True)
         try:
             while not self.window.has_exit:
                 self.dt = clock.tick()
