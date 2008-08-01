@@ -5,36 +5,33 @@ from pyglet.image import get_buffer_manager
 
 from PIL import Image
 
-def _imagedata_from_window(window):
-    manager = get_buffer_manager()
-    colBufImage = manager.get_color_buffer()
-    imageData = colBufImage.get_image_data()
-    return imageData
+
+def _create_tempfile():
+    fd, fname = mkstemp(prefix='testimage-', suffix='.png')
+    tempfile = fdopen(fd, "w+b")
+    return tempfile, fname
 
 
 def image_from_window(window):
-    imagedata = _imagedata_from_window(window)
-    data = imagedata.get_data('RGB', -window.width*3)
-    rgbdata = (
-        (ord(data[i]), ord(data[i+1]), ord(data[i+2]))
-        for i in range(0, len(data), 3)
-    )
-    image = Image.new('RGB', (window.width, window.height), None)
-    image.putdata(tuple(rgbdata))
+    tempfile, fname = _create_tempfile()
+    window.switch_to()
+    colorBuffer = get_buffer_manager().get_color_buffer()
+    colorBuffer.save(filename=fname, file=tempfile)
+    tempfile.seek(0)
+    image = Image.open(tempfile)
     return image
 
 
 def save_to_tempfile(image):
-    fd, fname = mkstemp(prefix='testimage-', suffix='.png')
-    tmpfile = fdopen(fd, "w+b")
-    image.save(tmpfile, format='PNG')
+    tempfile, fname = _create_tempfile()
+    image.save(tempfile, format='PNG')
     return fname
 
 
 def assert_entirely(image, expectedRgb, assertMsg=None):
     for x in range(image.size[0]):
         for y in range(image.size[1]):
-            rgb = image.getpixel((x,y))
+            rgb = image.getpixel((x,y))[:3]
             if rgb != expectedRgb:
                 if assertMsg is None:
                     assertMsg=''
@@ -47,7 +44,7 @@ def assert_contains(image, expectedRgb, assertMsg=None):
     found = set()
     for x in range(image.size[0]):
         for y in range(image.size[1]):
-            rgb = image.getpixel((x, y))
+            rgb = image.getpixel((x, y))[:3]
             if rgb == expectedRgb:
                 return
             found.add(rgb)
@@ -75,8 +72,8 @@ def _assert_rectangle_at_verifyargs(
         top+1 >= imageSize[1]
     )
     if rectTouchesEdges:
-        msg = 'rect %d,%d %d,%d touches window edge. Broken test?' % \
-            (left, bottom, right, top)
+        msg = 'rect %d,%d %d,%d touches edge of %s. Broken test?' % \
+            (left, bottom, right, top, imageSize)
         raise AssertionError(msg)
 
     if rectCol == backCol:
@@ -95,11 +92,13 @@ def assert_rectangle_at(
     width, height = image.size[0], image.size[1]
 
     def assert_pixel(x, y, color):
-        if image.getpixel((x, y)) != color:
+        actual = image.getpixel((x, y))[:3]
+        if actual != color:
             fname = save_to_tempfile(image)
-            msg = 'rectangle %d,%d %d,%d bad, eg at %d,%d\n' \
+            msg = 'rectangle %d,%d %d,%d bad, eg at %d,%d:\n' \
+                '%s != %s\n' \
                 'image saved to %s' % \
-                (left, bottom, right, top, x, y, fname)
+                (left, bottom, right, top, x, y, actual, color, fname)
             raise AssertionError(msg)
 
     for y in range(bottom, top+1):

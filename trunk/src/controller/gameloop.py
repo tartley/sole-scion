@@ -15,7 +15,7 @@ class Gameloop(object):
         self.world = World()
         self.world.populate()
         self.window = Window(fullscreen=True, vsync=True, caption=caption)
-        self.camera = Camera(self.world, self.window, 100)
+        self.camera = Camera(self.world, self.window)
 
 
     def dispose(self):

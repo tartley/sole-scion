@@ -1,225 +1,180 @@
 #!/usr/bin/python -O
 from math import pi, sqrt
 
+from pyglet.image import get_buffer_manager
 from pyglet.window import Window
 from pyglet.gl import (
-    glClear, glClearColor, glGetFloatv, glReadBuffer, glReadPixels,
+    glBegin, glClear, glClearColor, glColor3ub, glEnd, glGetFloatv,
+    glReadBuffer, glReadPixels, glVertex2f,
     GLfloat, GLubyte,
-    GL_BACK, GL_COLOR_BUFFER_BIT, GL_COLOR_CLEAR_VALUE, GL_FRONT, GL_RGB,
-    GL_UNSIGNED_BYTE,
+    GL_BACK, GL_COLOR_BUFFER_BIT, GL_COLOR_CLEAR_VALUE, GL_FRONT,
+    GL_TRIANGLE_FAN, GL_TRIANGLES, GL_RGB, GL_UNSIGNED_BYTE,
 )
 
 import fixpath
 
+from testutils.testimage import (
+    assert_entirely, assert_contains, assert_rectangle_at, image_from_window,
+    save_to_tempfile,
+)
+from testutils.listener import Listener
 from testutils.testcase import MyTestCase, run_test
 
 from model.world import Room, World
 from view.camera import Camera
 
 
-class Image(object):
-
-    def __init__(self, width, height):
-        self.width = width
-        self.height = height
-        numBytes = width * height * 3
-        self.pixeldata = (GLubyte * numBytes)(*(0 for _ in range(numBytes)))
-
-    @staticmethod
-    def from_buffer(win, buff=GL_FRONT):
-        image = Image(win.width, win.height)
-        glReadBuffer(buff)
-        glReadPixels(
-            0, 0, image.width, image.height,
-            GL_RGB, GL_UNSIGNED_BYTE, image.pixeldata)
-        return image
-
-
-    def get_pixel(self, x, y):
-        if 0 > x >= self.width or 0 > y >= self.height:
-            msg = "%s,%s out of range. image=%s,%s" % \
-                (x, y, self.width, self.height)
-            raise AssertionError(msg)
-        idx = (x + y * self.width) * 3
-        return tuple(self.pixeldata[idx:idx+3])
-
-
-    def assert_entirely(self, expectedRgb, assertMsg=None):
-        for idx in range(0, len(self.pixeldata), 3):
-            rgb = tuple(self.pixeldata[idx:idx+3])
-            if rgb != expectedRgb:
-                msg = "%s != %s\n  pixel %d wrong color\n  %s" % \
-                    (rgb, expectedRgb, idx, assertMsg)
-                raise AssertionError(msg)
-
-
-    def assert_contains(self, expectedRgb, assertMsg=None):
-        found = set()
-        for idx in range(0, len(self.pixeldata), 3):
-            rgb = tuple(self.pixeldata[idx:idx+3])
-            found.add(rgb)
-            if rgb == expectedRgb:
-                return
-        msg = "did not contain %s\ndid contain: %s\n%s" % \
-            (expectedRgb, found, assertMsg)
-        raise AssertionError(msg)
-
-
-    def assert_rectangle_at(self, left, bottom, right, top, rectCol, backCol):
-        badPixels = []
-
-        # inside rect is rectcol
-        if self.get_pixel(left+1, bottom+1) != rectCol:
-            badPixels += ["bottom left"]
-        if self.get_pixel(right-1, bottom+1) != rectCol:
-            badPixels += ["bottom right"]
-        if self.get_pixel(left+1, top-1) != rectCol:
-            badPixels += ["top left"]
-        if self.get_pixel(right-1, top-1) != rectCol:
-            badPixels += ["top right"]
-
-        # outside rect is backCol
-        if self.get_pixel(left-1, bottom+1) != backCol:
-            badPixels += ["bottom left, left edge"]
-        if self.get_pixel(left+1, bottom-1) != backCol:
-            badPixels += ["bottom left, bottom edge"]
-        if self.get_pixel(right+1, bottom+1) != backCol:
-            badPixels += ["bottom right, right edge"]
-        if self.get_pixel(right-1, bottom-1) != backCol:
-            badPixels += ["bottom right, bottom edge"]
-        if self.get_pixel(left-1, top-1) != backCol:
-            badPixels += ["top left, left edge"]
-        if self.get_pixel(left+1, top+1) != backCol:
-            badPixels += ["top left, top edge"]
-        if self.get_pixel(right+1, top-1) != backCol:
-            badPixels += ["top right, right edge"]
-        if self.get_pixel(right-1, top+1) != backCol:
-            badPixels += ["top right, top edge"]
-
-        if badPixels:
-            raise AssertionError('bad pixels at:\n  ' + '\n  '.join(badPixels))
-
+window = Window(
+    visible=False,
+    caption="Camera test",
+)
 
 class Camera_test(MyTestCase):
 
-    def setup(self):
+    def setUp(self):
+        global window
+        window = window
+        window.set_size(200, 100)
+        window.dispatch_events()
+        glClearColor(0, 0, 0, 1)
+        window.clear()
         self.world = World()
+        self.camera = Camera(self.world, window)
 
 
-    def testConstructor(self):
-        world = World()
-        window = Window(width=200, height=100, caption="Camera.testConstructor")
-        try:
-            camera = Camera(world, window, 123.0)
-            self.assertTrue(camera.world is world, "should store model")
-            self.assertTrue(camera.window is window, "should store window")
-            self.assertEquals(camera.scale, 123.0, "should store scale")
-        finally:
-            window.close()
+    def test_constructor(self):
+        global window
+        self.assertTrue(self.camera.world is self.world, "should store world")
+        self.assertTrue(self.camera.window is window, "should store win")
+        self.assertEquals(self.camera.x, 0.0, "should init x")
+        self.assertEquals(self.camera.y, 0.0, "should init y")
+        self.assertEquals(self.camera.scale, 1.0, "should init scale")
+        self.assertEquals(self.camera.rot, 0.0, "should init rot")
 
 
-    def testDraw_should_clear_buffer_with_world_backcolor(self):
-        world = World()
-        world.backColor = (250, 100, 150)
-        win = Window(width=200, height=100, caption="Camera.testDraw_scbwwb")
-        try:
-            win.dispatch_events()
-            camera = Camera(world, win, 1)
-
-            camera.draw()
-            win.flip()
-
-            image = Image.from_buffer(win)
-            image.assert_entirely(world.backColor, "should clear to backColor")
-        finally:
-            win.close()
+    def test_clear_fills_back_buffer_with_color(self):
+        global window
+        window.dispatch_events()
+        color = (100, 150, 200)
+        self.camera.clear(color)
+        image = image_from_window(window)
+        assert_entirely(image, color, "should fill with given color")
 
 
-    def testDraw_should_draw_the_room_color(self):
-        verts = [(-10, -10), (-10, +10), (+10, 0)]
-        room = Room((150, 100, 50), verts)
-        world = World()
-        world.rooms = set([room])
-        win = Window(width=200, height=100, caption="Camera.testDraw_sdtrc")
-        try:
-            win.dispatch_events()
-            camera = Camera(world, win, 10)
-
-            camera.draw()
-            win.flip()
-
-            image = Image.from_buffer(win)
-            image.assert_contains(room.color, "should draw some room color")
-        finally:
-            win.close()
+    def test_draw_clears_with_world_backColor(self):
+        self.camera.clear = Listener()
+        self.world.backColor = (111, 22, 3)
+        self.camera.draw()
+        self.assertEquals(self.camera.clear.args, ((111, 22, 3),),
+            "clear not called correctly")
 
 
-    def assert_room_drawn(self, verts,
-        camFocus, camScale, camRot,
-        expectedEdges):
+    def _draw_rect(self, backColor, polyColor, left, bottom, right, top):
+        glClearColor(
+            backColor[0]/255,
+            backColor[1]/255,
+            backColor[2]/255,
+            1.0)
+        window.clear()
 
-        world = World()
-        room = Room((255, 255, 0), verts)
-        world.rooms = set([room])
-        win = Window(width=200, height=100,
-            caption="Camera.assert_room_drawn")
-        try:
-            win.dispatch_events()
-            camera = Camera(world, win, camScale)
-            camera.x, camera.y = camFocus
-            camera.rot = camRot
-
-            camera.draw()
-            win.flip()
-
-            image = Image.from_buffer(win)
-            left = win.width/2 + expectedEdges[0]
-            bottom = win.height/2 + expectedEdges[1]
-            right = win.width/2 + expectedEdges[2]
-            top = win.height/2 + expectedEdges[3]
-            image.assert_rectangle_at(
-                left, bottom, right, top,
-                room.color, world.backColor)
-        finally:
-            win.close()
+        verts = [
+            (left, bottom),
+            (right, bottom),
+            (right, top),
+            (left, top),
+        ]
+        glColor3ub(*polyColor)
+        glBegin(GL_TRIANGLE_FAN)
+        for vert in verts:
+            glVertex2f(*vert)
+        glEnd()
 
 
-    def testDraw_xforms_room_verts_by_camera_scale(self):
-        roomVerts = [(-20, -10), (-20, 30), (40, 30), (40, -10)]
-        camScale = 50
-        expectedEdges = [-20, -10, +40, +30]
-        self.assert_room_drawn(
-            roomVerts,
-            (0, 0), camScale, 0,
-            expectedEdges)
+    def assert_world_projection(self, drawnRect, expectedRect):
+        global window
+
+        self.camera.world_projection()
+
+        backColor = (0, 0, 255)
+        polyColor = (255, 255, 0)
+        self._draw_rect(backColor, polyColor, *drawnRect)
+        image = image_from_window(window)
+        left, bottom, right, top = expectedRect
+        assert_rectangle_at(
+            image,
+            left, bottom, right, top,
+            polyColor, backColor)
 
 
-    def testDraw_xforms_room_verts_by_cam_scale_and_xy(self):
-        roomVerts = [(-20, -10), (-20, 30), (40, 30), (40, -10)]
-        camFocus = 40, 30
-        camScale = 100
-        expectedEdges = [-30, -20, 0, 0]
-        self.assert_room_drawn(
-            roomVerts,
-            camFocus, camScale, 0,
-            expectedEdges)
+    def test_world_projection_default(self):
+        rect = (-0.2, -0.4, +0.6, +0.8)
+        expectedRect = (90, 10, 129, 69)
+        # note that expectedRect has y-axis inverted
+        # to convert from OpenGL to PIL Image.
+        self.assert_world_projection(rect, expectedRect)
 
 
-    def testDraw_xforms_room_verts_by_cam_scale_xy_and_rot(self):
-        r2 = sqrt(2) * 10
-        roomVerts = [
-            (+40 -5*r2, +30 +r2),
-            (+40 -3*r2, +30 +3*r2),
-            (+40 +0,    +30 +0),
-            (+40 -2*r2, +30 -2*r2)]
-        camFocus = 40, 30
-        camScale = 100
-        camRot = pi/4
-        expectedEdges = [-30, -20, 0, 0]
-        self.assert_room_drawn(
-            roomVerts,
-            camFocus, camScale, camRot,
-            expectedEdges)
+    def test_defect_pyglet_get_color_buffer_for_resized_windows(self):
+        window.set_size(100, 200)
+        mgr = get_buffer_manager()
+        window.switch_to()
+        col_buf = mgr.get_color_buffer()
+        col_buf_size = col_buf.width, col_buf.height
+        self.assertEquals(col_buf_size, (200, 100), \
+            "pyglet bug has been fixed. Enable the test below")
+
+
+    # disabled due to pyglet bug: get_color_buffer() for resized window
+    # returns a buffer of the old window size.
+    def DONTtest_world_projection_strange_aspect(self):
+        global window
+        window.set_size(100, 200)
+        window.dispatch_events()
+        rect = (-0.2, -0.4, +0.6, +0.8)
+        expectedRect = (40, 60, 79, 119)
+        self.fail("get_color_buffer() for resized windows is broke"
+            "fixed in pyglet subversion. expect this test to star.")
+        self.assert_world_projection(rect, expectedRect)
+
+
+    def test_world_projection_offset(self):
+        self.camera.x, self.camera.y = (+0.5, +0.3)
+        rect = (-0.2, -0.4, +0.6, +0.8)
+        expectedRect = (65, 25, 104, 84)
+        self.assert_world_projection(rect, expectedRect)
+
+
+    def test_world_projection_scale(self):
+        self.camera.scale = 10
+        rect = (-1, -2, +3, +4)
+        expectedRect = (95, 30, 114, 59)
+        self.assert_world_projection(rect, expectedRect)
+
+
+    def test_world_projection_rot(self):
+        self.camera.rot = pi/2
+        rect = (-0.2, -0.4, +0.6, +0.8)
+        expectedRect = (60, 20, 119, 59)
+        self.assert_world_projection(rect, expectedRect)
+
+
+    def test_world_projection_complicated(self):
+        self.camera.rot = -pi/2
+        self.camera.scale = 10
+        self.camera.x, self.camera.y = (5, 6)
+        rect = (-1, -2, +3, +4)
+        expectedRect = (60, 20, 89, 39)
+        self.assert_world_projection(rect, expectedRect)
+
+
+    def test_hud_projection(self):
+        self.fail("write test")
+
+    def test_draw_hud(self):
+        self.fail("write test")
+
+    def test_draw_calls_subroutines_in_right_order(self):
+        self.fail("write test")
 
 
 if __name__ == "__main__":

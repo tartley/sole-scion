@@ -22,7 +22,7 @@ class Gameloop_test(MyTestCase):
         self.gameloop.window.close()
 
 
-    def testConstructor(self):
+    def test_constructor(self):
         self.assertEquals(self.gameloop.fps_limit, 30,
             "should define fps_limit")
         self.assertEquals(clock.get_fps_limit(), 30.0,
@@ -48,7 +48,7 @@ class Gameloop_test(MyTestCase):
             "should create camera with our window")
 
 
-    def testRun_loops_until_done(self):
+    def test_run_loops_until_done(self):
         calls = []
         self.callsLeft = 3
 
@@ -63,7 +63,7 @@ class Gameloop_test(MyTestCase):
         self.assertEquals(calls, [3, 2, 1], "run should iterate thrice")
 
 
-    def testRun_sets_dt(self):
+    def test_run_sets_dt(self):
         def setHasExit():
             self.gameloop.window.has_exit = True
 
@@ -83,7 +83,7 @@ class Gameloop_test(MyTestCase):
             "run should append dt to ticks")
 
 
-    def testRun_calls_some_functions(self):
+    def test_run_calls_some_functions(self):
         calls = []
 
         def recordCall(*args):
@@ -107,7 +107,7 @@ class Gameloop_test(MyTestCase):
         self.assertEquals(calls, expected, "run should call some functions")
 
 
-    def testRun_closes_the_window_on_exception(self):
+    def test_run_closes_the_window_on_exception(self):
 
         self.closeCalled = False
         origClose = self.gameloop.window.close
