@@ -1,3 +1,4 @@
+from pymunk import Body, Circle
 
 class Entity(object):
 
@@ -9,5 +10,8 @@ class Entity(object):
 
 
     def add_to(self, space):
-        pass
+        body = Body(1, 1)
+        shape = Circle(body, 1, (0, 0))
+        space.add(body, shape)
+
 
