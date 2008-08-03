@@ -141,5 +141,5 @@ class Gameloop_test(MyTestCase):
 
 
 if __name__ == "__main__":
-    run_test()
+    run_test(Gameloop_test)
 

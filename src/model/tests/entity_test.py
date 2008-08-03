@@ -9,7 +9,7 @@ from model.entity import Entity
 
 class Entity_test(MyTestCase):
 
-    def testConstructor_assigns_ids(self):
+    def test_constructor_assigns_ids(self):
         entity1 = Entity()
         self.assertEquals(type(entity1.id), int,
             "should assign an integer id")
@@ -20,5 +20,10 @@ class Entity_test(MyTestCase):
             "should increment to get next unique id")
 
 
+    def test_add_to(self):
+        self.fail("not written")
+
+
+
 if __name__ == "__main__":
-    run_test()
+    run_test(Entity_test)

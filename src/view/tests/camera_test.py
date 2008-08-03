@@ -161,15 +161,15 @@ class Camera_test(MyTestCase):
 
 
     def test_hud_projection(self):
-        self.fail("write test")
+        self.fail("not tested")
 
     def test_draw_hud(self):
-        self.fail("write test")
+        self.fail("not tested")
 
     def test_draw_calls_subroutines_in_right_order(self):
-        self.fail("write test")
+        self.fail("not tested")
 
 
 if __name__ == "__main__":
-    run_test()
+    run_test(Camera_test)
 

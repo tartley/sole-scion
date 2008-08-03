@@ -18,12 +18,12 @@ class Listener_test(MyTestCase):
         self.assertEquals(listener.kwargsList, [], "no kwargslist")
 
 
-    def testConstructor(self):
+    def test_constructor(self):
         listener = Listener()
         self.assert_is_reset(listener)
 
 
-    def testCall_no_args(self):
+    def test_call_no_args(self):
         listener = Listener()
         listener()
         self.assertTrue(listener.triggered, "no args triggered")
@@ -43,7 +43,7 @@ class Listener_test(MyTestCase):
             "no args kwargslist 2")
 
 
-    def testCall_with_args(self):
+    def test_call_with_args(self):
         listener = Listener()
         listener(1, 2, 3, a=7, b=8, c=9)
         self.assertTrue(listener.triggered, "with args triggered")
@@ -67,7 +67,7 @@ class Listener_test(MyTestCase):
             "with args kwargslist 2")
 
 
-    def testReturn_value(self):
+    def test_return_value(self):
         listener = Listener()
         self.assertNone(listener(), "default return value")
         listener.returnValue = 456
@@ -75,7 +75,7 @@ class Listener_test(MyTestCase):
         self.assertEquals(listener(), 456, "set return value 2")
 
 
-    def testReturnValueList(self):
+    def test_returnValueList(self):
         listener = Listener()
         listener.returnValueList = [4, 3, 2]
         self.assertEquals(listener(), 4, "set return value list 1")
@@ -85,7 +85,7 @@ class Listener_test(MyTestCase):
         self.assertEquals(listener(), None, "set return value list over 2")
 
 
-    def testReturnValueList_with_returnValue(self):
+    def test_returnValueList_with_returnValue(self):
         listener = Listener()
         listener.returnValueList = [4, 3, 2]
         listener.returnValue = 456
@@ -96,7 +96,7 @@ class Listener_test(MyTestCase):
         self.assertEquals(listener(), 456, "set return value list over 2")
 
 
-    def testReset(self):
+    def test_reset(self):
         listener = Listener()
         listener.returnValueList = [4, 3, 2]
         listener.returnValue = 456
@@ -108,16 +108,13 @@ class Listener_test(MyTestCase):
         self.assertEquals(listener(), 456, "reset messed with returnValue")
 
 
-    def testCall_deep_clones_args(self):
-        a = [2, 3, 4]
-        b = [11, a, 55]
+    def test_call_preserves_args_identity(self):
+        a = object()
         listener = Listener()
-        listener(b)
-        a.append('xxx')
-        expected = ([11, [2, 3, 4], 55],)
-        self.assertEquals(listener.args, expected, "should clone args")
+        listener(a)
+        self.assertEquals(listener.args, (a,), "args should == a")
 
 
 if __name__ == '__main__':
-    run_test()
+    run_test(Listener_test)
 

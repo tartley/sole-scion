@@ -1,4 +1,6 @@
-from unittest import TestCase as RealTestCase, TestLoader, TestSuite, main
+from unittest import (
+    TestCase as RealTestCase, TestLoader, TestSuite, TextTestRunner
+)
 from ctypes import Array
 
 
@@ -141,5 +143,9 @@ def combine(*args):
     return TestSuite(suites)
 
 
-def run_test():
-    main()
+def run_test(suite, verbosity=1):
+    if isinstance(suite, type) and issubclass(suite, RealTestCase):
+        suite = TestLoader().loadTestsFromTestCase(suite)
+    TextTestRunner(verbosity=verbosity).run(suite)
+
+

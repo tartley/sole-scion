@@ -368,11 +368,18 @@ class combine_test(RealTestCase):
         self.assert_combine_behaviour(manyTests, 6, [1, 2, 1, 2, 3, 3])
 
 
+class run_test_test(MyTestCase):
+
+    def test_passes_verbosity(self):
+        self.fail("not tested")
+
+
 TestCase_test = combine(
     TestCase_assertEquals_test,
     TestCase_assertRaises_test,
     TestCase_module_functions_test,
     combine_test,
+    run_test_test,
 )
 
 if __name__ == "__main__":
