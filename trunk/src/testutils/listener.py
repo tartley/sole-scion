@@ -1,4 +1,3 @@
-from copy import deepcopy
 
 class Listener(object):
 
@@ -27,7 +26,7 @@ class Listener(object):
     kwargs = property(_getKwargs)
 
     def __call__(self, *args, **kwargs):
-        self.argsList.append(deepcopy(args))
+        self.argsList.append(args)
         self.kwargsList.append(kwargs)
         if self.returnValueList:
             return self.returnValueList.pop(0)

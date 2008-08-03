@@ -24,7 +24,6 @@ def draw_rectangle(image, left, bottom, right, top, rectCol):
 class TestImage_from_window_test(MyTestCase):
 
     def setUp(self):
-        self.window = Window(width=30, height=20, visible=False)
         self.pixCols = {
             (0, 0): ( 0,    0,  40),
             (0, 1): ( 0,  200,  80),
@@ -34,7 +33,9 @@ class TestImage_from_window_test(MyTestCase):
             (2, 1): (200, 200, 240),
         }
 
+        self.window = Window(width=30, height=20)
         self.window.dispatch_events()
+        self.window.clear()
 
         gl.glBegin(gl.GL_POINTS)
         for loc, color in self.pixCols.iteritems():
@@ -241,5 +242,5 @@ TestImage_test = combine(
 )
 
 if __name__ == "__main__":
-    run_test()
+    run_test(TestImage_test)
 

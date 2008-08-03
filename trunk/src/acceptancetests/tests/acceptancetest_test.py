@@ -10,4 +10,4 @@ class AcceptanceTest_test(MyTestCase):
         self.fail("not tested")
 
 if __name__ == "__main__":
-    run_test()
+    run_test(AcceptanceTest_test)
