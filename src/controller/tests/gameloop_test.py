@@ -10,6 +10,7 @@ from testutils.testcase import MyTestCase, run_test
 from controller.gameloop import Gameloop
 from model.world import World
 from view.camera import Camera
+from view.renderer import Renderer
 
 
 class Gameloop_test(MyTestCase):
@@ -46,8 +47,11 @@ class Gameloop_test(MyTestCase):
             "window should be vsync")
         self.assertEquals(type(self.gameloop.camera), Camera,
             "should create camera")
-        self.assertTrue(self.gameloop.camera.window is self.gameloop.window,
-            "should create camera with our window")
+
+        self.assertEquals(type(self.gameloop.renderer), Renderer,
+            "should create renderer")
+        self.assertEquals(self.gameloop.renderer.camera, self.gameloop.camera,
+            "should create renderer with camera")
 
 
     def test_run_shows_window(self):
@@ -103,7 +107,7 @@ class Gameloop_test(MyTestCase):
 
         self.gameloop.window.dispatch_events = \
             lambda *args: recordCall("dispatch", args)
-        self.gameloop.camera.draw = \
+        self.gameloop.renderer.draw = \
             lambda *args: recordCall("draw", args)
         self.gameloop.window.flip = \
             lambda *args: recordCall("flip", args)
@@ -112,7 +116,7 @@ class Gameloop_test(MyTestCase):
 
         expected = [
             ('dispatch', ()),
-            ('draw', ()),
+            ('draw', (self.gameloop.world, 1)),
             ('flip', ()),
         ]
         self.assertEquals(calls, expected, "run should call some functions")

@@ -33,7 +33,7 @@ class Camera_test(MyTestCase):
         glClearColor(0, 0, 0, 1)
         self.window.clear()
         self.world = World()
-        self.camera = Camera(self.world, self.window)
+        self.camera = Camera()
 
 
     def tearDown(self):
@@ -41,28 +41,10 @@ class Camera_test(MyTestCase):
 
 
     def test_constructor(self):
-        self.assertTrue(self.camera.world is self.world, "should store world")
-        self.assertTrue(self.camera.window is self.window, "should store win")
         self.assertEquals(self.camera.x, 0.0, "should init x")
         self.assertEquals(self.camera.y, 0.0, "should init y")
         self.assertEquals(self.camera.scale, 1.0, "should init scale")
         self.assertEquals(self.camera.rot, 0.0, "should init rot")
-
-
-    def test_clear_fills_back_buffer_with_color(self):
-        self.window.dispatch_events()
-        color = (100, 150, 200)
-        self.camera.clear(color)
-        image = image_from_window(self.window)
-        assert_entirely(image, color, "should fill with given color")
-
-
-    def test_draw_clears_with_world_backColor(self):
-        self.camera.clear = Listener()
-        self.world.backColor = (111, 22, 3)
-        self.camera.draw()
-        self.assertEquals(self.camera.clear.args, ((111, 22, 3),),
-            "clear not called correctly")
 
 
     def _draw_rect(self, backColor, polyColor, left, bottom, right, top):
@@ -87,7 +69,7 @@ class Camera_test(MyTestCase):
 
 
     def assert_world_projection(self, drawnRect, expectedRect):
-        self.camera.world_projection()
+        self.camera.world_projection(2)
 
         backColor = (0, 0, 255)
         polyColor = (255, 255, 0)
@@ -102,9 +84,9 @@ class Camera_test(MyTestCase):
 
     def test_world_projection_default(self):
         rect = (-0.2, -0.4, +0.6, +0.8)
+        # note pyglet/OpenGL measures y from bottom, but PIL measures from top,
+        # so expectedRect has y-axis inverted
         expectedRect = (90, 10, 129, 69)
-        # note that expectedRect has y-axis inverted
-        # to convert from OpenGL to PIL Image.
         self.assert_world_projection(rect, expectedRect)
 
 
@@ -159,15 +141,6 @@ class Camera_test(MyTestCase):
         expectedRect = (60, 20, 89, 39)
         self.assert_world_projection(rect, expectedRect)
 
-
-    def test_hud_projection(self):
-        self.fail("not tested")
-
-    def test_draw_hud(self):
-        self.fail("not tested")
-
-    def test_draw_calls_subroutines_in_right_order(self):
-        self.fail("not tested")
 
 
 if __name__ == "__main__":
