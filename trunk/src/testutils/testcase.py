@@ -58,6 +58,8 @@ def _compare_indexables(actual, expected, message):
 
 class MyTestCase(RealTestCase):
     "A TestCase with augmented assertions"
+    # pylint: disable-msg=C0103
+    #   Invalid method names: This class uses unittest.TestCase conventions
 
     def assertNone(self, item, message=None):
         "Fail if item is not None"

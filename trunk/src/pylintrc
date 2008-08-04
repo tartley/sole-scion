@@ -10,9 +10,6 @@ reports=no
 
 [BASIC]
 
-# Regular expression which should only match correct method names
-method-rgx=[a-z_][a-zA-Z0-9_]{2,30}$
-
 # Regular expression which should only match correct instance attribute names
 attr-rgx=[a-z][a-zA-Z0-9]{2,30}$
 
@@ -24,4 +21,14 @@ variable-rgx=[a-z][a-zA-Z0-9]{2,30}$
 
 # Good variable names which should always be accepted, separated by a comma
 good-names=x,y,_
+
+
+[MESSAGES CONTROL]
+
+# Disable the messages with the given ids:
+disable-msg=W0142, R0903, R0201, I0011
+# W0142: Used * or ** magic
+# R0903: too few public methods
+# R0201: method could be a function
+# I0011: locally disabling <msgid>
 

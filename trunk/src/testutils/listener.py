@@ -6,7 +6,6 @@ class Listener(object):
     called, and with what arguments. It is useful for mocking out a
     callable during a unittest.
     """
-
     def __init__(self):
         self.argsList = None
         self.kwargsList = None

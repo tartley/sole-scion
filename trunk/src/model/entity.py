@@ -18,7 +18,8 @@ class Entity(object):
     def add_to(self, space):
         """
         Add this Entity to the given Chipmunk Space, as a single Body
-        and one or more Shapes attached to it"""
+        and one or more Shapes attached to it.
+        """
         body = Body(1, 1)
         shape = Circle(body, 1, (0, 0))
         space.add(body, shape)
