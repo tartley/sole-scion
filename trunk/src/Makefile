@@ -1,5 +1,5 @@
 
-tags:
+tags: clean
 	ctags -R .
 
 clean:
@@ -8,4 +8,6 @@ clean:
 	-rm tags
 
 install:
-	@echo 'There is no installer'
+	@echo 'There is no installer. Run with "python -O sole_scion.py"'
+
+.PHONY: tags, clean, install

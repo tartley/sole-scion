@@ -3,6 +3,7 @@ from pyglet.window import Window
 
 from model.world import World
 from view.camera import Camera
+from view.renderer import Renderer
 
 
 class Gameloop(object):
@@ -16,7 +17,8 @@ class Gameloop(object):
         self.world.populate()
         self.window = Window( \
             fullscreen=True, vsync=True, caption=caption, visible=False)
-        self.camera = Camera(self.world, self.window)
+        self.camera = Camera()
+        self.renderer = Renderer(self.camera)
 
 
     def dispose(self):
@@ -30,7 +32,8 @@ class Gameloop(object):
                 self.dt = clock.tick()
                 self.ticks.append(self.dt)
                 self.window.dispatch_events()
-                self.camera.draw()
+                aspect = self.window.width / self.window.height
+                self.renderer.draw(self.world, aspect)
                 self.window.flip()
         finally:
             self.dispose()

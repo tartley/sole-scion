@@ -1,44 +1,35 @@
+"""
+Camera tracks a position, orientation and zoom level, and applies openGL
+transforms so that subsequent renders are drawn at the correct place, size
+and orientation on screen
+"""
+
 from __future__ import division
 from math import sin, cos
 
-from pyglet import clock
 from pyglet.gl import (
-    glBegin, glClear, glClearColor, glColor3ub, glEnd, glLoadIdentity,
-    glMatrixMode, glVertex2f,
+    glLoadIdentity, glMatrixMode,
     gluLookAt, gluOrtho2D,
-    GL_COLOR_BUFFER_BIT, GL_TRIANGLE_FAN, GL_MODELVIEW, GL_PROJECTION
+    GL_MODELVIEW, GL_PROJECTION,
 )
 
 
 class Camera(object):
+    """Sole class of the camera module"""
 
-    # TODO: remove window. We only need aspect of width/height
-    def __init__(self, world, window):
-        self.world = world
-        self.window = window
-        self.scale = 1.0
+    def __init__(self):
         self.x = 0.0
         self.y = 0.0
+        self.scale = 1.0
         self.rot = 0.0
-        self.world_projection()
-
-        # TODO: where should this live?
-        self.clockDisplay = clock.ClockDisplay()
 
 
-    def clear(self, color):
-        glClearColor(
-            color[0] / 255,
-            color[1] / 255,
-            color[2] / 255,
-            1.0)
-        glClear(GL_COLOR_BUFFER_BIT)
-
-
-    def world_projection(self):
+    def world_projection(self, aspect):
+        """Sets opengl projection and modelview matrices such that the window is
+        centered on (x,y), shows at least scale world units in every direction,
+        and oriented by rot."""
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()
-        aspect = self.window.width / self.window.height
         gluOrtho2D(
             -self.scale * aspect,
             +self.scale * aspect,
@@ -51,30 +42,4 @@ class Camera(object):
             self.x, self.y, +1.0,
             self.x, self.y, -1.0,
             sin(self.rot), cos(self.rot), 0.0)
-
-
-    def draw_rooms(self):
-        for room in self.world.rooms:
-            glColor3ub(*room.color)
-            glBegin(GL_TRIANGLE_FAN)
-            for vert in room.verts:
-                glVertex2f(*vert)
-            glEnd()
-
-    def hud_projection(self):
-        glMatrixMode(GL_PROJECTION)
-        glLoadIdentity()
-        # TODO: some glu command. copy from gameloop3_flowers
-
-
-    def draw_hud(self):
-        self.clockDisplay.draw()
-
-
-    def draw(self):
-        self.clear(self.world.backColor)
-        self.world_projection()
-        self.draw_rooms()
-        self.hud_projection()
-        self.draw_hud()
 
