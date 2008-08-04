@@ -15,6 +15,8 @@ class AcceptanceTest(MyTestCase):
     After it has been retried for 'timeout' seconds, the False condition
     will cause a test failure.
     """
+    # pylint: disable-msg=R0904
+    #   Too many public methods
 
     timeout = 1.0
 
