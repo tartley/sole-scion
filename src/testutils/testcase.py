@@ -1,3 +1,5 @@
+"Provides class 'MyTestCase', 'combine()' and 'run_test()'"
+
 from unittest import (
     TestCase as RealTestCase, TestLoader, TestSuite, TextTestRunner
 )
@@ -5,6 +7,7 @@ from ctypes import Array
 
 
 def _is_int_indexable(item):
+    "Return true if item is indexable with integers"
     return (
         type(item) is not dict and
         hasattr(item, "__len__") and
@@ -12,14 +15,16 @@ def _is_int_indexable(item):
     )
 
 
-def _tostr(i):
-    if isinstance(i, Array):
-        return "Array(%s)" % ", ".join(str(x) for x in i)
+def _tostr(item):
+    "Convert item to str, special casing types with rubbish defaults"
+    if isinstance(item, Array):
+        return "Array(%s)" % ", ".join(str(x) for x in item)
     else:
-        return str(i)
+        return str(item)
 
 
 def _compare_lengths(actual, expected, message):
+    "Fail with a useful message if lengths differ"
     if len(actual) != len(expected):
         actualStr = _tostr(actual)
         expectedStr = _tostr(expected)
@@ -34,6 +39,7 @@ def _compare_lengths(actual, expected, message):
 
 
 def _compare_indexables(actual, expected, message):
+    "Fail with a useful message if content of indexable items differs"
     _compare_lengths(actual, expected, message)
     for index in range(len(actual)):
         if actual[index] != expected[index]:
@@ -51,8 +57,10 @@ def _compare_indexables(actual, expected, message):
 
 
 class MyTestCase(RealTestCase):
+    "A TestCase with augmented assertions"
 
     def assertNone(self, item, message=None):
+        "Fail if item is not None"
         if not item is None:
             if message is None:
                 message = ""
@@ -60,6 +68,7 @@ class MyTestCase(RealTestCase):
 
 
     def assertNotNone(self, item, message=None):
+        "Fail if item is None"
         if item is None:
             if message is None:
                 message = ""
@@ -67,6 +76,7 @@ class MyTestCase(RealTestCase):
 
 
     def assertEquals(self, actual, expected, message=None):
+        "Fail with useful message if actual is not equal expected"
         if message is None:
             message = ""
 
@@ -86,50 +96,57 @@ class MyTestCase(RealTestCase):
                 raise AssertionError(msg)
 
 
-    def _assertRaises_test_args(self, fn, excClass):
+    def _assertRaises_test_args(self, func, excClass):
+        "Raise TypeError on bad args to assertRaises"
 
-        def isException(o):
-            return isinstance(o, type) and issubclass(o, Exception)
+        def is_exception(obj):
+            "return true if obj is an Exception class"
+            return isinstance(obj, type) and issubclass(obj, Exception)
 
         msg = ""
-        arg1IsCallable = callable(fn) and not isException(fn)
+        arg1IsCallable = callable(func) and not is_exception(func)
         if not arg1IsCallable:
             msg += "1st arg is not callable\n"
-        arg2IsExcClass = isException(excClass)
+        arg2IsExcClass = is_exception(excClass)
         if not arg2IsExcClass:
             msg += "2nd arg is not exception class\n"
 
         if not arg1IsCallable or not arg2IsExcClass:
             msg += (
             "warning: assertRaises() in testutils/testcase.py has new sig:\n"
-            "  assertRaises(self, fn, expectedType, expectedMessage=None)")
+            "  assertRaises(self, func, expectedType, expectedMessage=None)")
             raise TypeError(msg)
 
 
     def assertRaises( \
-        self, fn, expectedException, expectedMessage=None):
+        self, func, expectedException, expectedMessage=None):
+        "Fail if func doesn't raise expectedException"
 
-        self._assertRaises_test_args(fn, expectedException)
+        self._assertRaises_test_args(func, expectedException)
 
         try:
-            fn()
-        except expectedException, e:
-            if expectedMessage is not None and e.message != expectedMessage:
+            func()
+        except expectedException, actual:
+            messageWrong = (
+                expectedMessage is not None and \
+                actual.message != expectedMessage)
+            if messageWrong:
                 msg = "raised exception with wrong message:\n  %s\n  %s\n" % \
-                    (e.message, expectedMessage)
+                    (actual.message, expectedMessage)
                 self.fail(msg)
-        except Exception, e:
+        except Exception, actual:
             msg = 'raised wrong exception type:\n  %s("%s")\n  %s' % \
-                (type(e), e.message, expectedException)
+                (type(actual), actual.message, expectedException)
             self.fail(msg)
         else:
             msg = "didn't raise.\n  Expected %s(\"%s\")" % \
                 (expectedException.__name__, expectedMessage)
             self.fail(msg)
-        return e
+        return actual
 
 
 def combine(*args):
+    "combine given list of TestCase classes and suite objects into a new suite"
     loader = TestLoader()
     suites = []
     for arg in args:
@@ -144,6 +161,7 @@ def combine(*args):
 
 
 def run_test(suite, verbosity=1):
+    "Use a TextTestRunner to run the given test suite"
     if isinstance(suite, type) and issubclass(suite, RealTestCase):
         suite = TestLoader().loadTestsFromTestCase(suite)
     TextTestRunner(verbosity=verbosity).run(suite)

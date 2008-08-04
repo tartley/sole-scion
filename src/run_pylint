@@ -1,0 +1,9 @@
+FILES=`find . -name '*.py' ! -name '*_test.py' ! -name '__init__.py' ! -name 'fixpath.py' ! -name 'run_all_tests.py' ! -name 'AT*.py'`
+if [ -z "$FILES" ]
+then
+    exit 1
+fi
+echo $FILES
+
+pylint --rcfile=pylintrc $FILES
+

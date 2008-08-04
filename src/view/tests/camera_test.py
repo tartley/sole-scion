@@ -1,26 +1,21 @@
 #!/usr/bin/python -O
-from math import pi, sqrt
+from math import pi
 
 from pyglet.image import get_buffer_manager
 from pyglet.window import Window
 from pyglet.gl import (
-    glBegin, glClear, glClearColor, glColor3ub, glEnd, glGetFloatv,
-    glReadBuffer, glReadPixels, glVertex2f,
-    GLfloat, GLubyte,
-    GL_BACK, GL_COLOR_BUFFER_BIT, GL_COLOR_CLEAR_VALUE, GL_FRONT,
-    GL_TRIANGLE_FAN, GL_TRIANGLES, GL_RGB, GL_UNSIGNED_BYTE,
+    glBegin, glClearColor, glColor3ub, glEnd, glVertex2f,
+    GL_TRIANGLE_FAN,
 )
 
 import fixpath
 
 from testutils.testimage import (
-    assert_entirely, assert_contains, assert_rectangle_at, image_from_window,
-    save_to_tempfile,
+    assert_rectangle_at, image_from_window,
 )
-from testutils.listener import Listener
 from testutils.testcase import MyTestCase, run_test
 
-from model.world import Room, World
+from model.world import World
 from view.camera import Camera
 
 
@@ -75,11 +70,7 @@ class Camera_test(MyTestCase):
         polyColor = (255, 255, 0)
         self._draw_rect(backColor, polyColor, *drawnRect)
         image = image_from_window(self.window)
-        left, bottom, right, top = expectedRect
-        assert_rectangle_at(
-            image,
-            left, bottom, right, top,
-            polyColor, backColor)
+        assert_rectangle_at(image, expectedRect, polyColor, backColor)
 
 
     def test_world_projection_default(self):

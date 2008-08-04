@@ -1,3 +1,8 @@
+"""
+Provide functions to convert pyglet Window to a PIL Image,
+and make assertions about the image contents.
+"""
+
 from os import fdopen
 from tempfile import mkstemp
 
@@ -7,12 +12,17 @@ from PIL import Image
 
 
 def _create_tempfile():
-    fd, fname = mkstemp(prefix='testimage-', suffix='.png')
-    tempfile = fdopen(fd, "w+b")
+    """
+    Return a temporary file opened for writing, and its filename.
+    Caller's responsibility to close and/or delete the file after use.
+    """
+    filedesc, fname = mkstemp(prefix='testimage-', suffix='.png')
+    tempfile = fdopen(filedesc, "w+b")
     return tempfile, fname
 
 
 def image_from_window(window):
+    "Convert given Pyglet Window into a PIL Image"
     tempfile, fname = _create_tempfile()
     window.switch_to()
     colorBuffer = get_buffer_manager().get_color_buffer()
@@ -23,24 +33,27 @@ def image_from_window(window):
 
 
 def save_to_tempfile(image):
+    "Save the given PIL Image to a temporary file, return the filename."
     tempfile, fname = _create_tempfile()
     image.save(tempfile, format='PNG')
     return fname
 
 
 def assert_entirely(image, expectedRgb, assertMsg=None):
+    "Fail if 'image' is not entirely 'expectedRgb' color"
     for x in range(image.size[0]):
         for y in range(image.size[1]):
-            rgb = image.getpixel((x,y))[:3]
+            rgb = image.getpixel((x, y))[:3]
             if rgb != expectedRgb:
                 if assertMsg is None:
-                    assertMsg=''
+                    assertMsg = ''
                 msg = '%s != %s\n  pixel %d,%d wrong color\n  %s' % \
                     (rgb, expectedRgb, x, y, assertMsg)
                 raise AssertionError(msg)
 
 
 def assert_contains(image, expectedRgb, assertMsg=None):
+    "Fail if 'image' does not contain 'expectedRgb' color"
     found = set()
     for x in range(image.size[0]):
         for y in range(image.size[1]):
@@ -55,10 +68,9 @@ def assert_contains(image, expectedRgb, assertMsg=None):
     raise AssertionError(msg)
 
 
-def _assert_rectangle_at_verifyargs(
-    imageSize,
-    left, bottom, right, top,
-    rectCol, backCol):
+def _assert_rectangle_at_verifyargs(imageSize, rect, rectCol, backCol):
+    "Fail on bad args to assert_rectangle_at()"
+    left, bottom, right, top = rect
 
     rectIsDegenerate = left >= (right-1) or bottom >= (top-1)
     if rectIsDegenerate:
@@ -81,17 +93,18 @@ def _assert_rectangle_at_verifyargs(
         raise AssertionError(msg)
 
 
-def assert_rectangle_at(
-    image,
-    left, bottom, right, top,
-    rectCol, backCol):
+def assert_rectangle_at(image, rect, rectCol, backCol):
+    """
+    Fail if 'image' doesn't have a solid rectangle of 'rectCol',
+    surrounded on all sides by 'backCol'
+    """
 
-    _assert_rectangle_at_verifyargs(
-        image.size, left, bottom, right, top, rectCol, backCol)
+    _assert_rectangle_at_verifyargs(image.size, rect, rectCol, backCol)
 
-    width, height = image.size[0], image.size[1]
+    left, bottom, right, top = rect
 
     def assert_pixel(x, y, color):
+        "Fail with useful message if pixel(x,y) is not 'color'"
         actual = image.getpixel((x, y))[:3]
         if actual != color:
             fname = save_to_tempfile(image)
