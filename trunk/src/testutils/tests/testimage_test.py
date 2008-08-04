@@ -136,7 +136,7 @@ class TestImage_assert_test(MyTestCase):
         ]
         for ords in window_ords:
             assertion = lambda: assert_rectangle_at(
-                image, ords[0], ords[1], ords[2], ords[3], rectCol, backCol)
+                image, ords, rectCol, backCol)
             expectedMsg = "degenerate rect %d,%d %d,%d. Broken test?" % ords
             self.assertRaises(assertion, AssertionError, expectedMsg)
 
@@ -158,7 +158,7 @@ class TestImage_assert_test(MyTestCase):
         ]
         for ords in window_ords:
             assertion = lambda: assert_rectangle_at(
-                image, ords[0], ords[1], ords[2], ords[3], rectCol, backCol)
+                image, ords, rectCol, backCol)
             expectedMsg = "rect %d,%d %d,%d touches edge of (20, 10). " \
                 "Broken test?" % ords
             self.assertRaises(assertion, AssertionError, expectedMsg)
@@ -168,7 +168,7 @@ class TestImage_assert_test(MyTestCase):
         color = (123, 45, 6)
         image = Image.new('RGB', (20, 10), color)
         assertion = lambda: assert_rectangle_at(
-            image, 1, 1, 18, 8, color, color)
+            image, (1, 1, 18, 8), color, color)
         expectedMsg = "colors are same %s. Broken test?" % (color,)
         self.assertRaises(assertion, AssertionError, expectedMsg)
 
@@ -178,14 +178,14 @@ class TestImage_assert_test(MyTestCase):
         image = Image.new('RGB', (20, 10), backCol)
         rectCol = (234, 56, 7)
         draw_rectangle(image, 2, 2, 17, 7, rectCol)
-        assert_rectangle_at(image, 2, 2, 17, 7, rectCol, backCol)
+        assert_rectangle_at(image, (2, 2, 17, 7), rectCol, backCol)
 
         # and again, with rogue pixels just off each corner
         image.putpixel((1, 1), rectCol)
         image.putpixel((18, 1), rectCol)
         image.putpixel((1, 8), rectCol)
         image.putpixel((18, 8), rectCol)
-        assert_rectangle_at(image, 2, 2, 17, 7, rectCol, backCol)
+        assert_rectangle_at(image, (2, 2, 17, 7), rectCol, backCol)
 
 
     def test_assert_rectangle_at_fails(self):
@@ -221,7 +221,7 @@ class TestImage_assert_test(MyTestCase):
             image.putpixel((x, y), col)
 
             assertion = lambda: assert_rectangle_at( \
-                image, 2, 2, 17, 7, rectCol, backCol)
+                image, (2, 2, 17, 7), rectCol, backCol)
             expectedMsg = "rectangle 2,2 17,7 bad, eg at %d,%d" % (x, y)
             e = self.assertRaises(assertion, AssertionError)
             self.assertTrue(e.message.startswith(expectedMsg), \
@@ -233,7 +233,7 @@ class TestImage_assert_test(MyTestCase):
         rectCol = (234, 56, 7)
         image = Image.new('RGBA', (20, 10), backCol)
         draw_rectangle(image, 2, 2, 17, 7, rectCol)
-        assert_rectangle_at(image, 2, 2, 17, 7, rectCol, backCol)
+        assert_rectangle_at(image, (2, 2, 17, 7), rectCol, backCol)
 
 
 TestImage_test = combine(

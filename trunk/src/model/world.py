@@ -1,9 +1,12 @@
-from pymunk import Body, inf, init_pymunk, Segment, Space
+"Module for the World class"
+
+from pymunk import Body, inf, init_pymunk, Space
 
 from model.room import Room
 
 
 class World(object):
+    "Container for everything in the model, ie: Rooms and Entities"
 
     def __init__(self):
         init_pymunk()
@@ -17,6 +20,7 @@ class World(object):
 
 
     def populate(self):
+        "Create some demo set of Rooms and Entities"
         color = (0, 50, 100)
         verts = [
             (-10, 0),
@@ -30,11 +34,13 @@ class World(object):
 
 
     def add_room(self, room):
+        "Add 'room' to this world, and insert it into Chipmunk's Space"
         room.add_to(self.space, self.staticBody)
         self.rooms.add(room)
 
 
     def add_entity(self, entity):
+        "Add 'entity' to this world, and insert it into Chipmunk's Space"
         entity.add_to(self.space)
         self.entities.add(entity)
 

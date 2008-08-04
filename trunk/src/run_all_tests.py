@@ -1,4 +1,6 @@
 #!/usr/bin/python -O
+"Runs all unit and acceptance tests"
+
 from unittest import TextTestRunner
 
 from testutils.testcase import combine
@@ -18,6 +20,7 @@ from acceptancetests.AT001_app_opens_a_fullscreen_window import \
 
 
 def run_all_tests():
+    "Runs all unit and acceptance tests"
     runner = TextTestRunner(verbosity=2)
     suite = combine(
         AcceptanceTest_test,

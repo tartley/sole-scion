@@ -189,7 +189,7 @@ class TestCase_assertRaises_test(RealTestCase):
         self.mytestcase = ClassUnderTest("testAlwaysPasses")
 
 
-    def testAssertRaises_for_fn_that_raises_the_right_thing(self):
+    def testAssertRaises_for_func_that_raises_the_right_thing(self):
 
         def raiseCorrectly():
             raise ZeroDivisionError("actual message")
@@ -199,11 +199,11 @@ class TestCase_assertRaises_test(RealTestCase):
 
 
     def assertFailureModeOfAssertRaises( \
-        self, fn, expectedMsgIn, expectedMsgOut):
+        self, func, expectedMsgIn, expectedMsgOut):
 
         try:
             self.mytestcase.assertRaises(
-                fn, ZeroDivisionError, expectedMsgIn)
+                func, ZeroDivisionError, expectedMsgIn)
 
         except AssertionError, e:
             if e.message != expectedMsgOut:
@@ -222,7 +222,7 @@ class TestCase_assertRaises_test(RealTestCase):
             self.fail("assertRaises should raise")
 
 
-    def testAssertRaises_for_fn_that_raises_with_wrong_message(self):
+    def testAssertRaises_for_func_that_raises_with_wrong_message(self):
 
         def raiseBadMessage():
             raise ZeroDivisionError("bad message")
@@ -237,7 +237,7 @@ class TestCase_assertRaises_test(RealTestCase):
             raiseBadMessage, "expected message", expectedMsgOut)
 
 
-    def testAssertRaises_for_fn_that_doesnt_raise(self):
+    def testAssertRaises_for_func_that_doesnt_raise(self):
 
         def raiseNothing():
             pass
@@ -272,15 +272,15 @@ class TestCase_assertRaises_test(RealTestCase):
         self.assertTrue(actual is e, "should return the raised exception")
 
 
-    def assert_warns_on_bad_args(self, fn, excClass, expectedPrefix):
+    def assert_warns_on_bad_args(self, func, excClass, expectedPrefix):
 
         assertion = lambda: self.mytestcase.assertRaises(
-            fn, excClass, "WARNING")
+            func, excClass, "WARNING")
 
         expectedMessage = (
             "%s" % expectedPrefix +
             "warning: assertRaises() in testutils/testcase.py has new sig:\n"
-            "  assertRaises(self, fn, expectedType, expectedMessage=None)")
+            "  assertRaises(self, func, expectedType, expectedMessage=None)")
         try:
             assertion()
         except Exception, e:
