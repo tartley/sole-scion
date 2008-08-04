@@ -24,11 +24,11 @@ class Gameloop_test(MyTestCase):
 
 
     def test_constructor(self):
-        self.assertEquals(self.gameloop.fps_limit, 30,
+        self.assertEquals(self.gameloop.fpsLimit, 30,
             "should define fps_limit")
         self.assertEquals(clock.get_fps_limit(), 30.0,
             "should set fps limit")
-        self.assertEquals(self.gameloop.dt, None,
+        self.assertEquals(self.gameloop.deltaT, None,
             "should set current frame time")
         self.assertEquals(self.gameloop.ticks, [], "should set ticks")
 
@@ -78,7 +78,7 @@ class Gameloop_test(MyTestCase):
         self.assertEquals(calls, [3, 2, 1], "run should iterate thrice")
 
 
-    def test_run_sets_dt(self):
+    def test_run_sets_deltaT(self):
         def setHasExit():
             self.gameloop.window.has_exit = True
 
@@ -92,10 +92,10 @@ class Gameloop_test(MyTestCase):
         finally:
             gameloopModule.clock.tick = oldTick
 
-        self.assertEquals(self.gameloop.dt, 12345,
-            "run should assign dt=clock.tick")
+        self.assertEquals(self.gameloop.deltaT, 12345,
+            "run should assign deltaT=clock.tick")
         self.assertEquals(self.gameloop.ticks, [12345],
-            "run should append dt to ticks")
+            "run should append deltaT to ticks")
 
 
     def test_run_calls_some_functions(self):

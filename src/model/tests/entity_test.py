@@ -12,13 +12,13 @@ class Entity_test(MyTestCase):
 
     def test_constructor_assigns_ids(self):
         ent1 = Entity()
-        self.assertEquals(type(ent1.id), int,
-            "should assign an integer id")
-        self.assertTrue(ent1.id > 0, "should assign positive id")
+        self.assertEquals(type(ent1.entId), int,
+            "should assign an integer entId")
+        self.assertTrue(ent1.entId > 0, "should assign positive entId")
 
         ent2 = Entity()
-        self.assertEquals(ent2.id, ent1.id + 1,
-            "ids should be unique and sequential")
+        self.assertEquals(ent2.entId, ent1.entId + 1,
+            "entId should be unique and sequential")
 
 
     def test_add_to(self):

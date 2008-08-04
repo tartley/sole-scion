@@ -33,7 +33,8 @@ class TestImage_from_window_test(MyTestCase):
             (2, 1): (200, 200, 240),
         }
 
-        self.window = Window(width=30, height=20)
+        self.window = Window(width=30, height=20, visible=False)
+        self.window.on_resize(30, 20)
         self.window.dispatch_events()
         self.window.clear()
 
