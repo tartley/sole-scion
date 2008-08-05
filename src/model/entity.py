@@ -1,28 +1,31 @@
-"Module of the Entity class"
-from pymunk import Body, Circle
+"Module for class 'Entity'"
+
+from pymunk import Body
 
 class Entity(object):
     """
-    An Entity represents a single rigid body within the gameworld. It manages
-    a list of circles and convex polys to be considered by Chipmunk in the
-    physics of this object, and are rendered to the window to draw this entity.
+    Represents an in-game object, that has a position, orientation, and a
+    geometry and mass provided by its shape
     """
 
     nextId = 1
 
-    def __init__(self):
+    def __init__(self, shape, x, y, rot):
         self.entId = Entity.nextId
         Entity.nextId += 1
 
+        self.x = x
+        self.y = y
+        self.rot = rot
+        self.shape = shape
 
-    def add_to(self, space):
+
+    def add_to_space(self, space):
         """
         Add this Entity to the given Chipmunk Space, as a single Body
         and one or more Shapes attached to it.
         """
-        body = Body(1, 1)
-        shape = Circle(body, 1, (0, 0))
-        space.add(body, shape)
-
-
+        body = Body(self.shape.mass, self.shape.moment)
+        self.shape.add_to_body(space, body)
+        space.add(body)
 
