@@ -10,10 +10,12 @@ from controller.tests.gameloop_test import Gameloop_test
 from model.tests.entity_test import Entity_test
 from model.tests.room_test import Room_test
 from model.tests.world_test import World_test
+from model.shapes.tests.disc_test import Disc_test
 from testutils.tests.testimage_test import TestImage_test
 from testutils.tests.listener_test import Listener_test
 from testutils.tests.testcase_test import TestCase_test
 from view.tests.camera_test import Camera_test
+from view.tests.renderer_test import Renderer_test
 
 from acceptancetests.AT001_app_opens_a_fullscreen_window import \
     AT001_app_opens_a_fullscreen_window
@@ -28,14 +30,15 @@ def run_all_tests():
         Entity_test,
         Room_test,
         World_test,
+        Disc_test,
         TestImage_test,
         Listener_test,
         TestCase_test,
         Camera_test,
+        Renderer_test,
         AT001_app_opens_a_fullscreen_window,
     )
     runner.run(suite)
-
 
 
 if __name__ == "__main__":

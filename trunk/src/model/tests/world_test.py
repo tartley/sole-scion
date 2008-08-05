@@ -63,7 +63,7 @@ class World_test(MyTestCase):
 
     def test_add_entity(self):
         world = World()
-        entity = Entity()
+        entity = Entity(None, 0, 0, 0)
         entity.add_to = Listener()
 
         world.add_entity(entity)
