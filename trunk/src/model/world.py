@@ -1,9 +1,12 @@
 "Module for the World class"
 
+from __future__ import division
+
 from pymunk import Body, inf, init_pymunk, Space
 
 from model.entity import Entity
 from model.room import Room
+from model.shapes.block import Block
 from model.shapes.disc import Disc
 
 
@@ -28,16 +31,37 @@ class World(object):
         verts = [
             (-10, 0),
             (0, -1),
-            (+10, 1),
-            (+8, 5),
-            (-8, 6),
+            (+10, 5),
+            (+12, 15),
+            (-12, 9),
         ]
         room = Room(color, verts)
         self.add_room(room)
 
-        ent = Entity(Disc(1, 0, 0), 4, 1, 0)
+        ent = Entity(Disc(0, 0, 0.25), -8, 5, 0)
         self.add_entity(ent)
-        ent = Entity(Disc(2, 0, 0), -6, 4, 0)
+        ent = Entity(Disc(0, 0, 0.5), -7, 5, 0)
+        self.add_entity(ent)
+        ent = Entity(Disc(0, 0, 0.75), -5, 5, 0)
+        self.add_entity(ent)
+        ent = Entity(Disc(0, 0, 1), -3, 5, 0)
+        self.add_entity(ent)
+        ent = Entity(Disc(0, 0, 2), 0, 5, 0)
+        self.add_entity(ent)
+        ent = Entity(Disc(0, 0, 4), 7, 9, 0)
+        self.add_entity(ent)
+
+        verts = [(-1, 3), (3, 2), (2, 0), (0, 0)]
+        ent = Entity(Block(0, 0, verts), 0, 8, 0)
+        self.add_entity(ent)
+
+        verts = [(-1, 2), (-1, 3), (1, 4), (2, 3), (2, 2), (1, 0), (0, 0)]
+        verts.reverse()
+        ent = Entity(Block(0, 0, verts), -3, 7, 0)
+        self.add_entity(ent)
+
+        verts = [(0, 0), (0, 1), (1, 1), (1, 0)]
+        ent = Entity(Block(0, 0, verts), -5, 3, 0)
         self.add_entity(ent)
 
 

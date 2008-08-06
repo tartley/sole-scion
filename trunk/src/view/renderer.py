@@ -1,4 +1,5 @@
 "Module of the 'Renderer' class"
+
 from __future__ import division
 from math import cos, sin, pi
 
@@ -7,6 +8,9 @@ from pyglet.gl import (
     glPushMatrix, glTranslatef, glRotatef, glVertex2f,
     GL_COLOR_BUFFER_BIT, GL_TRIANGLE_FAN,
 )
+
+from model.shapes.block import Block
+from model.shapes.disc import Disc
 
 
 class Renderer(object):
@@ -51,7 +55,28 @@ class Renderer(object):
         glTranslatef(ent.x, ent.y, 0)
         glRotatef(ent.rot * 180 / pi, 0, 0, 1)
 
-        numTris = 8
+        if type(ent.shape) == Disc:
+            self.draw_circle(ent)
+        elif type(ent.shape) == Block:
+            self.draw_poly(ent)
+        else:
+            raise TypeError("renderer cannot draw %s" % (type(ent),))
+
+        glPopMatrix()
+
+
+    def draw_poly(self, ent):
+        "Draw the given polygonal entity"
+        glColor3ub(255, 255, 0)
+        glBegin(GL_TRIANGLE_FAN)
+        for idx in range(len(ent.shape.verts)):
+            glVertex2f(*ent.shape.verts[idx])
+        glEnd()
+
+
+    def draw_circle(self, ent):
+        "Draw the given circular entity"
+        numTris = 19
         glColor3ub(255, 255, 0)
         x, y = ent.shape.offset
         glBegin(GL_TRIANGLE_FAN)
@@ -63,5 +88,4 @@ class Renderer(object):
                 y + ent.shape.radius * cos(theta))
         glEnd()
 
-        glPopMatrix()
 

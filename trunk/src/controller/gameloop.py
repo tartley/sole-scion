@@ -1,7 +1,5 @@
-"""
-Top level gameloop that cycles throughout the entire lifetime of the
-application.
-"""
+"Module of the 'Gameloop' class"
+
 from __future__ import division
 
 from pyglet import clock
@@ -13,7 +11,7 @@ from view.renderer import Renderer
 
 
 class Gameloop(object):
-    """Sole class of the 'gameloop' module"""
+    "Top level gameloop that cycles throughout the entire lifetime of the app"
 
     def __init__(self, caption):
         self.fpsLimit = 30
@@ -25,17 +23,18 @@ class Gameloop(object):
         self.window = Window( \
             fullscreen=True, vsync=True, caption=caption, visible=False)
         self.camera = Camera()
+        self.camera.scale = 8
+        self.camera.x, self.camera.y = (0, 5)
         self.renderer = Renderer(self.camera)
 
 
     def dispose(self):
-        """Disposes of resources created in __init__"""
+        "Disposes of resources"
         self.window.close()
 
 
     def run(self):
-        """Program's main animation loop"""
-        self.camera.scale = 10
+        "Program's main animation loop"
         self.window.set_visible(True)
         try:
             while not self.window.has_exit:
