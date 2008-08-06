@@ -17,8 +17,7 @@ class Disc_test(MyTestCase):
         disc = Disc(5, 1, 2)
 
         self.assertEquals(disc.radius, 5, "didnt store radius")
-        self.assertEquals(disc.x, 1, "didnt store x")
-        self.assertEquals(disc.y, 2, "didnt store y")
+        self.assertEquals(disc.offset, (1, 2), "didnt store offset")
         self.assertEquals(disc.mass, pi * 25, "disc mass wrong")
         expected = moment_for_circle(disc.mass, 0, 5, (1, 2))
         self.assertEquals(disc.moment, expected, "disc moment wrong")
@@ -37,7 +36,6 @@ class Disc_test(MyTestCase):
         self.assertEquals(shape.radius, 5.0, "radius wrong")
         self.assertEquals(shape.center.x, 6.0, "offset wrong")
         self.assertEquals(shape.center.y, 7.0, "offset wrong")
-
 
 
 if __name__ == "__main__":

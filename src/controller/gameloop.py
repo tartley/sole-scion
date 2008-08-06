@@ -33,6 +33,7 @@ class Gameloop(object):
 
     def run(self):
         """Program's main animation loop"""
+        self.camera.scale = 10
         self.window.set_visible(True)
         try:
             while not self.window.has_exit:

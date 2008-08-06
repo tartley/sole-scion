@@ -5,10 +5,8 @@ from pymunk import Segment
 
 class Room(object):
     """
-    A Room is a convex polygon in the world, defining a spatial area within
-    which Entities may exist. The Room is modelled as a list of vertices.
-    When a room is inserted into a Chipmunk Space, it inserts each of its
-    walls as static Segments.
+    A Room is a convex polygon in the game world, defining a spatial area
+    within which Entities (such as the player) may move.
     """
 
     def __init__(self, color, verts):
@@ -21,10 +19,9 @@ class Room(object):
         self.verts = verts
 
 
-    def add_to(self, space, body):
+    def add_to_body(self, space, body):
         """Add this Room to the given Space, by creating static Segments for
         each wall"""
-
         for idx in range(len(self.verts) - 1):
             self._add_wall_to(space, body, self.verts[idx], self.verts[idx+1])
         self._add_wall_to(space, body, self.verts[-1], self.verts[0])

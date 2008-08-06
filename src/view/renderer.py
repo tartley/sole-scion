@@ -1,9 +1,7 @@
-"""
-Draws OpenGL primitives to represent the current state of the model
-"""
+"Module of the 'Renderer' class"
 from __future__ import division
+from math import cos, sin, pi
 
-from pyglet import clock
 from pyglet.gl import (
     glBegin, glClear, glClearColor, glColor3ub, glEnd, glVertex2f,
     GL_COLOR_BUFFER_BIT, GL_TRIANGLE_FAN,
@@ -11,22 +9,24 @@ from pyglet.gl import (
 
 
 class Renderer(object):
-    """Sole class of the renderer module"""
+    "Draws OpenGL primitives to represent the current state of the model"
 
     def __init__(self, camera):
         self.camera = camera
-        self.clockDisplay = clock.ClockDisplay()
 
 
     def draw(self, world, aspect):
-        """Draw everything that is visible in the window"""
+        "Draw the entire contents of the window"
         self.clear(world.backColor)
         self.camera.world_projection(aspect)
-        self.draw_world(world)
+        for room in world.rooms:
+            self.draw_room(room)
+        for ent in world.entities:
+            self.draw_entity(ent)
 
 
     def clear(self, color):
-        """Clear the window background with the given color"""
+        "Clear the window background with the given color"
         glClearColor(
             color[0] / 255,
             color[1] / 255,
@@ -35,13 +35,26 @@ class Renderer(object):
         glClear(GL_COLOR_BUFFER_BIT)
 
 
-    def draw_world(self, world):
-        """Draw the given world in its entirety"""
-        for room in world.rooms:
-            glColor3ub(*room.color)
-            glBegin(GL_TRIANGLE_FAN)
-            for vert in room.verts:
-                glVertex2f(*vert)
-            glEnd()
+    def draw_room(self, room):
+        "Draw the given room"
+        glColor3ub(*room.color)
+        glBegin(GL_TRIANGLE_FAN)
+        for vert in room.verts:
+            glVertex2f(*vert)
+        glEnd()
 
+
+    def draw_entity(self, ent):
+        "Draw the given entity"
+        numTris = 7
+        glColor3ub(255, 255, 0)
+        x, y = ent.shape.offset
+        glBegin(GL_TRIANGLE_FAN)
+        glVertex2f(x, y)
+        for idx in range(numTris):
+            theta = 2 * pi / numTris * idx
+            glVertex2f(
+                x + ent.shape.radius * cos(theta),
+                y + ent.shape.radius * sin(theta))
+        glEnd()
 

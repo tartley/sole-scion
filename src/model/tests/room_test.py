@@ -1,5 +1,6 @@
 #!/usr/bin/python -O
 
+from pyglet.window import Window
 from pymunk import Body, inf, Space
 
 import fixpath
@@ -64,7 +65,7 @@ class Room_test(MyTestCase):
         self.assertRaises(lambda: Room(color, verts), TypeError, expectedMsg)
 
 
-    def test_add_to(self):
+    def test_add_to_body(self):
         color = (100, 150, 200)
         v1, v2, v3 = (0,1), (2,3), (4,5)
         verts = [v1, v2, v3]
@@ -72,7 +73,7 @@ class Room_test(MyTestCase):
         space = Space()
         body = Body(inf, inf)
 
-        room.add_to(space, body)
+        room.add_to_body(space, body)
 
         segs = set([
             ((seg.a[0], seg.a[1]), (seg.b[0], seg.b[1]))
