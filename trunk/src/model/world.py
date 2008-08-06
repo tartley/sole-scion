@@ -13,6 +13,7 @@ class World(object):
     def __init__(self):
         init_pymunk()
         self.space = Space()
+        self.space.gravity = (0, -1000)
         self.staticBody = Body(inf, inf)
 
         self.rooms = set()
@@ -48,4 +49,9 @@ class World(object):
         "Add 'entity' to this world, and insert it into Chipmunk's Space"
         entity.add_to_space(self.space)
         self.entities.add(entity)
+
+
+    def tick(self, deltaT):
+        "Update the world by one frame"
+        self.space.step(deltaT)
 

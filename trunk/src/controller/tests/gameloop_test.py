@@ -1,5 +1,5 @@
 #!/usr/bin/python -O
-
+from __future__ import division
 from pyglet import clock
 from pyglet.window import Window
 
@@ -107,6 +107,8 @@ class Gameloop_test(MyTestCase):
 
         self.gameloop.window.dispatch_events = \
             lambda *args: recordCall("dispatch", args)
+        self.gameloop.world.tick = \
+            lambda *args: recordCall("tick", args)
         self.gameloop.renderer.draw = \
             lambda *args: recordCall("draw", args)
         self.gameloop.window.flip = \
@@ -114,9 +116,12 @@ class Gameloop_test(MyTestCase):
 
         self.gameloop.run()
 
+        win = self.gameloop.window
+        aspect = win.width / win.height
         expected = [
             ('dispatch', ()),
-            ('draw', (self.gameloop.world, 1)),
+            ('tick', (1/30,)),
+            ('draw', (self.gameloop.world, aspect)),
             ('flip', ()),
         ]
         self.assertEquals(calls, expected, "run should call some functions")

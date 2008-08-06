@@ -3,7 +3,8 @@ from __future__ import division
 from math import cos, sin, pi
 
 from pyglet.gl import (
-    glBegin, glClear, glClearColor, glColor3ub, glEnd, glVertex2f,
+    glBegin, glClear, glClearColor, glColor3ub, glEnd, glPopMatrix,
+    glPushMatrix, glTranslatef, glRotatef, glVertex2f,
     GL_COLOR_BUFFER_BIT, GL_TRIANGLE_FAN,
 )
 
@@ -46,15 +47,21 @@ class Renderer(object):
 
     def draw_entity(self, ent):
         "Draw the given entity"
-        numTris = 7
+        glPushMatrix()
+        glTranslatef(ent.x, ent.y, 0)
+        glRotatef(ent.rot * 180 / pi, 0, 0, 1)
+
+        numTris = 8
         glColor3ub(255, 255, 0)
         x, y = ent.shape.offset
         glBegin(GL_TRIANGLE_FAN)
         glVertex2f(x, y)
-        for idx in range(numTris):
+        for idx in range(numTris+1):
             theta = 2 * pi / numTris * idx
             glVertex2f(
-                x + ent.shape.radius * cos(theta),
-                y + ent.shape.radius * sin(theta))
+                x + ent.shape.radius * sin(theta),
+                y + ent.shape.radius * cos(theta))
         glEnd()
+
+        glPopMatrix()
 
