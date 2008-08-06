@@ -76,19 +76,6 @@ class TestCase_module_functions_test(MyTestCase):
         array4 = (GLint * 4)(1, 2, 3, 4)
         _compare_types(array3, array4, None)
 
-        vec = Vec2d(1, 2)
-        _compare_types(vec, (1, 2), None)
-        _compare_types((1, 2), vec, None)
-
-        self.assertRaises(lambda: _compare_types(vec, (1, 2, 3), None),
-            AssertionError)
-        self.assertRaises(lambda: _compare_types((1, 2, 3), vec, None),
-            AssertionError)
-        self.assertRaises(lambda: _compare_types(vec, [1, 2], None),
-            AssertionError)
-        self.assertRaises(lambda: _compare_types([1, 2], vec, None),
-            AssertionError)
-
 
 class ClassUnderTest(MyTestCase):
 
