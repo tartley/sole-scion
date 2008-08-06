@@ -7,7 +7,7 @@ from testutils.listener import Listener
 from testutils.testcase import MyTestCase, run_test
 from testutils.testimage import assert_entirely, image_from_window
 
-from model.world import World
+from model.world import Entity, Room, World
 
 from view.camera import Camera
 from view.renderer import Renderer
@@ -30,35 +30,40 @@ class Renderer_test(MyTestCase):
 
 
     def test_draw_calls_subroutines_in_right_order(self):
-        listener = Listener()
         camera = Camera()
         renderer = Renderer(camera)
-        world = World()
-        renderer.clear = lambda *_: listener("clear")
-        camera.world_projection = lambda *_: listener("world_projection")
-        renderer.draw_world = lambda *_: listener("draw_world")
 
-        renderer.draw(world, 1.5)
+        roomColor = (255,0,0)
+        verts = [(0,1), (1,2), (3,4)]
+        room1 = Room(roomColor, verts)
+        room2 = Room(roomColor, verts)
 
-        expected = [
-            ("clear",),
-            ("world_projection",),
-            ("draw_world",),
-        ]
-        self.assertEquals(listener.argsList, expected, "draw didnt call subfns")
+        ent1 = Entity(None, 1, 2, 3)
+        ent2 = Entity(None, 1, 2, 3)
 
-
-    def test_draw_clears_with_world_backColor(self):
-        camera = Camera()
         world = World()
         world.backColor = (111, 22, 3)
-        renderer = Renderer(camera)
-        renderer.clear = Listener()
+        world.rooms = set([room1, room2])
+        world.entities = set([ent1, ent2])
 
-        renderer.draw(world, 1.5)
+        listener = Listener()
+        renderer.clear = lambda *args: listener("clear", *args)
+        camera.world_projection = lambda *args: listener("world_proj", *args)
+        renderer.draw_room = lambda *args: listener("draw_room", *args)
+        renderer.draw_entity = lambda *args: listener("draw_entity", *args)
 
-        self.assertEquals(renderer.clear.args, ((111, 22, 3),),
-            "clear not called correctly")
+        aspect = 1.5
+        renderer.draw(world, aspect)
+
+        expected = [
+            ("clear", world.backColor),
+            ("world_proj", aspect),
+            ("draw_room", room2),
+            ("draw_room", room1),
+            ("draw_entity", ent2),
+            ("draw_entity", ent1),
+        ]
+        self.assertEquals(listener.argsList, expected, "draw didnt call subfns")
 
 
     def test_clear_fills_back_buffer_with_color(self):
@@ -71,6 +76,15 @@ class Renderer_test(MyTestCase):
 
         image = image_from_window(self.window)
         assert_entirely(image, color, "should fill with given color")
+
+
+    def test_draw_room(self):
+        self.fail("not tested")
+
+
+    def test_draw_entity(self):
+        self.fail("not tested")
+        self.fail("TODO: set and restore modelview projection")
 
 
 if __name__ == "__main__":

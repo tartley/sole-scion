@@ -52,24 +52,25 @@ class World_test(MyTestCase):
         v1, v2, v3 = (0, 0), (100, 0), (0, 100)
         verts = [v1, v2, v3]
         room = Room(color, verts)
-        room.add_to = Listener()
+        room.add_to_body = Listener()
 
         world.add_room(room)
 
         self.assertEquals(world.rooms, set([room]), "room not added")
-        self.assertEquals(room.add_to.args, (world.space, world.staticBody),
+        expected = (world.space, world.staticBody)
+        self.assertEquals(room.add_to_body.args, expected,
             "room walls not added to space")
 
 
     def test_add_entity(self):
         world = World()
         entity = Entity(None, 0, 0, 0)
-        entity.add_to = Listener()
+        entity.add_to_space = Listener()
 
         world.add_entity(entity)
 
         self.assertEquals(world.entities, set([entity]), "ent not added")
-        self.assertEquals(entity.add_to.args, (world.space,),
+        self.assertEquals(entity.add_to_space.args, (world.space,),
             "ent not added to space")
 
 

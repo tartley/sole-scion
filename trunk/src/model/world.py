@@ -2,7 +2,9 @@
 
 from pymunk import Body, inf, init_pymunk, Space
 
+from model.entity import Entity
 from model.room import Room
+from model.shapes.disc import Disc
 
 
 class World(object):
@@ -32,15 +34,18 @@ class World(object):
         room = Room(color, verts)
         self.add_room(room)
 
+        ent = Entity(Disc(1, 0, 0), 1, 1, 0)
+        self.add_entity(ent)
+
 
     def add_room(self, room):
         "Add 'room' to this world, and insert it into Chipmunk's Space"
-        room.add_to(self.space, self.staticBody)
+        room.add_to_body(self.space, self.staticBody)
         self.rooms.add(room)
 
 
     def add_entity(self, entity):
         "Add 'entity' to this world, and insert it into Chipmunk's Space"
-        entity.add_to(self.space)
+        entity.add_to_space(self.space)
         self.entities.add(entity)
 
