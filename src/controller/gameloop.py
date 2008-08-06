@@ -2,6 +2,8 @@
 Top level gameloop that cycles throughout the entire lifetime of the
 application.
 """
+from __future__ import division
+
 from pyglet import clock
 from pyglet.window import Window
 
@@ -40,6 +42,7 @@ class Gameloop(object):
                 self.deltaT = clock.tick()
                 self.ticks.append(self.deltaT)
                 self.window.dispatch_events()
+                self.world.tick(1/self.fpsLimit)
                 aspect = self.window.width / self.window.height
                 self.renderer.draw(self.world, aspect)
                 self.window.flip()

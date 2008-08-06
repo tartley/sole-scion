@@ -1,6 +1,6 @@
 #!/usr/bin/python -O
 
-from pymunk import Body, inf, Space
+from pymunk import Body, inf, Space, Vec2d
 
 import fixpath
 
@@ -27,6 +27,8 @@ class World_test(MyTestCase):
             world_module.init_pymunk = orig
 
         self.assertEquals(type(world.space), Space, "should create a Space")
+        self.assertEquals(world.space.gravity, Vec2d(0, -1000),
+            "should set gravity")
         self.assertEquals(type(world.staticBody), Body, "should create a body")
         self.assertEquals(world.rooms, set(), "should create empty room set")
         self.assertEquals(world.backColor, (150, 100, 50),
@@ -72,6 +74,15 @@ class World_test(MyTestCase):
         self.assertEquals(world.entities, set([entity]), "ent not added")
         self.assertEquals(entity.add_to_space.args, (world.space,),
             "ent not added to space")
+
+
+    def test_tick(self):
+        world = World()
+        world.space.step = Listener()
+
+        world.tick(1/42)
+
+        self.assertEquals(world.space.step.args, (1/42,), "didn't step")
 
 
 if __name__ == "__main__":
