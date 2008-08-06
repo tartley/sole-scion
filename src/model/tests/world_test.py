@@ -10,6 +10,7 @@ from testutils.testcase import MyTestCase, run_test
 from model.entity import Entity
 from model.room import Room
 from model.world import World
+from model.shapes.disc import Disc
 
 
 class World_test(MyTestCase):
@@ -27,7 +28,7 @@ class World_test(MyTestCase):
             world_module.init_pymunk = orig
 
         self.assertEquals(type(world.space), Space, "should create a Space")
-        self.assertEquals(world.space.gravity, Vec2d(0, -1000),
+        self.assertEquals(world.space.gravity, Vec2d(0, -10),
             "should set gravity")
         self.assertEquals(type(world.staticBody), Body, "should create a body")
         self.assertEquals(world.rooms, set(), "should create empty room set")
@@ -66,7 +67,7 @@ class World_test(MyTestCase):
 
     def test_add_entity(self):
         world = World()
-        entity = Entity(None, 0, 0, 0)
+        entity = Entity(Disc(1, 0, 0), 0, 0, 0)
         entity.add_to_space = Listener()
 
         world.add_entity(entity)

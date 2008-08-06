@@ -30,5 +30,7 @@ class Room(object):
     def _add_wall_to(self, space, body, vert1, vert2):
         """Add a static Segment from vert1 to vert2 to the given Space"""
         wall = Segment(body, vert1, vert2, 0.0)
+        wall.friction = 0.5
+        wall.elasticity = 0.5
         space.add_static(wall)
 

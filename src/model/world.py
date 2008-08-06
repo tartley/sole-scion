@@ -13,7 +13,7 @@ class World(object):
     def __init__(self):
         init_pymunk()
         self.space = Space()
-        self.space.gravity = (0, -1000)
+        self.space.gravity = (0, -10)
         self.staticBody = Body(inf, inf)
 
         self.rooms = set()
@@ -35,7 +35,9 @@ class World(object):
         room = Room(color, verts)
         self.add_room(room)
 
-        ent = Entity(Disc(1, 0, 0), 1, 1, 0)
+        ent = Entity(Disc(1, 0, 0), 4, 1, 0)
+        self.add_entity(ent)
+        ent = Entity(Disc(2, 0, 0), -6, 4, 0)
         self.add_entity(ent)
 
 

@@ -82,6 +82,10 @@ class Room_test(MyTestCase):
         self.assertEquals(segs, set([(v1, v2), (v2, v3), (v3, v1)]),
             "room walls not added to space")
 
+        for seg in space.static_shapes:
+            self.assertEquals(seg.friction, 0.5, "bad wall friction")
+            self.assertEquals(seg.elasticity, 0.5, "bad wall elasticity")
+
 
 if __name__ == "__main__":
     run_test(Room_test)

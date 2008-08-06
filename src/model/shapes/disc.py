@@ -20,5 +20,7 @@ class Disc(object):
     def add_to_body(self, space, body):
         "Add a Circle shape representing this shape to the given space and body"
         shape = Circle(body, self.radius, self.offset)
+        shape.friction = 0.5
+        shape.elasticity = 0.5
         space.add(shape)
 
