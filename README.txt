@@ -1,47 +1,63 @@
-SOLE SCION
+Sole Scion
+==========
 
-A three month project to write a 2D vector graphic adventure game with Newtonian dynamics.
+A three month project to write a 2D vector graphic adventure game with
+Newtonian rigid-body dynamics.
+
+Currently at a very early stage of development. Only of interest to enthusiastic
+programmers.
+
+Works on Linux and Windows. Also works under PyPy, with functools installed.
+Anyone tried it on a Mac?
 
 http://code.google.com/p/sole-scion/
 
 
-CURRENT STATUS
+Dependencies
+------------
 
-v0.1, 17 Jun 08, week 2 of 12.
-A very rudimentary integration of our major dependencies. Linux only.
-Chipmunk controls some circles raining down the screen, which are rendered using Pyglet.
+You must install these manually.
 
+  * Python 2.5
+    or a lower version with the ctypes module.
 
-KNOWN PROBLEMS
-
-- Haven't tried to run it on Windows (no known incompatabilities though)
-- mouse/keyboard input accelerates gameloop, which later sleeps a big chunk to compensate
-- No user input / no point to the game
-- Still seem to be seeing tearing, although vsync is requested.
-
-
-FUTURE PLANS
-
-- Handle moving polygon entities (rocks) as well as circles.
-- Put the rocks inside a room with impenetrable walls.
-- Render faster, using Vertex Object Buffers instead of glVertex() calls.
-- Windows compatibility.
-- Windows binary distributable.
-- Handle multiple connected room polygons to form a maze of sorts.
-- Other objects in the maze to form a narrative / quest structure.
+  * Pymunk 0.8
+    Python bindings to Chipmunk, which provides 2D collision detection,
+    Newtonian rigid body dynamics. Includes binary of Chipmunk 4.0.2.
+    http://code.google.com/p/pymunk.
+    .
+  * Pyglet 1.1beta2
+    Output window, OpenGL graphics, key/mouse input, sound, etc.
+    http://www.pyglet.org
 
 
-DEPENDENCIES
+Install / Running
+-----------------
 
-Chipmunk 4.0.2
-Collision detection, Newtonian rigid body dynamics.
-http://wiki.slembcke.net/main/published/Chipmunk
+There is no install. To run::
 
-Pymunk 0.7.1
-Python bindings to Chipmunk.
-http://code.google.com/p/pymunk
+    python -O sole-scion.py
 
-Pyglet 1.1beta2
-Graphics, key/mouse input, sound, etc.
-http://www.pyglet.org
+Note that the -O flag can increase framerate by double or more on Linux. It
+disables some Pyglet error checking.
+
+
+Current Status
+--------------
+
+v0.2, 6 Aug 08, week 8 of 12
+  * Is now unit tested, and has a basic acceptance test.
+  * Internal architecture now defined (previous spike was one big script)
+  * A handful of circular entities now bounce around inside a single
+    polygonal room.
+
+http://tartley.com/wp-content/uploads/2008/06/screenshot-sole-scion-v10.png
+
+
+Known Problems
+--------------
+
+  * It is possible for a fast-moving object to make it through a Room wall from
+    one frame to the next. Possible solution is to use fat line segments (ie.
+    width>0) for wall collision shapes to help prevent this?
 

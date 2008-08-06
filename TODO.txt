@@ -1,0 +1,55 @@
+for v0.2
+
+  * Handle moving polygon entities ('blocks') as well as discs.
+  * Entities with compound shapes (ie collection of discs and blocks)
+  * Shapes have a material, which determines their color, density, elasticity,
+    friction.
+
+for v0.3
+
+  * Give the player control to move one of the entities around, and pick up
+    and drag around adjacent entities.
+
+for v0.4
+
+  * Handle multiple connected room polygons.
+  * Autogenerate a set of rooms to form a maze of sorts.
+
+for v0.5
+
+  * Render faster, using Vertex Object Buffers instead of glVertex() calls.
+  * Render only rooms (and their contents) that are on-screen.
+  * Render object decorations.
+
+for v0.6
+
+  * Other objects in the maze.
+      * Rocks: High density, high friction, low elasticity.
+      * Eggs: Low density, low friction, high elasticity.
+      * Eggs are tough, but can be broken.
+
+for v0.7
+
+    * Game completion - return all eggs to the nest to win.
+        Display stats. Restart.
+    * Death - get squished to restart from a collected egg
+    * Abandon - [esc] will give up, restarting from a collected egg.
+        After a while, abandoned avatar is replaced by a skeleton.
+    * Game over - no eggs left.
+        Display stats, restart.
+
+for v0.8
+
+    * Persist highscores
+    * Achievements
+        * Longest free-fall
+        * Hardest impact
+        * Most bretheren rescued
+        * Fastest game completion
+        * Least bretheren lost at completion
+
+for v0.9
+
+  * Windows binary distributable.
+  * Acceptance tests on Windows hopefully using VMWare to run from Linux.
+
