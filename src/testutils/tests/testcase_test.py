@@ -4,10 +4,16 @@ from unittest import (
 from ctypes import Array
 
 from pyglet.gl import GLint
+from pymunk import Vec2d
 
 import fixpath
 
-from testutils.testcase import combine, _is_int_indexable, _tostr, MyTestCase
+from testutils.listener import Listener
+from testutils.testcase import (
+    _compare_indexables, _compare_lengths, _compare_types, _is_int_indexable,
+    _tostr,
+    combine, MyTestCase, run_test,
+)
 
 
 class TestCase_module_functions_test(MyTestCase):
@@ -35,18 +41,53 @@ class TestCase_module_functions_test(MyTestCase):
             self.assertEquals(_tostr(i), str(i),
                 'tostr() for %s' % str(type(i)))
 
-        array = (GLint * 3)(*[1, 2, 3])
+        array = (GLint * 3)(1, 2, 3)
         self.assertEqual(_tostr(array), "Array(1, 2, 3)", "Array")
 
 
     def test_compare_lengths(self):
-        self.fail("not tested")
+        _compare_lengths((1, 2, 3), [1, 2, 3], None)
+        self.assertRaises(
+            lambda: _compare_lengths((1, 2, 3), [1, 2, 3, 4], None),
+            AssertionError)
+        self.assertRaises(
+            lambda: _compare_lengths((1, 2, 3), [1, 2], None),
+            AssertionError)
 
 
     def test_compare_indexables(self):
-        self.fail("not tested")
+        _compare_indexables((1, 2, 3), [1, 2, 3], None)
+        self.assertRaises(
+            lambda: _compare_indexables((1, 2, 3), [1, 2, 4], None),
+            AssertionError)
+        self.assertRaises(
+            lambda: _compare_indexables((1, 2, 3), [1, 2, 3, 4], None),
+            AssertionError)
+        self.assertRaises(
+            lambda: _compare_indexables((1, 2, 3, 4), [1, 2, 3], None),
+            AssertionError)
 
 
+    def test_compare_types(self):
+        _compare_types(0, 1, None)
+        self.assertRaises(lambda: _compare_types(0, 0.1, None), AssertionError)
+
+        array3 = (GLint * 3)(1, 2, 3)
+        array4 = (GLint * 4)(1, 2, 3, 4)
+        _compare_types(array3, array4, None)
+
+        vec = Vec2d(1, 2)
+        _compare_types(vec, (1, 2), None)
+        _compare_types((1, 2), vec, None)
+
+        self.assertRaises(lambda: _compare_types(vec, (1, 2, 3), None),
+            AssertionError)
+        self.assertRaises(lambda: _compare_types((1, 2, 3), vec, None),
+            AssertionError)
+        self.assertRaises(lambda: _compare_types(vec, [1, 2], None),
+            AssertionError)
+        self.assertRaises(lambda: _compare_types([1, 2], vec, None),
+            AssertionError)
 
 
 class ClassUnderTest(MyTestCase):
@@ -371,7 +412,21 @@ class combine_test(RealTestCase):
 class run_test_test(MyTestCase):
 
     def test_passes_verbosity(self):
-        self.fail("not tested")
+        mockRunner = Listener()
+        mockRunner.returnValue = TextTestRunner()
+        mockRun = Listener()
+        mockRunner.returnValue.run = mockRun
+        from testutils import testcase as testcase_module
+        orig = testcase_module.TextTestRunner
+        testcase_module.TextTestRunner = mockRunner
+        try:
+            suite = ClassUnderTest("testAlwaysPasses")
+            run_test(suite, verbosity=33)
+        finally:
+            testcase_module.TextTestRunner = orig
+        self.assertEquals(mockRunner.kwargs, {"verbosity": 33},
+            "didnt create a verbose runner")
+        self.assertEquals(mockRun.args, (suite,), "didnt run suite")
 
 
 TestCase_test = combine(

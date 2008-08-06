@@ -1,9 +1,11 @@
 "Provides class 'MyTestCase', 'combine()' and 'run_test()'"
 
+from ctypes import Array
 from unittest import (
     TestCase as RealTestCase, TestLoader, TestSuite, TextTestRunner
 )
-from ctypes import Array
+
+from pymunk import Vec2d
 
 
 def _is_int_indexable(item):
@@ -56,6 +58,24 @@ def _compare_indexables(actual, expected, message):
             raise AssertionError(msg)
 
 
+def _compare_types(actual, expected, message):
+    """
+    Fail if types differ, except in a few special cases where different
+    types are considered to be the same (eg Vec2d and tuple of 2)
+    """
+    if type(actual) == type(expected):
+        return
+
+    # ctypes arrays of different length are actually different types
+    # but reporting them as such is just confusing
+    if isinstance(actual, Array) and isinstance(expected, Array):
+        return
+
+    msg = "not equal. types differ:\n  %s %s\n  %s %s\n%s" % \
+        (type(actual), actual, type(expected), expected, message)
+    raise AssertionError(msg)
+
+
 class MyTestCase(RealTestCase):
     "A TestCase with augmented assertions"
     # pylint: disable-msg=C0103
@@ -82,13 +102,7 @@ class MyTestCase(RealTestCase):
         if message is None:
             message = ""
 
-        if type(actual) != type(expected):
-            # ctypes arrays of different length are actually different types
-            # but reporting them as such is just confusing
-            if not (isinstance(actual, Array) and isinstance(expected, Array)):
-                msg = "not equal. types differ:\n  %s %s\n  %s %s\n%s" % \
-                    (type(actual), actual, type(expected), expected, message)
-                raise AssertionError(msg)
+        _compare_types(actual, expected, message)
 
         if actual != expected:
             if _is_int_indexable(actual):
