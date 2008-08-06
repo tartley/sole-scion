@@ -8,6 +8,7 @@ from testutils.testcase import MyTestCase, run_test
 from testutils.testimage import assert_entirely, image_from_window
 
 from model.world import Entity, Room, World
+from model.shapes.disc import Disc
 
 from view.camera import Camera
 from view.renderer import Renderer
@@ -38,8 +39,9 @@ class Renderer_test(MyTestCase):
         room1 = Room(roomColor, verts)
         room2 = Room(roomColor, verts)
 
-        ent1 = Entity(None, 1, 2, 3)
-        ent2 = Entity(None, 1, 2, 3)
+        disc = Disc(1, 0, 0)
+        ent1 = Entity(disc, 1, 2, 3)
+        ent2 = Entity(disc, 1, 2, 3)
 
         world = World()
         world.backColor = (111, 22, 3)

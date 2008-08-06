@@ -36,6 +36,8 @@ class Disc_test(MyTestCase):
         self.assertEquals(shape.radius, 5.0, "radius wrong")
         self.assertEquals(shape.center.x, 6.0, "offset wrong")
         self.assertEquals(shape.center.y, 7.0, "offset wrong")
+        self.assertEquals(shape.friction, 0.5, "bad shape friction")
+        self.assertEquals(shape.elasticity, 0.5, "bad shape elasticity")
 
 
 if __name__ == "__main__":
