@@ -76,7 +76,7 @@ class Renderer(object):
 
     def draw_circle(self, ent):
         "Draw the given circular entity"
-        numTris = 19
+        numTris = 39
         glColor3ub(255, 255, 0)
         x, y = ent.shape.offset
         glBegin(GL_TRIANGLE_FAN)

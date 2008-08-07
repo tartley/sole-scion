@@ -42,7 +42,7 @@ class TestCase_module_functions_test(MyTestCase):
                 'tostr() for %s' % str(type(i)))
 
         array = (GLint * 3)(1, 2, 3)
-        self.assertEqual(_tostr(array), "Array(1, 2, 3)", "Array")
+        self.assertEquals(_tostr(array), "Array(1, 2, 3)", "Array")
 
 
     def test_compare_lengths(self):

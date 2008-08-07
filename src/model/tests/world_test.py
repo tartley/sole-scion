@@ -52,7 +52,7 @@ class World_test(MyTestCase):
     def test_add_room(self):
         world = World()
         color = (50, 100, 200)
-        v1, v2, v3 = (0, 0), (100, 0), (0, 100)
+        v1, v2, v3 = (0, 0), (0, 100), (100, 0)
         verts = [v1, v2, v3]
         room = Room(color, verts)
         room.add_to_body = Listener()

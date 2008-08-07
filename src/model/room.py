@@ -1,5 +1,6 @@
 "Module for class 'Room'"
 
+from utils.geometry import assert_valid_poly
 from pymunk import Segment
 
 
@@ -10,13 +11,9 @@ class Room(object):
     """
 
     def __init__(self, color, verts):
-        if len(color) != 3:
-            raise TypeError("bad color: %s" % (color,))
-        self.color = color
-
-        if len(verts) < 3:
-            raise TypeError("need 3 or more verts")
+        assert_valid_poly(verts)
         self.verts = verts
+        self.color = color
 
 
     def add_to_body(self, space, body):

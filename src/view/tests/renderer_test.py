@@ -35,7 +35,7 @@ class Renderer_test(MyTestCase):
         renderer = Renderer(camera)
 
         roomColor = (255,0,0)
-        verts = [(0,1), (1,2), (3,4)]
+        verts = [(-1, 0), (2,3), (4, 0)]
         room1 = Room(roomColor, verts)
         room2 = Room(roomColor, verts)
 

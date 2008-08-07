@@ -1,6 +1,7 @@
 "Module for the World class"
 
 from __future__ import division
+from random import uniform
 
 from pymunk import Body, inf, init_pymunk, Space
 
@@ -29,27 +30,18 @@ class World(object):
         "Create some demo set of Rooms and Entities"
         color = (0, 50, 100)
         verts = [
-            (-10, 0),
-            (0, -1),
-            (+10, 5),
-            (+12, 15),
             (-12, 9),
+            (+12, 15),
+            (+10, 5),
+            (0, -1),
+            (-10, 0),
         ]
         room = Room(color, verts)
         self.add_room(room)
 
-        ent = Entity(Disc(0, 0, 0.25), -8, 5, 0)
-        self.add_entity(ent)
-        ent = Entity(Disc(0, 0, 0.5), -7, 5, 0)
-        self.add_entity(ent)
-        ent = Entity(Disc(0, 0, 0.75), -5, 5, 0)
-        self.add_entity(ent)
-        ent = Entity(Disc(0, 0, 1), -3, 5, 0)
-        self.add_entity(ent)
-        ent = Entity(Disc(0, 0, 2), 0, 5, 0)
-        self.add_entity(ent)
-        ent = Entity(Disc(0, 0, 4), 7, 9, 0)
-        self.add_entity(ent)
+        for x in range(-8, 12, 4):
+            ent = Entity(Disc(0, 0, uniform(0.5, 2)), x, 8, 0)
+            self.add_entity(ent)
 
         verts = [(-1, 3), (3, 2), (2, 0), (0, 0)]
         ent = Entity(Block(0, 0, verts), 0, 8, 0)
@@ -79,4 +71,5 @@ class World(object):
     def tick(self, deltaT):
         "Update the world by one frame"
         self.space.step(deltaT)
+
 
