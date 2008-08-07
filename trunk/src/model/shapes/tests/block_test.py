@@ -5,6 +5,7 @@ from shapely.geometry import Polygon
 
 import fixpath
 
+from testutils.listener import Listener
 from testutils.testcase import MyTestCase, run_test
 
 from model.shapes.block import Block
@@ -24,33 +25,23 @@ class Block_test(MyTestCase):
         self.assertEquals(block.moment, expected, "moment wrong")
 
 
-    def test_constructor_reverses_verts_with_clockwise_winding(self):
-        clockwiseVerts = [(0, 1), (-1, 4), (2, 3)]
-        antiVerts = list(reversed(clockwiseVerts))
-
-        clockwiseBlock = Block(5, 6, clockwiseVerts)
-        antiBlock = Block(5, 6, antiVerts)
-
-        self.assertEquals(clockwiseBlock.verts, antiVerts, "verts not reversed")
-        self.assertEquals(antiBlock.verts, antiVerts, "verts reversed")
-
-
-    def test_constructor_rejects_nonconvex_verts(self):
-        verts = [(0, 0), (2, 0), (2, 2), (1, 1), (0, 2)]
-        expectedMsg = "verts not convex: %s" % (verts,)
-        self.assertRaises(lambda: Block(0, 0, verts), TypeError, expectedMsg)
-
-
-    def test_constructor_reject_too_few_verts(self):
-        verts = [(0, 0), (2, 0)]
-        expectedMsg = "verts not convex: %s" % (verts,)
-        self.assertRaises(lambda: Block(0, 0, verts), TypeError, expectedMsg)
+    def test_constructor_validates_verts(self):
+        listener = Listener()
+        verts = [(0, 1), (2, 3), (-1, 4)]
+        from model.shapes import block as block_module
+        orig = block_module.assert_valid_poly
+        block_module.assert_valid_poly = listener
+        try:
+            block = Block(5, 6, verts)
+        finally:
+            block_module.assert_valid_poly = orig
+        self.assertEquals(listener.args, (verts,), "didnt validate verts")
 
 
     def test_add_to_body(self):
         space = Space()
         body = Body(10, 20)
-        verts = ((0, 1), (-1, 4), (2, 3))
+        verts = [(0, 1), (-1, 4), (2, 3)]
         block = Block(1, 2, verts)
 
         block.add_to_body(space, body)
