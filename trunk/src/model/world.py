@@ -56,7 +56,6 @@ class World(object):
         self.add_entity(ent)
 
         verts = [(-1, 2), (-1, 3), (1, 4), (2, 3), (2, 2), (1, 0), (0, 0)]
-        verts.reverse()
         ent = Entity(Block(0, 0, verts), -3, 7, 0)
         self.add_entity(ent)
 
