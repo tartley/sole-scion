@@ -40,5 +40,4 @@ class Block(object):
         self.shape.friction = 0.5
         self.shape.elasticity = 0.5
         space.add(self.shape)
-        print self.shape.get_points()
 
