@@ -11,6 +11,7 @@ from testutils.listener import Listener
 from testutils.testcase import MyTestCase, run_test
 
 from model.rigidbody import RigidBody
+from model.shapes.block import Block
 from model.shapes.disc import Disc
 
 
@@ -25,67 +26,72 @@ class RigidBody_test(MyTestCase):
 
     def test_constructor(self):
         body = RigidBody()
-        self.assertEquals(type(body.body), Body, "didnt create body")
-        self.assertEquals(body.body.mass, 0.0, "bad mass")
-        self.assertEquals(body.body.moment, 0.0, "bad moment")
-        self.assertEquals(body.body.position, Vec2d(0.0, 0.0), "bad position")
-        self.assertEquals(body.body.angle, 0.0, "bad angle")
-        self.assertEquals(body.shapes, [], "bad shapes")
+        self.assertNone(body.body, "bad body")
+        self.assertEquals(body.shapes, (), "bad shapes")
 
 
-    def test_constructor_takes_optional_shapes(self):
-        body = RigidBody()
-        body.add_shape = Listener()
-        sh1 = Disc(1)
-        sh2 = Disc(2)
-        sh3 = Disc(3)
-        body.__init__(sh1, sh2, sh3)
-        self.assertEquals(body.add_shape.argsList, [(sh1,), (sh2,), (sh3,)],
-            "shapes not addded")
+    def test_constructor_adds_optional_shapes(self):
+        orig = RigidBody.set_shapes
+        RigidBody.set_shapes = Listener()
+        try:
+            shape1 = Disc(1)
+            shape2 = Disc(2)
+            shape3 = Disc(3)
+            body = RigidBody(shape1, shape2, shape3)
+            self.assertEquals(
+                body.set_shapes.argsList,
+                [(shape1, shape2, shape3),],
+                "shapes not addded")
+        finally:
+            RigidBody.set_shapes = orig
 
 
     def test_position_read_from_body(self):
         body = RigidBody()
-        body.body.position = (55, 66)
-        body.body.angle = 1.45
-        self.assertEquals(body.position, Vec2d(55, 66),
-            "didnt use body position")
-        self.assertAlmostEquals(body.angle, 1.45, msg="didnt use body angle")
+        self.assertNone(body.position, "bad initial position")
+        self.assertNone(body.angle, "bad initial angle")
+
+        space = Space()
+        body.add_to_space(space, (11, 22), 0.456)
+        self.assertEquals(body.position, Vec2d(11, 22), "bad position")
+        self.assertAlmostEquals(body.angle, 0.456, places=7, msg="bad angle")
 
 
     def test_center_of_gravity(self):
-        body = RigidBody()
+        body0 = RigidBody()
+        self.assertEquals(body0._center_of_gravity(), (0, 0), "bad COG0")
 
-        obj1 = MockShape(2, offset=(10, 20))
-        body.shapes.append(obj1)
-        body.body.mass += obj1.mass
+        shape1 = MockShape(2, offset=(10, 20))
+        body = RigidBody()
+        body.shapes = (shape1,)
         self.assertEquals(body._center_of_gravity(), (10, 20), "bad COG1")
 
-        obj2 = MockShape(6, offset=(100, 50))
-        body.shapes.append(obj2)
-        body.body.mass += obj2.mass
+        shape2 = MockShape(6, offset=(100, 50))
+        body.shapes = (shape2,)
+        self.assertEquals(body._center_of_gravity(), (100, 50), "bad COG2")
+
+        body.shapes = (shape1, shape2)
         x = (600 + 20) / 8
         y = (300 + 40) / 8
-        self.assertEquals(body._center_of_gravity(), (x, y), "bad COG2")
+        self.assertEquals(body._center_of_gravity(), (x, y), "bad COG3")
 
 
-    def test_offset_position(self):
+    def test_offset_shapes(self):
         body = RigidBody()
-        body.body.position = (100, 200)
         sh1 = MockShape(None, offset=(10, 20))
         sh2 = MockShape(None, offset=(30, 40))
         body.shapes = [sh1, sh2]
 
-        body._offset_position((+2, -3))
+        body._offset_shapes((+2, -3))
 
-        self.assertEquals(body.body.position, Vec2d(102, 197),
-            "bad body position")
         self.assertEquals(body.shapes[0].offset, (8, 23), "bad sh1 offset")
         self.assertEquals(body.shapes[1].offset, (28, 43), "bad sh2 offset")
 
 
     def test_get_moment(self):
         body = RigidBody()
+        self.assertEquals(body.get_moment(), 0.0, "bad initial moment")
+
         sh1 = MockShape(None, moment=5)
         sh2 = MockShape(None, moment=10)
         body.shapes = [sh1, sh2]
@@ -93,39 +99,73 @@ class RigidBody_test(MyTestCase):
         self.assertEquals(body.get_moment(), 15.0, "bad moment")
 
 
-    def test_add_shape_disc(self):
+    def test_get_mass(self):
+        body = RigidBody()
+        self.assertEquals(body.get_mass(), 0.0, "bad initial mass")
+
+        sh1 = MockShape(5)
+        sh2 = MockShape(10)
+        body.shapes = [sh1, sh2]
+        self.assertEquals(body.get_mass(), 15.0, "bad mass")
+
+
+    def test_set_shapes_disc(self):
         radius = 4
         offset = (3, 2)
         disc = Disc(radius, offset)
+        body = RigidBody()
+        body.set_shapes(disc)
+
+        self.assertEquals(body.shapes, (disc,), "bad shapes")
+        shape = body.shapes[0]
+        self.assertEquals(shape.offset, (0, 0))
+
+
+    def test_set_shapes_block(self):
+        verts = [(0, 0), (0, 1), (1, 1), (1, 0)]
+        offset = (10, 20)
+        block = Block(verts, offset)
+        body = RigidBody()
+        body.set_shapes(block)
+
+        self.assertEquals(body.shapes, (block,), "bad shapes")
+        shape = body.shapes[0]
+        self.assertEquals(shape.offset, (0, 0), "bad offset")
+
+
+    def test_set_shapes_two_discs(self):
+        disc1 = Disc(4, (+100, +200))
+        disc2 = Disc(2, (+115, +225))
 
         body = RigidBody()
-        body.add_shape(disc)
+        body.set_shapes(disc1, disc2)
+        self.assertEquals(body.shapes, (disc1, disc2), "bad shapes")
+        self.assertEquals(body.shapes[0].offset[0], -3.0, "bad offset1 x")
+        self.assertAlmostEquals(body.shapes[0].offset[1], -5.0,
+            msg="bad offset1 y")
+        self.assertEquals(body.shapes[1].offset[0], +12.0, "bad offset2 x")
+        self.assertAlmostEquals(body.shapes[1].offset[1], +20.0,
+            msg="bad offset2 y")
 
-        expectedMass = pi * radius * radius
-        self.assertAlmostEquals(body.body.mass, expectedMass, places=5,
-            msg="bad mass")
-        expectedMoment = moment_for_circle(expectedMass, 0, radius, (0, 0))
-        self.assertEquals(body.body.moment, expectedMoment, "bad moment")
-        self.assertEquals(body.body.position, Vec2d(3, 2), "bad position")
-
-        self.assertEquals(body.shapes, [disc], "bad shapes")
 
 
     def test_add_to_space(self):
         disc1 = Disc(1)
         disc2 = Disc(2)
         disc3 = Disc(3)
-        body = RigidBody(disc1, disc2, disc3)
         space = Space()
+        body = RigidBody(disc1, disc2, disc3)
 
         body.add_to_space(space, (1, 2), 0.75)
 
+        self.assertEquals(type(body.body), Body, "didnt create body")
         self.assertEquals(body.body.position, Vec2d(1, 2), "bad position")
         self.assertEquals(body.body.angle, 0.75, "bad angle")
 
         self.assertEquals(space.bodies, set([body.body]),
             "body not added to space")
 
+        self.assertEquals(len(space.shapes), 3, "shapes not added to space")
         radii = set()
         for circle in space.shapes:
             self.assertEquals(circle.body, body.body, "bad Circle body")
