@@ -26,8 +26,8 @@ class Renderer(object):
         self.camera.world_projection(aspect)
         for room in world.rooms:
             self.draw_room(room)
-        for ent in world.entities:
-            self.draw_entity(ent)
+        for body in world.rigidBodies:
+            self.draw_rigidbody(body)
 
 
     def clear(self, color):
@@ -49,26 +49,26 @@ class Renderer(object):
         glEnd()
 
 
-    def draw_entity(self, ent):
-        "Draw the given entity"
+    def draw_rigidbody(self, rigidbody):
+        "Draw the given rigidbody"
         glPushMatrix()
-        glTranslatef(ent.position.x, ent.position.y, 0)
-        glRotatef(ent.angle * 180 / pi, 0, 0, 1)
+        glTranslatef(rigidbody.position.x, rigidbody.position.y, 0)
+        glRotatef(rigidbody.angle * 180 / pi, 0, 0, 1)
 
-        for shape in ent.shapes:
+        for shape in rigidbody.shapes:
             glColor3ub(*shape.color)
             if type(shape) == Disc:
                 self.draw_circle(shape)
             elif type(shape) == Block:
                 self.draw_poly(shape)
             else:
-                raise TypeError("renderer cannot draw %s" % (type(ent),))
+                raise TypeError("renderer cannot draw %s" % (type(rigidbody),))
 
         glPopMatrix()
 
 
     def draw_poly(self, shape):
-        "Draw the given polygonal entity"
+        "Draw the given polygonal rigidbody"
         glBegin(GL_TRIANGLE_FAN)
         for idx in range(len(shape.verts)):
             glVertex2f(*shape.verts[idx])
@@ -76,7 +76,7 @@ class Renderer(object):
 
 
     def draw_circle(self, shape):
-        "Draw the given circular entity"
+        "Draw the given circular rigidbody"
         numTris = 39
         x, y = shape.offset
         glBegin(GL_TRIANGLE_FAN)

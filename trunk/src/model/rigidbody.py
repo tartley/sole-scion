@@ -1,8 +1,8 @@
-"Module for class 'Entity'"
+"Module for class 'RigidBody'"
 
 from pymunk import Body
 
-class Entity(object):
+class RigidBody(object):
     """
     Represents an in-game rigid body, that has a position, orientation, and a
     collection of shapes, which provide geometry and mass.
@@ -44,7 +44,7 @@ class Entity(object):
 
 
     def get_moment(self):
-        "Calculate this entity's moment, by summing component shape's moments"
+        "Calculate this rigidbody's moment, the sum of its shape's moments"
         moment = 0.0
         for shape in self.shapes:
             moment += shape.get_moment()
@@ -53,8 +53,8 @@ class Entity(object):
 
     def add_shape(self, shape):
         """
-        Add given shape to this Entity's collection, recalculating entity
-        center of gravity and updating body mass and moment.
+        Add given shape to this RigidBody's collection, recalculating the
+        resulting center of gravity and updating body mass and moment.
         """
         self.shapes.append(shape)
         self.body.mass += shape.mass
@@ -64,7 +64,7 @@ class Entity(object):
 
     def add_to_space(self, space, position, angle):
         """
-        Add this Entity to the given Chipmunk Space, as a single Body
+        Add this RigidBody to the given Chipmunk Space, as a single Body
         and one or more Shapes attached to it.
         """
         self.body.position = position
