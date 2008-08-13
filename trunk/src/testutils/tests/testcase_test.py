@@ -334,6 +334,44 @@ class TestCase_assertRaises_test(RealTestCase):
         self.assert_warns_on_bad_args(Exception, lambda: None, arg1+arg2)
 
 
+class TestCase_assertValidColor_test(RealTestCase):
+
+    def setUp(self):
+        self.mytestcase = ClassUnderTest("testAlwaysPasses")
+
+
+    def test_assertValidColor_with_valid_colors(self):
+        self.mytestcase.assertValidColor((0, 0, 0))
+        self.mytestcase.assertValidColor((255, 255, 255))
+        self.mytestcase.assertValidColor((100, 100, 100), "msg")
+
+
+    def assertBadColor(self, badColor):
+        self.mytestcase.assertRaises(
+            lambda: self.mytestcase.assertValidColor(badColor),
+            AssertionError,
+            "bad color: %s\n" % (badColor,))
+        self.mytestcase.assertRaises(
+            lambda: self.mytestcase.assertValidColor(badColor, "msg"),
+            AssertionError,
+            "bad color: %s\nmsg" % (badColor,))
+
+
+    def test_assertValidColor_raises_on_bad_color(self):
+        self.assertBadColor((100, 100))
+        self.assertBadColor((100, 100, 100, 100))
+        self.assertBadColor((-1, 100, 100))
+        self.assertBadColor((256, 100, 100))
+        self.assertBadColor((100, -1, 100))
+        self.assertBadColor((100, 256, 100))
+        self.assertBadColor((100, 100, -1))
+        self.assertBadColor((100, 100, 256))
+        self.assertBadColor((100.0, 100, 100))
+        self.assertBadColor((100, 100.0, 100))
+        self.assertBadColor((100, 100, 100.0))
+
+
+
 
 class combine_test(RealTestCase):
 
@@ -417,9 +455,10 @@ class run_test_test(MyTestCase):
 
 
 TestCase_test = combine(
+    TestCase_module_functions_test,
     TestCase_assertEquals_test,
     TestCase_assertRaises_test,
-    TestCase_module_functions_test,
+    TestCase_assertValidColor_test,
     combine_test,
     run_test_test,
 )

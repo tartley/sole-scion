@@ -4,31 +4,72 @@ from pymunk import Body
 
 class Entity(object):
     """
-    Represents an in-game object, that has a position, orientation, and a
-    shape, which provides geometry and mass.
+    Represents an in-game rigid body, that has a position, orientation, and a
+    collection of shapes, which provide geometry and mass.
     """
 
-    nextId = 1
-
-    def __init__(self, shape, x, y, rot):
-        self.entId = Entity.nextId
-        Entity.nextId += 1
-        self.shape = shape
-        self.body = Body(self.shape.mass, self.shape.moment)
-        self.body.position = (x, y)
-        self.body.angle = rot
+    def __init__(self, *shapes):
+        self.body = Body(0, 0)
+        self.shapes = []
+        for shape in shapes:
+            self.add_shape(shape)
 
 
-    x = property(lambda self: self.body.position.x)
-    y = property(lambda self: self.body.position.y)
-    rot = property(lambda self: self.body.angle)
+    position = property(lambda self: self.body.position)
+    angle = property(lambda self: self.body.angle)
 
 
-    def add_to_space(self, space):
+    def _center_of_gravity(self):
+        "return center of gravity as (x, y)"
+        x, y = 0, 0
+        for shape in self.shapes:
+            x += shape.offset[0] * shape.mass
+            y += shape.offset[1] * shape.mass
+        x /= self.body.mass
+        y /= self.body.mass
+        return (x, y)
+
+
+    def _offset_position(self, offset):
+        """
+        Move body position by given amount, and move all shape offsets in
+        opposite direction to compensate.
+        """
+        self.body.position.x += offset[0]
+        self.body.position.y += offset[1]
+        for shape in self.shapes:
+            shape.offset = (
+                shape.offset[0] - offset[0],
+                shape.offset[1] - offset[1])
+
+
+    def get_moment(self):
+        "Calculate this entity's moment, by summing component shape's moments"
+        moment = 0.0
+        for shape in self.shapes:
+            moment += shape.get_moment()
+        return moment
+
+
+    def add_shape(self, shape):
+        """
+        Add given shape to this Entity's collection, recalculating entity
+        center of gravity and updating body mass and moment.
+        """
+        self.shapes.append(shape)
+        self.body.mass += shape.mass
+        self._offset_position(self._center_of_gravity())
+        self.body.moment = self.get_moment()
+
+
+    def add_to_space(self, space, position, angle):
         """
         Add this Entity to the given Chipmunk Space, as a single Body
         and one or more Shapes attached to it.
         """
-        self.shape.add_to_body(space, self.body)
+        self.body.position = position
+        self.body.angle = angle
         space.add(self.body)
+        for shape in self.shapes:
+            shape.add_to_body(space, self.body)
 

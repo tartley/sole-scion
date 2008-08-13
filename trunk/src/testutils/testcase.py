@@ -78,6 +78,8 @@ class MyTestCase(RealTestCase):
     "A TestCase with augmented assertions"
     # pylint: disable-msg=C0103
     #   Invalid method names: This class uses unittest.TestCase conventions
+    # pylint: disable-msg=R0904
+    #   Too many public methods
 
     def assertNone(self, item, message=None):
         "Fail if item is not None"
@@ -108,6 +110,18 @@ class MyTestCase(RealTestCase):
             else:
                 msg = "%s != %s\n  %s" % (actual, expected, message)
                 raise AssertionError(msg)
+
+
+    def assertValidColor(self, color, message=None):
+        "Fails if color is not a triplet of ints from 0 to 255"
+        if message is None:
+            message = ""
+        if len(color) != 3:
+            self.fail("bad color: %s\n%s" % (color, message))
+        for i in [0, 1, 2]:
+            cpt = color[i]
+            if not isinstance(cpt, int) or not 0 <= cpt <= 255:
+                self.fail("bad color: %s\n%s" % (color, message))
 
 
     def _assertRaises_test_args(self, func, excClass):

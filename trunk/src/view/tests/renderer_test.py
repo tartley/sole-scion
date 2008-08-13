@@ -39,9 +39,8 @@ class Renderer_test(MyTestCase):
         room1 = Room(roomColor, verts)
         room2 = Room(roomColor, verts)
 
-        disc = Disc(1, 0, 0)
-        ent1 = Entity(disc, 1, 2, 3)
-        ent2 = Entity(disc, 1, 2, 3)
+        ent1 = Entity()
+        ent2 = Entity()
 
         world = World()
         world.backColor = (111, 22, 3)
