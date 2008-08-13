@@ -7,7 +7,7 @@ from testutils.testcase import combine
 
 from acceptancetests.tests.acceptancetest_test import AcceptanceTest_test
 from controller.tests.gameloop_test import Gameloop_test
-from model.tests.entity_test import Entity_test
+from model.tests.rigidbody_test import RigidBody_test
 from model.tests.room_test import Room_test
 from model.tests.world_test import World_test
 from model.shapes.tests.disc_test import Disc_test
@@ -28,7 +28,7 @@ def run_all_tests():
     suite = combine(
         AcceptanceTest_test,
         Gameloop_test,
-        Entity_test,
+        RigidBody_test,
         Room_test,
         World_test,
         Disc_test,

@@ -7,7 +7,7 @@ import fixpath
 from testutils.listener import Listener
 from testutils.testcase import MyTestCase, run_test
 
-from model.entity import Entity
+from model.rigidbody import RigidBody
 from model.room import Room
 from model.world import World
 from model.shapes.disc import Disc
@@ -65,18 +65,19 @@ class World_test(MyTestCase):
             "room walls not added to space")
 
 
-    def test_add_entity(self):
+    def test_add_rigidbody(self):
         world = World()
-        entity = Entity(Disc(1))
-        entity.add_to_space = Listener()
+        rigidbody = RigidBody(Disc(1))
+        rigidbody.add_to_space = Listener()
 
-        world.add_entity(entity, (1, 2), 0.5)
+        world.add_rigidbody(rigidbody, (1, 2), 0.5)
 
-        self.assertEquals(world.entities, set([entity]), "ent not added")
+        self.assertEquals(world.rigidBodies, set([rigidbody]),
+            "rigidbody not added")
         self.assertEquals(
-            entity.add_to_space.args,
+            rigidbody.add_to_space.args,
             (world.space, (1, 2), 0.5),
-            "ent not added to space")
+            "rigidbody not added to space")
 
 
     def test_tick(self):
