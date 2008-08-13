@@ -24,7 +24,7 @@ class TestCase_module_functions_test(MyTestCase):
         self.assertTrue(_is_int_indexable((GLint * 1)(*[1])), "Array1")
         self.assertTrue(_is_int_indexable('a'), "str")
 
-        # TODO: probably dicts and sets should pretty printed too
+        # TODO: probably dicts and sets should pretty output too
         self.assertFalse(_is_int_indexable({}), "dict")
         self.assertFalse(_is_int_indexable(set()), "set")
         self.assertFalse(_is_int_indexable(1), "int")

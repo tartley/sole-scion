@@ -38,26 +38,28 @@ class World(object):
         room = Room(color, verts)
         self.add_room(room)
 
-        verts = [(0, 0), (0, 1), (1, 1), (1, 0)]
-        for x in range(7):
-            disc = Disc(1 + x/8)
-            body = RigidBody(disc)
-            self.add_rigidbody(body, (x*2 - 8, 9 - (x % 2)*2), 0)
+        disc1 = Disc(2, (0, 0))
+        disc2 = Disc(1, (0, +2))
+        body = RigidBody(disc1, disc2)
+        self.add_rigidbody(body, (-8, 8), 0)
 
-        verts = [(-1, 3), (3, 2), (2, 0), (0, 0)]
-        block = Block(verts)
-        body = RigidBody(block)
-        self.add_rigidbody(body, (8, 5.5), 0.55)
+        if 0:
+            verts = [(-1, 3), (3, 2), (2, 0), (0, 0)]
+            block = Block(verts)
+            body = RigidBody(block)
+            self.add_rigidbody(body, (8, 5.5), 0.55)
 
-        verts = [(-1, 2), (-1, 3), (1, 4), (2, 3), (2, 2), (1, 0), (0, 0)]
-        block = Block(verts)
-        body = RigidBody(block)
-        self.add_rigidbody(body, (-5, 1.5), -0.1)
+            verts = [(-1, 2), (-1, 3), (1, 4), (2, 3), (2, 2), (1, 0), (0, 0)]
+            block = Block(verts)
+            body = RigidBody(block)
+            self.add_rigidbody(body, (-5, 1.5), -0.1)
 
-        verts = [(0, 0), (0, 3), (1, 3), (1, 0)]
-        block = Block(verts)
-        body = RigidBody(block)
-        self.add_rigidbody(body, (-0.5, 0.5), 0.1)
+        verts1 = [(0, 0), (0, 3), (1, 3), (1, 0)]
+        block1 = Block(verts1)
+        verts2 = [(0, 0), (0, 1), (3, 1), (3, 0)]
+        block2 = Block(verts2)
+        body = RigidBody(block1, block2)
+        self.add_rigidbody(body, (+8.0, 8.5), 0.1)
 
 
     def add_room(self, room):

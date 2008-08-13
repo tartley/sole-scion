@@ -7,7 +7,5 @@ then
 fi
 # echo $FILES
 
-print $@
-
 pylint --rcfile=pylintrc $@ $FILES
 
