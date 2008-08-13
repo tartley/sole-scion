@@ -15,7 +15,10 @@ http://code.google.com/p/sole-scion/
 
 ===Screenshot===
 
-A spike of v0.2, circles rain down on a polygonal surface. Note the current HEAD does not look as interesting as this.
+A spike of v0.2, circles rain down on a polygonal surface. Note the current
+HEAD features arbitrary polygon shapes as well as circles, but does not look as
+cutesy as this, since it's missing some superficial features like the gradient
+fills, and stars in the background.
 
 http://sole-scion.googlecode.com/svn/trunk/screenshots/Screenshot-Sole-Scion-spike2.png
 
@@ -43,9 +46,10 @@ Note that the -O flag can increase framerate by double or more on Linux. It disa
 ===Current Status===
 
 v0.2, 6 Aug 08, week 8 of 12
+  * A handful of circular and polygonal entities bounce around inside a single polygonal room.
+  * Rendering is very plain indeed.
   * Is now unit tested, and has a basic acceptance test.
-  * Internal architecture now defined (previous spike was one big script)
-  * A handful of circular entities now bounce around inside a single polygonal room.
+  * Internal architecture now defined (v0.1 spike was just one big script)
 
 
 ===Known Problems===

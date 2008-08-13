@@ -1,14 +1,39 @@
+for v0.1
+
+  * Circles rain down on an inclined plane, bouncing off it and each other.
+  * A big spike demonstrating the integration of our major dependancies,
+    pymunk for rigid-body dynamics, pyglet for openGL graphics.
+
 for v0.2
 
+  * Reimpliment in a test-driven manner
+  * Replace inclined-plane with a single polygonal room, within which circles
+    are free to move.
   * Handle moving polygon entities ('blocks') as well as discs.
+  * Pymunk only eats clockwise wound vertices. Barf on counterclockwise.
+  * Move the existing 'is_convex()' utility function from Block to 
+    utils.geometry, broaden it to a generic 'assert_valid_poly(),
+    and use it to verify Rooms verts
+
+==DONE==
+
+  * sort out the interface to creating Entities and Shapes
+    - see Entity_test.test_new_interface()
+  * Entities should automatically figure their centre of mass and offset
+    vertex co-ordinates from that.
   * Entities with compound shapes (ie collection of discs and blocks)
   * Shapes have a material, which determines their color, density, elasticity,
     friction.
+  * Define a few materials: Stone. Wood. Lead. Air.
+  * World.material=Stone. Renderer draws walls in world.material color.
+  * Room.material=Air. Renderer draws rooms in room.material color. Rooms no
+    longer need a color.
+
 
 for v0.3
 
-  * Give the player control to move one of the entities around, and pick up
-    and drag around adjacent entities.
+  * Give the player control over one of the entities: To move around, jump, and 
+    drag adjacent entities about.
 
 for v0.4
 
