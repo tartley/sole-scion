@@ -1,69 +1,54 @@
-for v0.1
+See bottom of file for tasks that are 'done'
 
-  * Circles rain down on an inclined plane, bouncing off it and each other.
-  * A big spike demonstrating the integration of our major dependancies,
-    pymunk for rigid-body dynamics, pyglet for openGL graphics.
+for v0.2 : Engine
 
-for v0.2
-
-  * Reimpliment in a test-driven manner
-  * Replace inclined-plane with a single polygonal room, within which circles
-    are free to move.
-  * Handle moving polygon entities ('blocks') as well as discs.
-  * Pymunk only eats clockwise wound vertices. Barf on counterclockwise.
-  * Move the existing 'is_convex()' utility function from Block to 
-    utils.geometry, broaden it to a generic 'assert_valid_poly(),
-    and use it to verify Rooms verts
-
-==DONE==
-
-  * sort out the interface to creating Entities and Shapes
-    - see Entity_test.test_new_interface()
-  * Entities should automatically figure their centre of mass and offset
-    vertex co-ordinates from that.
-  * Entities with compound shapes (ie collection of discs and blocks)
+  * Figure out the bug that is borking collision detection for compound
+    RigidBodies
+  * Rename shapes as 'parts' or 'chunks' or 'shards' or 'slivers' This
+    would eliminate the odd reference to rigidbody.shapes[0].shape,
+    instead becoming 'rigidbody.shards[0].shape'
   * Shapes have a material, which determines their color, density, elasticity,
     friction.
   * Define a few materials: Stone. Wood. Lead. Air.
   * World.material=Stone. Renderer draws walls in world.material color.
   * Room.material=Air. Renderer draws rooms in room.material color. Rooms no
     longer need a color.
+  * integrate new version of pyglet: 1.1
 
-
-for v0.3
+for v0.3 : Avatar
 
   * Give the player control over one of the entities: To move around, jump, and 
     drag adjacent entities about.
 
-for v0.4
+for v0.4 : Maze
 
   * Handle multiple connected room polygons.
   * Autogenerate a set of rooms to form a maze of sorts.
 
-for v0.5
+for v0.5 : Rendering
 
   * Render faster, using Vertex Object Buffers instead of glVertex() calls.
   * Render only rooms (and their contents) that are on-screen.
   * Render object decorations.
 
-for v0.6
+for v0.6 : Quest
 
   * Other objects in the maze.
       * Rocks: High density, high friction, low elasticity.
       * Eggs: Low density, low friction, high elasticity.
       * Eggs are tough, but can be broken.
-
-for v0.7
-
     * Game completion - return all eggs to the nest to win.
         Display stats. Restart.
+
+for v0.7 : Death
+
     * Death - get squished to restart from a collected egg
     * Abandon - [esc] will give up, restarting from a collected egg.
         After a while, abandoned avatar is replaced by a skeleton.
     * Game over - no eggs left.
         Display stats, restart.
 
-for v0.8
+for v0.8 : Achievements
 
     * Persist highscores
     * Achievements
@@ -73,8 +58,33 @@ for v0.8
         * Fastest game completion
         * Least bretheren lost at completion
 
-for v0.9
+for v0.9 : Install
 
   * Windows binary distributable.
   * Acceptance tests on Windows hopefully using VMWare to run from Linux.
 
+
+== DONE ==
+
+for v0.1 : Spike
+
+  * Circles rain down on an inclined plane, bouncing off it and each other.
+  * A big spike demonstrating the integration of our major dependancies,
+    pymunk for rigid-body dynamics, pyglet for openGL graphics.
+
+for v0.2 : Engine
+
+  * Reimpliment in a test-driven manner
+  * Replace inclined-plane with a single polygonal room, within which circles
+    are free to move.
+  * Handle moving polygon entities ('blocks') as well as discs.
+  * Pymunk only eats clockwise wound vertices. Barf on counterclockwise.
+  * Move the existing 'is_convex()' utility function from Block to 
+    utils.geometry, broaden it to a generic 'assert_valid_poly(),
+    and use it to verify Rooms verts
+  * sort out the interface to creating Entities and Shapes
+    - see Entity_test.test_new_interface()
+  * Entities should automatically figure their centre of mass and offset
+    vertex co-ordinates from that.
+  * Entities with compound shapes (ie collection of discs and blocks)
+  * Rename Entity as RigidBody
