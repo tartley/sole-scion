@@ -52,40 +52,40 @@ class Renderer(object):
     def draw_entity(self, ent):
         "Draw the given entity"
         glPushMatrix()
-        glTranslatef(ent.x, ent.y, 0)
-        glRotatef(ent.rot * 180 / pi, 0, 0, 1)
+        glTranslatef(ent.position.x, ent.position.y, 0)
+        glRotatef(ent.angle * 180 / pi, 0, 0, 1)
 
-        if type(ent.shape) == Disc:
-            self.draw_circle(ent)
-        elif type(ent.shape) == Block:
-            self.draw_poly(ent)
-        else:
-            raise TypeError("renderer cannot draw %s" % (type(ent),))
+        for shape in ent.shapes:
+            glColor3ub(*shape.color)
+            if type(shape) == Disc:
+                self.draw_circle(shape)
+            elif type(shape) == Block:
+                self.draw_poly(shape)
+            else:
+                raise TypeError("renderer cannot draw %s" % (type(ent),))
 
         glPopMatrix()
 
 
-    def draw_poly(self, ent):
+    def draw_poly(self, shape):
         "Draw the given polygonal entity"
-        glColor3ub(255, 255, 0)
         glBegin(GL_TRIANGLE_FAN)
-        for idx in range(len(ent.shape.verts)):
-            glVertex2f(*ent.shape.verts[idx])
+        for idx in range(len(shape.verts)):
+            glVertex2f(*shape.verts[idx])
         glEnd()
 
 
-    def draw_circle(self, ent):
+    def draw_circle(self, shape):
         "Draw the given circular entity"
         numTris = 39
-        glColor3ub(255, 255, 0)
-        x, y = ent.shape.offset
+        x, y = shape.offset
         glBegin(GL_TRIANGLE_FAN)
         glVertex2f(x, y)
         for idx in range(numTris+1):
             theta = 2 * pi / numTris * idx
             glVertex2f(
-                x + ent.shape.radius * sin(theta),
-                y + ent.shape.radius * cos(theta))
+                x + shape.radius * sin(theta),
+                y + shape.radius * cos(theta))
         glEnd()
 
 

@@ -3,23 +3,21 @@
 from __future__ import division
 from math import cos, sin, pi
 
-from shapely.geometry import Polygon
-
 import fixpath
 
-from testutils.testcase import MyTestCase, run_test
+from testutils.testcase import combine, MyTestCase, run_test
 
-from utils.geometry import assert_valid_poly, poly_area
+from utils.geometry import assert_valid_poly, poly_area, poly_centroid
 
 
-class Geometry_test(MyTestCase):
+class Assert_valid_poly_test(MyTestCase):
 
     def test_assert_valid_poly_ok(self):
-        verts3y = [(0, 0), (0, 1), (1, 0)]
-        assert_valid_poly(verts3y)
+        verts3 = [(0, 0), (0, 1), (1, 0)]
+        assert_valid_poly(verts3)
 
-        verts4y = [(0, 0), (0, 2), (2, 2), (2, 0)]
-        assert_valid_poly(verts4y)
+        verts4 = [(0, 0), (0, 2), (2, 2), (2, 0)]
+        assert_valid_poly(verts4)
 
 
     def test_assert_valid_poly_too_few(self):
@@ -38,12 +36,14 @@ class Geometry_test(MyTestCase):
             TypeError, 'need 3 or more verts: %s' % (verts2,))
 
 
-    def test_assert_valid_poly_bad(self):
-        verts3c = [(0, 0), (1, 1), (2, 2)]
+    def test_assert_valid_poly_colinear_are_ok(self):
+        colinear = [(0, 0), (1, 1), (2, 2)]
         self.assertRaises(
-            lambda: assert_valid_poly(verts3c),
-            TypeError, 'verts are colinear: %s' % (verts3c,))
+            lambda: assert_valid_poly(colinear),
+            TypeError, "colinear: %s" % (colinear,))
 
+
+    def test_assert_valid_poly_nonconvex(self):
         verts4n = [(3, 0), (0, 0), (0, 3), (1, 1)]
         self.assertRaises(
             lambda: assert_valid_poly(verts4n),
@@ -54,13 +54,15 @@ class Geometry_test(MyTestCase):
         verts3cw = [(0, 1), (0, 0), (1, 0)]
         self.assertRaises(
             lambda: assert_valid_poly(verts3cw),
-            TypeError, 'clockwise winding: %s' % (verts3cw,))
+            TypeError, 'anticlockwise winding: %s' % (verts3cw,))
 
         verts4cw = [(0, 2), (0, 0), (2, 0), (2, 2)]
         self.assertRaises(
             lambda: assert_valid_poly(verts4cw),
-            TypeError, 'clockwise winding: %s' % (verts4cw,))
+            TypeError, 'anticlockwise winding: %s' % (verts4cw,))
 
+
+class Poly_area_test(MyTestCase):
 
     def test_poly_area_unit_square(self):
         verts = [(0, 0), (0, 1), (1, 1), (1, 0)]
@@ -82,6 +84,71 @@ class Geometry_test(MyTestCase):
         self.assertAlmostEquals(poly_area(verts), -pi, places=4,
             msg="bad clockwise circle area")
 
+
+class Poly_centroid_test(MyTestCase):
+
+    def test_poly_centroid_unit_square(self):
+        verts = [(0,0), (0,1), (1,1), (1,0)]
+        self.assertEquals(poly_centroid(verts), (0.5, 0.5),
+            "bad centroid unitsquare")
+
+
+    def test_poly_centroid_big_slanty_square(self):
+        verts = [(90,100), (100,110), (110,100), (100,90)]
+        self.assertEquals(poly_centroid(verts), (100, 100),
+            "bad centroid big slanty square")
+
+
+    def test_poly_centroid_triangle(self):
+        verts = [(2, 2), (4, 2), (6, 5)]
+        self.assertEquals(poly_centroid(verts), (4, 3),
+            "bad centroid big slanty square")
+
+
+    def test_poly_centroid_triangle_counterclockwise(self):
+        verts = [(2, 2), (4, 2), (6, 5)]
+        verts.reverse()
+        self.assertEquals(poly_centroid(verts), (4, 3),
+            "bad centroid big slanty square")
+
+
+    def test_poly_centroid_regular_octagon(self):
+        verts = [
+            (80, 90),
+            (80, 110),
+            (90, 120),
+            (110, 120),
+            (120, 110),
+            (120, 90),
+            (110, 80),
+            (90, 80),
+        ]
+        self.assertEquals(poly_centroid(verts), (100, 100),
+            "bad centroid big slanty square")
+
+
+    def test_poly_centroid_clustered_verts(self):
+        verts = [
+            (1, 0),
+            (0.3, 0),
+            (0.2, 0),
+            (0.1, 0),
+            (0, 0),
+            (0, 0.1),
+            (0, 0.2),
+            (0, 0.3),
+            (0, 1),
+            (1, 1),
+        ]
+        self.assertEquals(poly_centroid(verts), (0.5, 0.5),
+            "bad centroid unitsquare")
+
+
+Geometry_test = combine(
+    Poly_area_test,
+    Poly_centroid_test,
+    Assert_valid_poly_test,
+)
 
 if __name__ == "__main__":
     run_test(Geometry_test)

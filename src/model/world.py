@@ -1,7 +1,6 @@
 "Module for the World class"
 
 from __future__ import division
-from random import uniform
 
 from pymunk import Body, inf, init_pymunk, Space
 
@@ -39,21 +38,26 @@ class World(object):
         room = Room(color, verts)
         self.add_room(room)
 
-        for x in range(-8, 12, 4):
-            ent = Entity(Disc(0, 0, uniform(0.5, 2)), x, 8, 0)
-            self.add_entity(ent)
+        verts = [(0, 0), (0, 1), (1, 1), (1, 0)]
+        for x in range(7):
+            disc = Disc(1 + x/8)
+            ent = Entity(disc)
+            self.add_entity(ent, (x*2 - 8, 9 - (x % 2)*2), 0)
 
         verts = [(-1, 3), (3, 2), (2, 0), (0, 0)]
-        ent = Entity(Block(0, 0, verts), 0, 8, 0)
-        self.add_entity(ent)
+        block = Block(verts)
+        ent = Entity(block)
+        self.add_entity(ent, (8, 5.5), 0.55)
 
         verts = [(-1, 2), (-1, 3), (1, 4), (2, 3), (2, 2), (1, 0), (0, 0)]
-        ent = Entity(Block(0, 0, verts), -3, 7, 0)
-        self.add_entity(ent)
+        block = Block(verts)
+        ent = Entity(block)
+        self.add_entity(ent, (-5, 1.5), -0.1)
 
-        verts = [(0, 0), (0, 1), (1, 1), (1, 0)]
-        ent = Entity(Block(0, 0, verts), -5, 3, 0)
-        self.add_entity(ent)
+        verts = [(0, 0), (0, 3), (1, 3), (1, 0)]
+        block = Block(verts)
+        ent = Entity(block)
+        self.add_entity(ent, (-0.5, 0.5), 0.1)
 
 
     def add_room(self, room):
@@ -62,9 +66,9 @@ class World(object):
         self.rooms.add(room)
 
 
-    def add_entity(self, entity):
+    def add_entity(self, entity, position, angle):
         "Add 'entity' to this world, and insert it into Chipmunk's Space"
-        entity.add_to_space(self.space)
+        entity.add_to_space(self.space, position, angle)
         self.entities.add(entity)
 
 

@@ -67,13 +67,15 @@ class World_test(MyTestCase):
 
     def test_add_entity(self):
         world = World()
-        entity = Entity(Disc(1, 0, 0), 0, 0, 0)
+        entity = Entity(Disc(1))
         entity.add_to_space = Listener()
 
-        world.add_entity(entity)
+        world.add_entity(entity, (1, 2), 0.5)
 
         self.assertEquals(world.entities, set([entity]), "ent not added")
-        self.assertEquals(entity.add_to_space.args, (world.space,),
+        self.assertEquals(
+            entity.add_to_space.args,
+            (world.space, (1, 2), 0.5),
             "ent not added to space")
 
 
