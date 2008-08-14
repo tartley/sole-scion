@@ -30,7 +30,7 @@ class World(object):
         color = (0, 50, 100)
         verts = [
             (-12, 9),
-            (+12, 15),
+            (+12, 14),
             (+10, 5),
             (0, -1),
             (-10, 0),
@@ -42,17 +42,22 @@ class World(object):
         disc2 = Disc(1, (0, +2))
         body = RigidBody(disc1, disc2)
         self.add_rigidbody(body, (-8, 8), 0)
+        disc1.shape.elasticity = 1.0
 
-        if 0:
-            verts = [(-1, 3), (3, 2), (2, 0), (0, 0)]
-            block = Block(verts)
-            body = RigidBody(block)
-            self.add_rigidbody(body, (8, 5.5), 0.55)
+        disc = Disc(1)
+        body = RigidBody(disc)
+        self.add_rigidbody(body, (8, 12))
+        disc.shape.elasticity = 2.0
 
-            verts = [(-1, 2), (-1, 3), (1, 4), (2, 3), (2, 2), (1, 0), (0, 0)]
-            block = Block(verts)
-            body = RigidBody(block)
-            self.add_rigidbody(body, (-5, 1.5), -0.1)
+        verts = [(-1, 3), (3, 2), (2, 0), (0, 0)]
+        block = Block(verts)
+        body = RigidBody(block)
+        self.add_rigidbody(body, (8, 5.5), 0.55)
+
+        verts = [(-1, 2), (-1, 3), (1, 4), (2, 3), (2, 2), (1, 0), (0, 0)]
+        block = Block(verts)
+        body = RigidBody(block)
+        self.add_rigidbody(body, (-5, 1.5), -0.1)
 
         verts1 = [(0, 0), (0, 3), (1, 3), (1, 0)]
         block1 = Block(verts1)
@@ -68,7 +73,7 @@ class World(object):
         self.rooms.add(room)
 
 
-    def add_rigidbody(self, rigidbody, position, angle):
+    def add_rigidbody(self, rigidbody, position, angle=0):
         "Add 'rigidbody' to this world, and insert it into Chipmunk's Space"
         rigidbody.add_to_space(self.space, position, angle)
         self.rigidBodies.add(rigidbody)
