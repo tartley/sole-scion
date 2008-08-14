@@ -27,7 +27,7 @@ class Renderer(object):
         for room in world.rooms:
             self.draw_room(room)
         for body in world.rigidBodies:
-            self.draw_rigidbody(body)
+            self.draw_chunk(body)
 
 
     def clear(self, color):
@@ -49,26 +49,26 @@ class Renderer(object):
         glEnd()
 
 
-    def draw_rigidbody(self, rigidbody):
-        "Draw the given rigidbody"
+    def draw_chunk(self, chunk):
+        "Draw the given chunk"
         glPushMatrix()
-        glTranslatef(rigidbody.position.x, rigidbody.position.y, 0)
-        glRotatef(rigidbody.angle * 180 / pi, 0, 0, 1)
+        glTranslatef(chunk.position.x, chunk.position.y, 0)
+        glRotatef(chunk.angle * 180 / pi, 0, 0, 1)
 
-        for shard in rigidbody.shards:
+        for shard in chunk.shards:
             glColor3ub(*shard.color)
             if type(shard) == Disc:
                 self.draw_disc(shard)
             elif type(shard) == Block:
                 self.draw_block(shard)
             else:
-                raise TypeError("renderer cannot draw %s" % (type(rigidbody),))
+                raise TypeError("renderer cannot draw %s" % (type(chunk),))
 
         glPopMatrix()
 
 
     def draw_block(self, block):
-        "Draw the given polygonal rigidbody"
+        "Draw the given polygonal chunk"
         glBegin(GL_TRIANGLE_FAN)
         for idx in range(len(block.verts)):
             glVertex2f(*block.verts[idx])
@@ -76,7 +76,7 @@ class Renderer(object):
 
 
     def draw_disc(self, disc):
-        "Draw the given circular rigidbody"
+        "Draw the given circular chunk"
         numTris = 39
         x, y = disc.get_offset()
         glBegin(GL_TRIANGLE_FAN)

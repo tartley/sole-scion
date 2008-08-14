@@ -1,8 +1,8 @@
-"Module for class 'RigidBody'"
+"Module for class 'Chunk'"
 
 from pymunk import Body
 
-class RigidBody(object):
+class Chunk(object):
     """
     Represents an in-game rigid body, that has a position, orientation, and a
     collection of shards, which provide geometry and mass.
@@ -19,7 +19,7 @@ class RigidBody(object):
 
 
     def get_mass(self):
-        "Calculate this rigidbody's mass, the sum of its shard's masses"
+        "Calculate this chunk's mass, the sum of its shard's masses"
         mass = 0.0
         for shard in self.shards:
             mass += shard.mass
@@ -27,7 +27,7 @@ class RigidBody(object):
 
 
     def get_moment(self):
-        "Calculate this rigidbody's moment, the sum of its shard's moments"
+        "Calculate this chunk's moment, the sum of its shard's moments"
         moment = 0.0
         for shard in self.shards:
             moment += shard.get_moment()
@@ -56,7 +56,7 @@ class RigidBody(object):
 
     def set_shards(self, *shards):
         """
-        Set this RigidBody's collection of shards, updating the offset of
+        Set this Chunk's collection of shards, updating the offset of
         each shard so that they are centered around the collective
         center of gravity.
         """
@@ -67,7 +67,7 @@ class RigidBody(object):
 
     def add_to_space(self, space, position, angle):
         """
-        Add this RigidBody to the given Chipmunk Space, as a single Body
+        Add this Chunk to the given Chipmunk Space, as a single Body
         and one or more Shapes attached to it.
         """
         self.body = Body(self.get_mass(), self.get_moment())
