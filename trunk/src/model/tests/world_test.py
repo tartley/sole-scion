@@ -7,7 +7,7 @@ import fixpath
 from testutils.listener import Listener
 from testutils.testcase import MyTestCase, run_test
 
-from model.rigidbody import RigidBody
+from model.chunk import Chunk
 from model.room import Room
 from model.world import World
 from model.shards.disc import Disc
@@ -65,26 +65,26 @@ class World_test(MyTestCase):
             "room walls not added to space")
 
 
-    def test_add_rigidbody(self):
+    def test_add_chunk(self):
         world = World()
-        rigidbody = RigidBody(Disc(1))
-        rigidbody.add_to_space = Listener()
+        chunk = Chunk(Disc(1))
+        chunk.add_to_space = Listener()
 
-        world.add_rigidbody(rigidbody, (1, 2), 0.5)
+        world.add_chunk(chunk, (1, 2), 0.5)
 
-        self.assertEquals(world.rigidBodies, set([rigidbody]),
-            "rigidbody not added")
+        self.assertEquals(world.rigidBodies, set([chunk]),
+            "chunk not added")
         self.assertEquals(
-            rigidbody.add_to_space.args,
+            chunk.add_to_space.args,
             (world.space, (1, 2), 0.5),
-            "rigidbody not added to space")
+            "chunk not added to space")
 
 
-    def test_add_rigidbody_default_angle(self):
+    def test_add_chunk_default_angle(self):
         world = World()
-        rigidBody = RigidBody(Disc(1))
+        rigidBody = Chunk(Disc(1))
 
-        world.add_rigidbody(rigidBody, (10, 20))
+        world.add_chunk(rigidBody, (10, 20))
 
         body = [b for b in world.space.bodies][0]
         self.assertEquals(body.angle, 0.0, "bad default angle")

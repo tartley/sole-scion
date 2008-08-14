@@ -4,7 +4,7 @@ from __future__ import division
 
 from pymunk import Body, inf, init_pymunk, Space
 
-from model.rigidbody import RigidBody
+from model.chunk import Chunk
 from model.room import Room
 from model.shards.block import Block
 from model.shards.disc import Disc
@@ -40,31 +40,31 @@ class World(object):
 
         disc1 = Disc(2, (0, 0))
         disc2 = Disc(1, (0, +2))
-        body = RigidBody(disc1, disc2)
-        self.add_rigidbody(body, (-8, 8), 0)
+        body = Chunk(disc1, disc2)
+        self.add_chunk(body, (-8, 8), 0)
         disc1.shape.elasticity = 1.0
 
         disc = Disc(1)
-        body = RigidBody(disc)
-        self.add_rigidbody(body, (8, 12))
+        body = Chunk(disc)
+        self.add_chunk(body, (8, 12))
         disc.shape.elasticity = 2.0
 
         verts = [(-1, 3), (3, 2), (2, 0), (0, 0)]
         block = Block(verts)
-        body = RigidBody(block)
-        self.add_rigidbody(body, (8, 5.5), 0.55)
+        body = Chunk(block)
+        self.add_chunk(body, (8, 5.5), 0.55)
 
         verts = [(-1, 2), (-1, 3), (1, 4), (2, 3), (2, 2), (1, 0), (0, 0)]
         block = Block(verts)
-        body = RigidBody(block)
-        self.add_rigidbody(body, (-5, 1.5), -0.1)
+        body = Chunk(block)
+        self.add_chunk(body, (-5, 1.5), -0.1)
 
         verts1 = [(0, 0), (0, 3), (1, 3), (1, 0)]
         block1 = Block(verts1)
         verts2 = [(0, 0), (0, 1), (3, 1), (3, 0)]
         block2 = Block(verts2)
-        body = RigidBody(block1, block2)
-        self.add_rigidbody(body, (+8.0, 8.5), 0.1)
+        body = Chunk(block1, block2)
+        self.add_chunk(body, (+8.0, 8.5), 0.1)
 
 
     def add_room(self, room):
@@ -73,10 +73,10 @@ class World(object):
         self.rooms.add(room)
 
 
-    def add_rigidbody(self, rigidbody, position, angle=0):
-        "Add 'rigidbody' to this world, and insert it into Chipmunk's Space"
-        rigidbody.add_to_space(self.space, position, angle)
-        self.rigidBodies.add(rigidbody)
+    def add_chunk(self, chunk, position, angle=0):
+        "Add 'chunk' to this world, and insert it into Chipmunk's Space"
+        chunk.add_to_space(self.space, position, angle)
+        self.rigidBodies.add(chunk)
 
 
     def tick(self, deltaT):

@@ -7,7 +7,7 @@ from testutils.listener import Listener
 from testutils.testcase import MyTestCase, run_test
 from testutils.testimage import assert_entirely, image_from_window
 
-from model.world import RigidBody, Room, World
+from model.world import Chunk, Room, World
 from model.shards.disc import Disc
 
 from view.camera import Camera
@@ -39,8 +39,8 @@ class Renderer_test(MyTestCase):
         room1 = Room(roomColor, verts)
         room2 = Room(roomColor, verts)
 
-        body1 = RigidBody()
-        body2 = RigidBody()
+        body1 = Chunk()
+        body2 = Chunk()
 
         world = World()
         world.backColor = (111, 22, 3)
@@ -51,8 +51,8 @@ class Renderer_test(MyTestCase):
         renderer.clear = lambda *args: listener("clear", *args)
         camera.world_projection = lambda *args: listener("world_proj", *args)
         renderer.draw_room = lambda *args: listener("draw_room", *args)
-        renderer.draw_rigidbody = \
-            lambda *args: listener("draw_rigidbody", *args)
+        renderer.draw_chunk = \
+            lambda *args: listener("draw_chunk", *args)
 
         aspect = 1.5
         renderer.draw(world, aspect)
@@ -62,8 +62,8 @@ class Renderer_test(MyTestCase):
             ("world_proj", aspect),
             ("draw_room", room2),
             ("draw_room", room1),
-            ("draw_rigidbody", body2),
-            ("draw_rigidbody", body1),
+            ("draw_chunk", body2),
+            ("draw_chunk", body1),
         ]
         self.assertEquals(listener.argsList, expected, "draw didnt call subfns")
 
@@ -84,7 +84,7 @@ class Renderer_test(MyTestCase):
         self.fail("not tested")
 
 
-    def test_draw_rigidbody(self):
+    def test_draw_chunk(self):
         self.fail("not tested")
         self.fail("TODO: set and restore modelview projection")
 

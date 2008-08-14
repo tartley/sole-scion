@@ -10,41 +10,41 @@ import fixpath
 from testutils.listener import Listener
 from testutils.testcase import MyTestCase, run_test
 
-from model.rigidbody import RigidBody
+from model.chunk import Chunk
 from model.shards.block import Block
 from model.shards.disc import Disc
 
 
-class RigidBody_test(MyTestCase):
+class Chunk_test(MyTestCase):
 
     def setUp(self):
         self.unitsquare = [(0, 0), (0, 1), (1, 1), (1, 0)]
 
 
     def test_constructor(self):
-        body = RigidBody()
+        body = Chunk()
         self.assertNone(body.body, "bad body")
         self.assertEquals(body.shards, (), "bad shards")
 
 
     def test_constructor_adds_optional_shards(self):
-        orig = RigidBody.set_shards
-        RigidBody.set_shards = Listener()
+        orig = Chunk.set_shards
+        Chunk.set_shards = Listener()
         try:
             shard1 = Disc(1)
             shard2 = Disc(2)
             shard3 = Disc(3)
-            body = RigidBody(shard1, shard2, shard3)
+            body = Chunk(shard1, shard2, shard3)
             self.assertEquals(
                 body.set_shards.argsList,
                 [(shard1, shard2, shard3),],
                 "shards not addded")
         finally:
-            RigidBody.set_shards = orig
+            Chunk.set_shards = orig
 
 
     def test_position_read_from_body(self):
-        body = RigidBody()
+        body = Chunk()
         self.assertNone(body.position, "bad initial position")
         self.assertNone(body.angle, "bad initial angle")
 
@@ -55,11 +55,11 @@ class RigidBody_test(MyTestCase):
 
 
     def test_center_of_gravity(self):
-        body0 = RigidBody()
+        body0 = Chunk()
         self.assertEquals(body0._center_of_gravity(), (0, 0), "bad COG0")
 
         shard1 = Disc(2, (10, 20))
-        body = RigidBody()
+        body = Chunk()
         body.shards = (shard1,)
         self.assertEquals(body._center_of_gravity(), (10, 20), "bad COG1")
 
@@ -76,7 +76,7 @@ class RigidBody_test(MyTestCase):
 
 
     def test_offset_shards(self):
-        body = RigidBody()
+        body = Chunk()
         shard1 = Disc(5, (10, 20))
         shard2 = Block(self.unitsquare, (30, 40), center=True)
         body.shards = [shard1, shard2]
@@ -90,7 +90,7 @@ class RigidBody_test(MyTestCase):
 
 
     def test_get_moment(self):
-        body = RigidBody()
+        body = Chunk()
         self.assertEquals(body.get_moment(), 0.0, "bad initial moment")
 
         shard1 = Disc(2, (10, 20))
@@ -102,7 +102,7 @@ class RigidBody_test(MyTestCase):
 
 
     def test_get_mass(self):
-        body = RigidBody()
+        body = Chunk()
         self.assertEquals(body.get_mass(), 0.0, "bad initial mass")
 
         shard1 = Disc(5)
@@ -115,7 +115,7 @@ class RigidBody_test(MyTestCase):
         radius = 4
         offset = (3, 2)
         disc = Disc(radius, offset)
-        body = RigidBody()
+        body = Chunk()
         body.set_shards(disc)
 
         self.assertEquals(body.shards, (disc,), "bad shards")
@@ -127,7 +127,7 @@ class RigidBody_test(MyTestCase):
         disc1 = Disc(4, (+100, +200))
         disc2 = Disc(2, (+115, +225))
 
-        body = RigidBody()
+        body = Chunk()
         body.set_shards(disc1, disc2)
         self.assertEquals(body.shards, (disc1, disc2), "bad shards")
         shard1offset = body.shards[0].get_offset()
@@ -146,7 +146,7 @@ class RigidBody_test(MyTestCase):
         block = Block(verts, offset)
         self.assertEquals(block.get_offset(), (10.5, 20.5), "bad offset")
 
-        body = RigidBody()
+        body = Chunk()
         body.set_shards(block)
 
         self.assertEquals(body.shards, (block,), "bad shards")
@@ -159,7 +159,7 @@ class RigidBody_test(MyTestCase):
         block1 = Block(verts1, (8, 0))
         verts2 = [(0, 0), (0, 4), (12, 4), (12, 0)]
         block2 = Block(verts2, (0, 4))
-        body = RigidBody(block1, block2)
+        body = Chunk(block1, block2)
 
         self.assertEquals(body.shards, (block1, block2,), "shards not added")
         self.assertEquals(block1.get_offset(), (+3, -3), "bad offset1")
@@ -171,7 +171,7 @@ class RigidBody_test(MyTestCase):
         block1 = Block(verts1, (0, +12))
         verts2 = [(0, 0), (0, 12), (24, 12), (24, 0)]
         block2 = Block(verts2)
-        body = RigidBody(block1, block2)
+        body = Chunk(block1, block2)
 
         body.add_to_space(Space(), (100, 200), 0)
 
@@ -241,7 +241,7 @@ class RigidBody_test(MyTestCase):
         disc2 = Disc(2)
         disc3 = Disc(3)
         space = Space()
-        body = RigidBody(disc1, disc2, disc3)
+        body = Chunk(disc1, disc2, disc3)
 
         body.add_to_space(space, (1, 2), 0.75)
 
@@ -263,5 +263,5 @@ class RigidBody_test(MyTestCase):
 
 
 if __name__ == "__main__":
-    run_test(RigidBody_test)
+    run_test(Chunk_test)
 
