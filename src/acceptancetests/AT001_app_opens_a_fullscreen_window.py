@@ -7,7 +7,7 @@ import fixpath
 from acceptancetest import AcceptanceTest
 from testutils.testcase import run_test
 
-from sole_scion import main as run_sole_scion
+from run import main
 
 
 class AT001_app_opens_a_fullscreen_window(AcceptanceTest):
@@ -28,7 +28,7 @@ class AT001_app_opens_a_fullscreen_window(AcceptanceTest):
             self.is_window_fullscreen,
         ]
         self.set_conditions(conditions)
-        run_sole_scion()
+        main()
 
 
 if __name__ == "__main__":
