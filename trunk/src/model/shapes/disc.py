@@ -22,10 +22,12 @@ class Disc(object):
 
 
     def get_offset(self):
+        "Return this disc's offset from the center of its parent body"
         return self.center
 
 
     def offset(self, offset):
+        "Add to this disc's offset from the center of its parent body"
         self.center = (
             self.center[0] + offset[0],
             self.center[1] + offset[1])
