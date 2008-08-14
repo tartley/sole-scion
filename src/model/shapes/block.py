@@ -26,18 +26,13 @@ class Block(object):
 
 
     def _centralize_verts(self):
-        """
-        Offset verts such that their centroid is (0, 0). Move self.offset
-        in the opposite direction to compensate, so that this shape is
-        unmoved in relation to its parent body.
-        """
+        "Offset this block to put its centroid at its parent block's center"
         centroid = poly_centroid(self.verts)
-        offset = (-centroid[0], -centroid[1])
-        self.verts = offset_verts(self.verts, offset)
+        self.offset((-centroid[0], -centroid[1]))
 
 
     def get_moment(self):
-        "Return moment of inertia of this poly at self.offset"
+        "Return moment of inertia of this Block"
         return moment_for_poly(self.mass, self.verts, (0, 0))
 
 
@@ -47,6 +42,7 @@ class Block(object):
 
 
     def offset(self, offset):
+        "Add to this block's offset from the center of its parent Block"
         self.verts = offset_verts(self.verts, offset)
 
 
