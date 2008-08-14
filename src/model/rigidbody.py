@@ -39,8 +39,9 @@ class RigidBody(object):
         x, y = 0, 0
         mass = self.get_mass()
         for shape in self.shapes:
-            x += shape.offset[0] * shape.mass
-            y += shape.offset[1] * shape.mass
+            offset = shape.get_offset()
+            x += offset[0] * shape.mass
+            y += offset[1] * shape.mass
         if len(self.shapes) > 0:
             x /= mass
             y /= mass
@@ -48,11 +49,9 @@ class RigidBody(object):
 
 
     def _offset_shapes(self, offset):
-        "Move all shape offsets in opposite direction."
+        "Move all shapes by the given offset."
         for shape in self.shapes:
-            shape.offset = (
-                shape.offset[0] - offset[0],
-                shape.offset[1] - offset[1])
+            shape.offset(offset)
 
 
     def set_shapes(self, *shapes):
@@ -61,7 +60,8 @@ class RigidBody(object):
         resulting center of gravity and updating each shapes offset.
         """
         self.shapes = shapes
-        self._offset_shapes(self._center_of_gravity())
+        cog = self._center_of_gravity()
+        self._offset_shapes((-cog[0], -cog[1]))
 
 
     def add_to_space(self, space, position, angle):

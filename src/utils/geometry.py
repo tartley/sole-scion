@@ -5,6 +5,29 @@ from __future__ import division
 from pymunk.util import is_clockwise, is_convex
 
 
+def assert_valid_poly(verts):
+    "Raise TypeError if 'verts' not a valid convex clockwise poly"
+
+    if len(verts) < 3:
+        raise TypeError('need 3 or more verts: %s' % (verts,))
+    if not is_convex(verts):
+        raise TypeError('not convex: %s' % (verts,))
+    if poly_area(verts) == 0.0:
+        raise TypeError("colinear: %s" % (verts,))
+    # note: pymunk considers y-axis points down, ours points up,
+    # hence we consider pymunk's 'clockwise' to be anticlockwise
+    if not is_clockwise(verts):
+        raise TypeError('anticlockwise winding: %s' % (verts,))
+
+
+def offset_verts(verts, offset):
+    "Return a new sequence of verts, each vert moved by 'offset'"
+    return type(verts)(
+        (verts[i][0] + offset[0], verts[i][1] + offset[1])
+        for i in range(len(verts))
+    )
+
+
 def poly_area(verts):
     """
     Return area of a simple (ie. non-self-intersecting) polygon.
@@ -29,19 +52,4 @@ def poly_centroid(verts):
     x /= 6 * area
     y /= 6 * area
     return (x, y)
-
-
-def assert_valid_poly(verts):
-    "Raise TypeError if 'verts' not a valid convex clockwise poly"
-
-    if len(verts) < 3:
-        raise TypeError('need 3 or more verts: %s' % (verts,))
-    if not is_convex(verts):
-        raise TypeError('not convex: %s' % (verts,))
-    if poly_area(verts) == 0.0:
-        raise TypeError("colinear: %s" % (verts,))
-    # note: pymunk considers y-axis points down, ours points up,
-    # hence we consider pymunk's 'clockwise' to be anticlockwise
-    if not is_clockwise(verts):
-        raise TypeError('anticlockwise winding: %s' % (verts,))
 

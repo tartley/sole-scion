@@ -78,7 +78,7 @@ class Renderer(object):
     def draw_circle(self, shape):
         "Draw the given circular rigidbody"
         numTris = 39
-        x, y = shape.offset
+        x, y = shape.get_offset()
         glBegin(GL_TRIANGLE_FAN)
         glVertex2f(x, y)
         for idx in range(numTris+1):

@@ -4,22 +4,22 @@ from random import randint
 
 from pymunk import moment_for_poly, Poly
 
-from utils.geometry import assert_valid_poly, poly_area, poly_centroid
+from utils.geometry import (
+    assert_valid_poly, offset_verts, poly_area, poly_centroid,
+)
 
 
 class Block(object):
     """
-    A convex polygonal shape, with an offset from it's body's COG.
-    Verts are normalised on construction to be centered about (0,0),
-    and offset updated in the opposite direction.
+    A convex polygonal shape, vert coords relative to it's body's COG.
     """
-    def __init__(self, verts, offset=None):
-        if offset is None:
-            offset = (0, 0)
+    def __init__(self, verts, offset=None, center=False):
         assert_valid_poly(verts)
         self.verts = verts
-        self.offset = offset
-        self._centralize_verts()
+        if center:
+            self._centralize_verts()
+        if offset is not None:
+            self.verts = offset_verts(self.verts, offset)
         self.mass = poly_area(verts)
         self.shape = None
         self.color = (randint(0, 255), randint(0, 255), randint(0, 255))
@@ -32,29 +32,28 @@ class Block(object):
         unmoved in relation to its parent body.
         """
         centroid = poly_centroid(self.verts)
-        self.offset = (
-            self.offset[0] + centroid[0],
-            self.offset[1] + centroid[1]
-        )
-        newVerts = []
-        for vert in self.verts:
-            newVert = (
-                vert[0] - centroid[0],
-                vert[1] - centroid[1],
-            )
-            newVerts.append(newVert)
-        self.verts = newVerts
+        offset = (-centroid[0], -centroid[1])
+        self.verts = offset_verts(self.verts, offset)
 
 
     def get_moment(self):
         "Return moment of inertia of this poly at self.offset"
-        return moment_for_poly(self.mass, self.verts, self.offset)
+        return moment_for_poly(self.mass, self.verts, (0, 0))
+
+
+    def get_offset(self):
+        "Return centroid of our poly verts"
+        return poly_centroid(self.verts)
+
+
+    def offset(self, offset):
+        self.verts = offset_verts(self.verts, offset)
 
 
     def add_to_body(self, space, body):
         "Create a shape to represent this block, add it to 'space' and 'body'."
         self.shape = Poly(
-            body, self.verts, self.offset)
+            body, self.verts, (0, 0))
         self.shape.friction = 0.5
         self.shape.elasticity = 0.5
         space.add(self.shape)
