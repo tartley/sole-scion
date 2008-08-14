@@ -10,8 +10,8 @@ from controller.tests.gameloop_test import Gameloop_test
 from model.tests.rigidbody_test import RigidBody_test
 from model.tests.room_test import Room_test
 from model.tests.world_test import World_test
-from model.shapes.tests.disc_test import Disc_test
-from model.shapes.tests.block_test import Block_test
+from model.shards.tests.disc_test import Disc_test
+from model.shards.tests.block_test import Block_test
 from testutils.tests.testimage_test import TestImage_test
 from testutils.tests.listener_test import Listener_test
 from testutils.tests.testcase_test import TestCase_test

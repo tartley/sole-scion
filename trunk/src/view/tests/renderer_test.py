@@ -8,7 +8,7 @@ from testutils.testcase import MyTestCase, run_test
 from testutils.testimage import assert_entirely, image_from_window
 
 from model.world import RigidBody, Room, World
-from model.shapes.disc import Disc
+from model.shards.disc import Disc
 
 from view.camera import Camera
 from view.renderer import Renderer
