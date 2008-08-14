@@ -2,11 +2,9 @@ See bottom of file for tasks that are 'done'
 
 for v0.2 : Engine
 
-  * Figure out the bug that is borking collision detection for compound
-    RigidBodies
-  * Rename shapes as 'parts' or 'chunks' or 'shards' or 'slivers' This
-    would eliminate the odd reference to rigidbody.shapes[0].shape,
-    instead becoming 'rigidbody.shards[0].shape'
+  * Rename shapes (Discs, Blocks) which are not pymunk.Shape as 'chunks'
+    This would eliminate odd references to rigidbody.shapes[0].shape,
+    instead becoming 'rigidbody.chunks[0].shape'
   * Shapes have a material, which determines their color, density, elasticity,
     friction.
   * Define a few materials: Stone. Wood. Lead. Air.
@@ -25,11 +23,13 @@ for v0.4 : Maze
   * Handle multiple connected room polygons.
   * Autogenerate a set of rooms to form a maze of sorts.
 
-for v0.5 : Rendering
+for v0.5 : Performance
 
   * Render faster, using Vertex Object Buffers instead of glVertex() calls.
   * Render only rooms (and their contents) that are on-screen.
   * Render object decorations.
+  * Tune pymunk parameters
+  * Another other easy win performance tweaks
 
 for v0.6 : Quest
 
@@ -88,3 +88,8 @@ for v0.2 : Engine
     vertex co-ordinates from that.
   * Entities with compound shapes (ie collection of discs and blocks)
   * Rename Entity as RigidBody
+  * Figure out the bug that is borking collision detection for compound
+    RigidBodies : pymunk.Poly() did not heed its 'offset' param. To work
+    around, Blocks no longer maintain an offset, but update their verts
+    directly, and create Polys with a zero offset.
+
