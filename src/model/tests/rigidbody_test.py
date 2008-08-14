@@ -11,8 +11,8 @@ from testutils.listener import Listener
 from testutils.testcase import MyTestCase, run_test
 
 from model.rigidbody import RigidBody
-from model.shapes.block import Block
-from model.shapes.disc import Disc
+from model.shards.block import Block
+from model.shards.disc import Disc
 
 
 class RigidBody_test(MyTestCase):
@@ -24,23 +24,23 @@ class RigidBody_test(MyTestCase):
     def test_constructor(self):
         body = RigidBody()
         self.assertNone(body.body, "bad body")
-        self.assertEquals(body.shapes, (), "bad shapes")
+        self.assertEquals(body.shards, (), "bad shards")
 
 
-    def test_constructor_adds_optional_shapes(self):
-        orig = RigidBody.set_shapes
-        RigidBody.set_shapes = Listener()
+    def test_constructor_adds_optional_shards(self):
+        orig = RigidBody.set_shards
+        RigidBody.set_shards = Listener()
         try:
-            shape1 = Disc(1)
-            shape2 = Disc(2)
-            shape3 = Disc(3)
-            body = RigidBody(shape1, shape2, shape3)
+            shard1 = Disc(1)
+            shard2 = Disc(2)
+            shard3 = Disc(3)
+            body = RigidBody(shard1, shard2, shard3)
             self.assertEquals(
-                body.set_shapes.argsList,
-                [(shape1, shape2, shape3),],
-                "shapes not addded")
+                body.set_shards.argsList,
+                [(shard1, shard2, shard3),],
+                "shards not addded")
         finally:
-            RigidBody.set_shapes = orig
+            RigidBody.set_shards = orig
 
 
     def test_position_read_from_body(self):
@@ -58,46 +58,46 @@ class RigidBody_test(MyTestCase):
         body0 = RigidBody()
         self.assertEquals(body0._center_of_gravity(), (0, 0), "bad COG0")
 
-        shape1 = Disc(2, (10, 20))
+        shard1 = Disc(2, (10, 20))
         body = RigidBody()
-        body.shapes = (shape1,)
+        body.shards = (shard1,)
         self.assertEquals(body._center_of_gravity(), (10, 20), "bad COG1")
 
         verts = [(99, 49), (99, 51), (101, 51), (101, 49)]
-        shape2 = Block(verts)
-        body.shapes = (shape2,)
+        shard2 = Block(verts)
+        body.shards = (shard2,)
         self.assertEquals(body._center_of_gravity(), (100, 50), "bad COG2")
 
-        body.shapes = (shape1, shape2)
-        totalMass = shape1.mass + shape2.mass
+        body.shards = (shard1, shard2)
+        totalMass = shard1.mass + shard2.mass
         x = (10 * 4*pi + 100 * 4) / totalMass
         y = (20 * 4*pi + 50 * 4) / totalMass
         self.assertEquals(body._center_of_gravity(), (x, y), "bad COG3")
 
 
-    def test_offset_shapes(self):
+    def test_offset_shards(self):
         body = RigidBody()
-        sh1 = Disc(5, (10, 20))
-        sh2 = Block(self.unitsquare, (30, 40), center=True)
-        body.shapes = [sh1, sh2]
+        shard1 = Disc(5, (10, 20))
+        shard2 = Block(self.unitsquare, (30, 40), center=True)
+        body.shards = [shard1, shard2]
 
-        body._offset_shapes((+2, -3))
+        body._offset_shards((+2, -3))
 
-        offset1 = body.shapes[0].get_offset()
-        self.assertEquals(offset1, (12, 17), "bad sh1 offset")
-        offset2 = body.shapes[1].get_offset() 
-        self.assertEquals(offset2, (32, 37), "bad sh2 offset")
+        offset1 = body.shards[0].get_offset()
+        self.assertEquals(offset1, (12, 17), "bad shard1 offset")
+        offset2 = body.shards[1].get_offset()
+        self.assertEquals(offset2, (32, 37), "bad shard2 offset")
 
 
     def test_get_moment(self):
         body = RigidBody()
         self.assertEquals(body.get_moment(), 0.0, "bad initial moment")
 
-        sh1 = Disc(2, (10, 20))
-        sh2 = Block(self.unitsquare, (100, 200))
-        body.shapes = [sh1, sh2]
+        shard1 = Disc(2, (10, 20))
+        shard2 = Block(self.unitsquare, (100, 200))
+        body.shards = [shard1, shard2]
 
-        expected = sh1.get_moment() + sh2.get_moment()
+        expected = shard1.get_moment() + shard2.get_moment()
         self.assertEquals(body.get_moment(), expected, "bad moment")
 
 
@@ -105,63 +105,63 @@ class RigidBody_test(MyTestCase):
         body = RigidBody()
         self.assertEquals(body.get_mass(), 0.0, "bad initial mass")
 
-        sh1 = Disc(5)
-        sh2 = Block(self.unitsquare)
-        body.shapes = [sh1, sh2]
+        shard1 = Disc(5)
+        shard2 = Block(self.unitsquare)
+        body.shards = [shard1, shard2]
         self.assertEquals(body.get_mass(), 25*pi + 1, "bad mass")
 
 
-    def test_set_shapes_disc(self):
+    def test_set_shards_disc(self):
         radius = 4
         offset = (3, 2)
         disc = Disc(radius, offset)
         body = RigidBody()
-        body.set_shapes(disc)
+        body.set_shards(disc)
 
-        self.assertEquals(body.shapes, (disc,), "bad shapes")
-        shape = body.shapes[0]
-        self.assertEquals(shape.get_offset(), (0, 0))
+        self.assertEquals(body.shards, (disc,), "bad shards")
+        shard = body.shards[0]
+        self.assertEquals(shard.get_offset(), (0, 0))
 
 
-    def test_set_shapes_two_discs(self):
+    def test_set_shards_two_discs(self):
         disc1 = Disc(4, (+100, +200))
         disc2 = Disc(2, (+115, +225))
 
         body = RigidBody()
-        body.set_shapes(disc1, disc2)
-        self.assertEquals(body.shapes, (disc1, disc2), "bad shapes")
-        shape1offset = body.shapes[0].get_offset()
-        self.assertEquals(shape1offset[0], -3.0, "bad offset1 x")
-        self.assertAlmostEquals(shape1offset[1], -5.0,
+        body.set_shards(disc1, disc2)
+        self.assertEquals(body.shards, (disc1, disc2), "bad shards")
+        shard1offset = body.shards[0].get_offset()
+        self.assertEquals(shard1offset[0], -3.0, "bad offset1 x")
+        self.assertAlmostEquals(shard1offset[1], -5.0,
             msg="bad offset1 y")
-        shape2offset = body.shapes[1].get_offset()
-        self.assertEquals(shape2offset[0], +12.0, "bad offset2 x")
-        self.assertAlmostEquals(shape2offset[1], +20.0,
+        shard2offset = body.shards[1].get_offset()
+        self.assertEquals(shard2offset[0], +12.0, "bad offset2 x")
+        self.assertAlmostEquals(shard2offset[1], +20.0,
             msg="bad offset2 y")
 
 
-    def test_set_shapes_block(self):
+    def test_set_shards_block(self):
         verts = [(0, 0), (0, 1), (1, 1), (1, 0)]
         offset = (10, 20)
         block = Block(verts, offset)
         self.assertEquals(block.get_offset(), (10.5, 20.5), "bad offset")
 
         body = RigidBody()
-        body.set_shapes(block)
+        body.set_shards(block)
 
-        self.assertEquals(body.shapes, (block,), "bad shapes")
-        shape = body.shapes[0]
-        self.assertEquals(shape.get_offset(), (0, 0), "bad offset")
+        self.assertEquals(body.shards, (block,), "bad shards")
+        shard = body.shards[0]
+        self.assertEquals(shard.get_offset(), (0, 0), "bad offset")
 
 
-    def test_set_shapes_two_blocks(self):
+    def test_set_shards_two_blocks(self):
         verts1 = [(0, 0), (0, 4), (4, 4), (4, 0)]
         block1 = Block(verts1, (8, 0))
         verts2 = [(0, 0), (0, 4), (12, 4), (12, 0)]
         block2 = Block(verts2, (0, 4))
         body = RigidBody(block1, block2)
 
-        self.assertEquals(body.shapes, (block1, block2,), "shapes not added")
+        self.assertEquals(body.shards, (block1, block2,), "shards not added")
         self.assertEquals(block1.get_offset(), (+3, -3), "bad offset1")
         self.assertEquals(block2.get_offset(), (-1, +1), "bad offset2")
 
@@ -175,15 +175,15 @@ class RigidBody_test(MyTestCase):
 
         body.add_to_space(Space(), (100, 200), 0)
 
-        self.assertEquals(body.shapes, (block1, block2,), "shapes not added")
+        self.assertEquals(body.shards, (block1, block2,), "shards not added")
 
-        poly1 = body.shapes[0].shape.get_points()
+        poly1 = body.shards[0].shard.get_points()
         expected = [
             Vec2d(92, 104), Vec2d(92, 116),
             Vec2d(104, 116), Vec2d(104, 104)]
         self.assertEquals(poly1, expected, "bad poly1 verts")
 
-        poly2 = body.shapes[1].shape.get_points()
+        poly2 = body.shards[1].shard.get_points()
         expected = [
             Vec2d(92, 92), Vec2d(92, 104),
             Vec2d(116, 104), Vec2d(116, 92),

@@ -10,7 +10,7 @@ from testutils.testcase import MyTestCase, run_test
 from model.rigidbody import RigidBody
 from model.room import Room
 from model.world import World
-from model.shapes.disc import Disc
+from model.shards.disc import Disc
 
 
 class World_test(MyTestCase):

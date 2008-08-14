@@ -6,8 +6,8 @@ from pymunk import Body, inf, init_pymunk, Space
 
 from model.rigidbody import RigidBody
 from model.room import Room
-from model.shapes.block import Block
-from model.shapes.disc import Disc
+from model.shards.block import Block
+from model.shards.disc import Disc
 
 
 class World(object):

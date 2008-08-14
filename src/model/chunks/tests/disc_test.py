@@ -8,7 +8,7 @@ import fixpath
 
 from testutils.testcase import MyTestCase, run_test
 
-from model.shapes.disc import Disc
+from model.shards.disc import Disc
 
 
 class Disc_test(MyTestCase):
