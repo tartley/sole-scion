@@ -80,6 +80,16 @@ class World_test(MyTestCase):
             "rigidbody not added to space")
 
 
+    def test_add_rigidbody_default_angle(self):
+        world = World()
+        rigidBody = RigidBody(Disc(1))
+
+        world.add_rigidbody(rigidBody, (10, 20))
+
+        body = [b for b in world.space.bodies][0]
+        self.assertEquals(body.angle, 0.0, "bad default angle")
+
+
     def test_tick(self):
         world = World()
         world.space.step = Listener()
