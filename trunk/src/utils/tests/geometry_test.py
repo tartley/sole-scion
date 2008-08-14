@@ -7,7 +7,9 @@ import fixpath
 
 from testutils.testcase import combine, MyTestCase, run_test
 
-from utils.geometry import assert_valid_poly, poly_area, poly_centroid
+from utils.geometry import (
+    assert_valid_poly, offset_verts, poly_area, poly_centroid
+)
 
 
 class Assert_valid_poly_test(MyTestCase):
@@ -60,6 +62,31 @@ class Assert_valid_poly_test(MyTestCase):
         self.assertRaises(
             lambda: assert_valid_poly(verts4cw),
             TypeError, 'anticlockwise winding: %s' % (verts4cw,))
+
+
+
+class Offset_verts_test(MyTestCase):
+
+    def test_offset_verts(self):
+        verts = [(0, 1), (-2, -3), (4, 5)]
+        self.assertEquals(
+            offset_verts(verts, (10, 20)),
+            [(10, 21), (8, 17), (14, 25)],
+            "bad offset verts")
+
+
+    def test_tuple_returns_tuple(self):
+        verts = ((0, 1), (-2, -3), (4, 5))
+        self.assertEquals(
+            offset_verts(verts, (10, 20)),
+            ((10, 21), (8, 17), (14, 25)),
+            "bad offset tuple verts")
+
+
+    def test_degenerate_cases(self):
+        self.assertEquals(offset_verts([], (1, 1)), [], "bad for empty list")
+        self.assertEquals(offset_verts((), (1, 1)), (), "bad for empty tuple")
+
 
 
 class Poly_area_test(MyTestCase):
@@ -145,9 +172,10 @@ class Poly_centroid_test(MyTestCase):
 
 
 Geometry_test = combine(
+    Assert_valid_poly_test,
+    Offset_verts_test,
     Poly_area_test,
     Poly_centroid_test,
-    Assert_valid_poly_test,
 )
 
 if __name__ == "__main__":
