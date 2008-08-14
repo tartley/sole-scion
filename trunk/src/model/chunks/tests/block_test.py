@@ -8,7 +8,7 @@ from testutils.listener import Listener
 from testutils.testcase import MyTestCase, run_test
 
 from utils.geometry import offset_verts, poly_area
-from model.shapes.block import Block
+from model.shards.block import Block
 
 
 class Block_test(MyTestCase):
@@ -26,7 +26,7 @@ class Block_test(MyTestCase):
     def test_constructor_validates_verts(self):
         listener = Listener()
         verts = [(-1, -1), (-1, +1), (+1, +1), (+1, -1)]
-        from model.shapes import block as block_module
+        from model.shards import block as block_module
         orig = block_module.assert_valid_poly
         block_module.assert_valid_poly = listener
         try:
@@ -98,7 +98,7 @@ class Block_test(MyTestCase):
         self.assertEquals(shapeVerts, expected, "bad shape verts")
         self.assertEquals(block.shape.friction, 0.5, "bad shape friction")
         self.assertEquals(block.shape.elasticity, 0.5, "bad shape elasticity")
-        spaceShape = space.shapes.pop()
+        spaceShape = [s for s in space.shapes][0]
         self.assertEquals(block.shape, spaceShape, "didn't add shape to space")
 
 

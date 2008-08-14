@@ -5,13 +5,13 @@ from pymunk import Body
 class RigidBody(object):
     """
     Represents an in-game rigid body, that has a position, orientation, and a
-    collection of shapes, which provide geometry and mass.
+    collection of shards, which provide geometry and mass.
     """
 
-    def __init__(self, *shapes):
+    def __init__(self, *shards):
         self.body = None
-        self.shapes = []
-        self.set_shapes(*shapes)
+        self.shards = []
+        self.set_shards(*shards)
 
 
     position = property(lambda self: self.body and self.body.position)
@@ -19,18 +19,18 @@ class RigidBody(object):
 
 
     def get_mass(self):
-        "Calculate this rigidbody's mass, the sum of its shape's masses"
+        "Calculate this rigidbody's mass, the sum of its shard's masses"
         mass = 0.0
-        for shape in self.shapes:
-            mass += shape.mass
+        for shard in self.shards:
+            mass += shard.mass
         return mass
 
 
     def get_moment(self):
-        "Calculate this rigidbody's moment, the sum of its shape's moments"
+        "Calculate this rigidbody's moment, the sum of its shard's moments"
         moment = 0.0
-        for shape in self.shapes:
-            moment += shape.get_moment()
+        for shard in self.shards:
+            moment += shard.get_moment()
         return moment
 
 
@@ -38,30 +38,31 @@ class RigidBody(object):
         "return center of gravity as (x, y)"
         x, y = 0, 0
         mass = self.get_mass()
-        for shape in self.shapes:
-            offset = shape.get_offset()
-            x += offset[0] * shape.mass
-            y += offset[1] * shape.mass
-        if len(self.shapes) > 0:
+        for shard in self.shards:
+            offset = shard.get_offset()
+            x += offset[0] * shard.mass
+            y += offset[1] * shard.mass
+        if len(self.shards) > 0:
             x /= mass
             y /= mass
         return (x, y)
 
 
-    def _offset_shapes(self, offset):
-        "Move all shapes by the given offset."
-        for shape in self.shapes:
-            shape.offset(offset)
+    def _offset_shards(self, offset):
+        "Move all shards by the given offset."
+        for shard in self.shards:
+            shard.offset(offset)
 
 
-    def set_shapes(self, *shapes):
+    def set_shards(self, *shards):
         """
-        Add shapes to this RigidBody's collection, recalculating the
-        resulting center of gravity and updating each shapes offset.
+        Set this RigidBody's collection of shards, updating the offset of
+        each shard so that they are centered around the collective
+        center of gravity.
         """
-        self.shapes = shapes
+        self.shards = shards
         cog = self._center_of_gravity()
-        self._offset_shapes((-cog[0], -cog[1]))
+        self._offset_shards((-cog[0], -cog[1]))
 
 
     def add_to_space(self, space, position, angle):
@@ -73,6 +74,6 @@ class RigidBody(object):
         self.body.position = position
         self.body.angle = angle
         space.add(self.body)
-        for shape in self.shapes:
-            shape.add_to_body(space, self.body)
+        for shard in self.shards:
+            shard.add_to_body(space, self.body)
 
