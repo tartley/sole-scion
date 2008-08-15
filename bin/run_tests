@@ -1,2 +1,2 @@
 #!/bin/bash
-python -O solescion/run_tests.py
+python -O solescion/run_tests.py $@
