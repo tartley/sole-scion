@@ -3,8 +3,8 @@ to HISTORY.txt
 
 for v0.3, Avatar
 
-  * Give the player control over one of the entities: To move around, jump, and 
-    drag adjacent entities about.
+  * Give the player control over one of the chunks: To move around, jump, and 
+    drag adjacent chunks about.
 
 for v0.4, Maze
 

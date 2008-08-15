@@ -9,6 +9,10 @@ clean:
 		-name '*.pyo' \
 		\) -exec rm {} \;
 
+zip:
+	bin/make_zip
+
+
 install:
 	@echo 'There is no installer. To run: "python -O solescion/run.py"'
 	@echo '(or "bin/run" on Linux)'
