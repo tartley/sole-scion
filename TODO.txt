@@ -2,15 +2,6 @@ See bottom of file for tasks that are 'done'
 
 for v0.2 : Engine
 
-  * Rename shapes (Discs, Blocks) which are not pymunk.Shape as 'chunks'
-    This would eliminate odd references to rigidbody.shapes[0].shape,
-    instead becoming 'rigidbody.chunks[0].shape'
-  * Shapes have a material, which determines their color, density, elasticity,
-    friction.
-  * Define a few materials: Stone. Wood. Lead. Air.
-  * World.material=Stone. Renderer draws walls in world.material color.
-  * Room.material=Air. Renderer draws rooms in room.material color. Rooms no
-    longer need a color.
   * integrate new version of pyglet: 1.1
 
 for v0.3 : Avatar
@@ -34,11 +25,11 @@ for v0.5 : Performance
 for v0.6 : Quest
 
   * Other objects in the maze.
-      * Rocks: High density, high friction, low elasticity.
-      * Eggs: Low density, low friction, high elasticity.
-      * Eggs are tough, but can be broken.
-    * Game completion - return all eggs to the nest to win.
-        Display stats. Restart.
+  * Rocks: High density, high friction, low elasticity.
+  * Eggs: Low density, low friction, high elasticity.
+  * Eggs are tough, but can be broken.
+  * Game completion - return all eggs to the nest to win.
+    Display stats. Restart.
 
 for v0.7 : Death
 
@@ -54,7 +45,7 @@ for v0.8 : Achievements
     * Achievements
         * Longest free-fall
         * Hardest impact
-        * Most bretheren rescued
+        * Most brethren rescued
         * Fastest game completion
         * Least bretheren lost at completion
 
@@ -92,4 +83,13 @@ for v0.2 : Engine
     RigidBodies : pymunk.Poly() did not heed its 'offset' param. To work
     around, Blocks no longer maintain an offset, but update their verts
     directly, and create Polys with a zero offset.
-
+  * Rename shapes (Discs, Blocks) as 'shards' to differ with pymunk.Shape
+    This would eliminate odd references to rigidbody.shapes[0].shape,
+    Renamed 'RigidBody' to 'chunk' while I was at it.
+  * Define a few materials: Granite, Gold, Bamboo, Ice, Rubber, Air.
+  * Shapes have a material, which determines their color, density, elasticity,
+    friction.
+  * World.material=Granite. Renderer draws walls in world.material color.
+    World no longer needs a color.
+  * Room.material=Air. Renderer draws rooms in room.material color.
+    Room no longer needs a color.

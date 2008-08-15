@@ -38,7 +38,7 @@ You must install these manually.
 
 There is no install. To run::
 
-    python -O sole-scion.py
+    python -O run.py
 
 Note that the -O flag can increase framerate by double or more on Linux. It disables some Pyglet error checking.
 
