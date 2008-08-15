@@ -1,0 +1,57 @@
+See bottom of file for tasks that are 'done' but which have not yet been moved
+to HISTORY.txt
+
+for v0.3, Avatar
+
+  * Give the player control over one of the entities: To move around, jump, and 
+    drag adjacent entities about.
+
+for v0.4, Maze
+
+  * Handle multiple connected room polygons.
+  * Autogenerate a set of rooms to form a maze of sorts.
+
+for v0.5, Performance
+
+  * Render faster, using Vertex Object Buffers instead of glVertex() calls.
+  * Render only rooms (and their contents) that are on-screen.
+  * Render object decorations.
+  * Tune pymunk parameters
+  * Another other easy win performance tweaks
+
+for v0.6, Quest
+
+  * Other objects in the maze.
+  * Rocks: High density, high friction, low elasticity.
+  * Eggs: Low density, low friction, high elasticity.
+  * Eggs are tough, but can be broken.
+  * Game completion - return all eggs to the nest to win.
+    Display stats. Restart.
+
+for v0.7, Death
+
+    * Death - get squished to restart from a collected egg
+    * Abandon - [esc] will give up, restarting from a collected egg.
+        After a while, abandoned avatar is replaced by a skeleton.
+    * Game over - no eggs left.
+        Display stats, restart.
+
+for v0.8, Achievements
+
+    * Persist highscores
+    * Achievements
+        * Longest free-fall
+        * Hardest impact
+        * Most brethren rescued
+        * Fastest game completion
+        * Least bretheren lost at completion
+
+for v0.9, Install
+
+  * Windows binary distributable.
+  * Acceptance tests on Windows hopefully using VMWare to run from Linux.
+
+
+== DONE ==
+
+
