@@ -1,11 +1,6 @@
 See bottom of file for tasks that are 'done' but which have not yet been moved
 to HISTORY.txt
 
-for v0.2, Engine
-
-  * label the project with a version number somehow
-  * try out using a convensional pyglet gameloop again
-
 for v0.3, Avatar
 
   * Give the player control over one of the entities: To move around, jump, and 
@@ -59,37 +54,4 @@ for v0.9, Install
 
 == DONE ==
 
-v0.2, "Engine"
-
-  * Now thoroughly unit tested, and has a basic acceptance test.
-  * Reasonable internal architecture defined.
-  * Replace inclined-plane with a single polygonal room, within which circles
-    bounce around.
-  * Handle moving polygon entities ('blocks') as well as discs.
-  * Pymunk only eats clockwise wound vertices. Barf on counterclockwise.
-  * Move the existing 'is_convex()' utility function from Block to 
-    utils.geometry, broaden it to a generic 'assert_valid_poly(),
-    and use it to verify Rooms verts
-  * sort out the interface to creating Entities and Shapes
-    - see Entity_test.test_new_interface()
-  * Entities should automatically figure their centre of mass and offset
-    vertex co-ordinates from that.
-  * Entities with compound shapes (ie collection of discs and blocks)
-  * Rename Entity as RigidBody
-  * Figure out the bug that is borking collision detection for compound
-    RigidBodies : pymunk.Poly() did not heed its 'offset' param. To work
-    around, Blocks no longer maintain an offset, but update their verts
-    directly, and create Polys with a zero offset. UPDATE: Confirmed, this
-    is a bug in Pymunk get_points(), to be fixed in a future release.
-  * Rename shapes (Discs, Blocks) as 'shards' to differ with pymunk.Shape
-    This would eliminate odd references to rigidbody.shapes[0].shape,
-    Renamed 'RigidBody' to 'chunk' while I was at it.
-  * Define a few materials: Granite, Gold, Bamboo, Ice, Rubber, Air.
-  * Shapes have a material, which determines their color, density, elasticity,
-    friction.
-  * World.material=Granite. Renderer draws walls in world.material color.
-    World no longer needs a color.
-  * Room.material=Air. Renderer draws rooms in room.material color.
-    Room no longer needs a color.
-  * run with new version of pyglet: 1.1 : no changes reqd
 
