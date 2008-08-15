@@ -1,14 +1,11 @@
-v0.2, 6 Aug 08, week 8 of 12
-  * Is now unit tested, and has a basic acceptance test.
-  * Internal architecture now defined (previous spike was one big script)
-  * A handful of circular entities now bounce around inside a single
-    polygonal room.
 
 v0.1, 17 Jun 08, week 2 of 12.
-  * A very rudimentary integration of our major dependencies.
-  * Chipmunk controls the physics, Pyglet does rendering and gameloop.
-  * Circles rain down the screen, striking an inclined plane.
+  * Circles rain down on an inclined plane, bouncing off it and each other.
+  * A very rudimentary integration of our major dependencies:
+    - Chipmunk controls the physics
+    - Pyglet does OpenGL rendering and gameloop
   * Only tested on Linux. Reported to work on Windows. Reported to run under
     PyPy too, if you install functools. Anyone tried it on a Mac?
   * Accepts no user input, therefore isn't a game yet.
+  * A spike. Not tested. No design, all one big script.
 
