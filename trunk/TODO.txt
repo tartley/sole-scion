@@ -1,20 +1,22 @@
-See bottom of file for tasks that are 'done'
+See bottom of file for tasks that are 'done' but which have not yet been moved
+to HISTORY.txt
 
-for v0.2 : Engine
+for v0.2, Engine
 
-  * integrate new version of pyglet: 1.1
+  * label the project with a version number somehow
+  * try out using a convensional pyglet gameloop again
 
-for v0.3 : Avatar
+for v0.3, Avatar
 
   * Give the player control over one of the entities: To move around, jump, and 
     drag adjacent entities about.
 
-for v0.4 : Maze
+for v0.4, Maze
 
   * Handle multiple connected room polygons.
   * Autogenerate a set of rooms to form a maze of sorts.
 
-for v0.5 : Performance
+for v0.5, Performance
 
   * Render faster, using Vertex Object Buffers instead of glVertex() calls.
   * Render only rooms (and their contents) that are on-screen.
@@ -22,7 +24,7 @@ for v0.5 : Performance
   * Tune pymunk parameters
   * Another other easy win performance tweaks
 
-for v0.6 : Quest
+for v0.6, Quest
 
   * Other objects in the maze.
   * Rocks: High density, high friction, low elasticity.
@@ -31,7 +33,7 @@ for v0.6 : Quest
   * Game completion - return all eggs to the nest to win.
     Display stats. Restart.
 
-for v0.7 : Death
+for v0.7, Death
 
     * Death - get squished to restart from a collected egg
     * Abandon - [esc] will give up, restarting from a collected egg.
@@ -39,7 +41,7 @@ for v0.7 : Death
     * Game over - no eggs left.
         Display stats, restart.
 
-for v0.8 : Achievements
+for v0.8, Achievements
 
     * Persist highscores
     * Achievements
@@ -49,7 +51,7 @@ for v0.8 : Achievements
         * Fastest game completion
         * Least bretheren lost at completion
 
-for v0.9 : Install
+for v0.9, Install
 
   * Windows binary distributable.
   * Acceptance tests on Windows hopefully using VMWare to run from Linux.
@@ -57,17 +59,12 @@ for v0.9 : Install
 
 == DONE ==
 
-for v0.1 : Spike
+v0.2, "Engine"
 
-  * Circles rain down on an inclined plane, bouncing off it and each other.
-  * A big spike demonstrating the integration of our major dependancies,
-    pymunk for rigid-body dynamics, pyglet for openGL graphics.
-
-for v0.2 : Engine
-
-  * Reimpliment in a test-driven manner
+  * Now thoroughly unit tested, and has a basic acceptance test.
+  * Reasonable internal architecture defined.
   * Replace inclined-plane with a single polygonal room, within which circles
-    are free to move.
+    bounce around.
   * Handle moving polygon entities ('blocks') as well as discs.
   * Pymunk only eats clockwise wound vertices. Barf on counterclockwise.
   * Move the existing 'is_convex()' utility function from Block to 
@@ -82,7 +79,8 @@ for v0.2 : Engine
   * Figure out the bug that is borking collision detection for compound
     RigidBodies : pymunk.Poly() did not heed its 'offset' param. To work
     around, Blocks no longer maintain an offset, but update their verts
-    directly, and create Polys with a zero offset.
+    directly, and create Polys with a zero offset. UPDATE: Confirmed, this
+    is a bug in Pymunk get_points(), to be fixed in a future release.
   * Rename shapes (Discs, Blocks) as 'shards' to differ with pymunk.Shape
     This would eliminate odd references to rigidbody.shapes[0].shape,
     Renamed 'RigidBody' to 'chunk' while I was at it.
@@ -93,3 +91,5 @@ for v0.2 : Engine
     World no longer needs a color.
   * Room.material=Air. Renderer draws rooms in room.material color.
     Room no longer needs a color.
+  * run with new version of pyglet: 1.1 : no changes reqd
+
