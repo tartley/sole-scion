@@ -1,6 +1,42 @@
-This file is old content from the 'TODO.txt', shunted into here at each release.
+This file contains content shunted over from 'TODO.txt' at each release.
 
-v0.1, 17 Jun 08, week 2 of 12.
+v0.2, "Engine", 15 Aug 2008, week 10 of 12
+  * Now thoroughly unit tested, and has a basic acceptance test.
+  * Reasonable internal architecture defined.
+  * Replace inclined-plane with a single polygonal room, within which circles
+    bounce around.
+  * Handle moving polygon entities ('blocks') as well as discs.
+  * Pymunk only eats clockwise wound vertices. Barf on counterclockwise.
+  * Move the existing 'is_convex()' utility function from Block to 
+    utils.geometry, broaden it to a generic 'assert_valid_poly(),
+    and use it to verify Rooms verts
+  * sort out the interface to creating Entities and Shapes
+    - see Entity_test.test_new_interface()
+  * Entities should automatically figure their centre of mass and offset
+    vertex co-ordinates from that.
+  * Entities with compound shapes (ie collection of discs and blocks)
+  * Rename Entity as RigidBody
+  * Figure out the bug that is borking collision detection for compound
+    RigidBodies : pymunk.Poly() did not heed its 'offset' param. To work
+    around, Blocks no longer maintain an offset, but update their verts
+    directly, and create Polys with a zero offset. UPDATE: Confirmed, this
+    is a bug in Pymunk get_points(), to be fixed in a future release.
+  * Rename shapes (Discs, Blocks) as 'shards' to differ with pymunk.Shape
+    This would eliminate odd references to rigidbody.shapes[0].shape,
+    Renamed 'RigidBody' to 'chunk' while I was at it.
+  * Define a few materials: Granite, Gold, Bamboo, Ice, Rubber, Air.
+  * Shapes have a material, which determines their color, density, elasticity,
+    friction.
+  * World.material=Granite. Renderer draws walls in world.material color.
+    World no longer needs a color.
+  * Room.material=Air. Renderer draws rooms in room.material color.
+    Room no longer needs a color.
+  * run with new version of pyglet: 1.1 : no changes reqd
+  * label the project with a version number : Called it v0.1.9
+  * try out using a convensional pyglet gameloop again : It still doubles the
+  framerate from 30fps to 60fps when i move the mouse around.
+
+v0.1, "Spike", 17 Jun 08, week 2 of 12.
   * Circles rain down on an inclined plane, bouncing off it and each other.
   * A very rudimentary integration of our major dependencies:
     - Chipmunk controls the physics

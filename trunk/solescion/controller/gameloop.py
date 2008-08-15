@@ -21,7 +21,7 @@ class Gameloop(object):
             fullscreen=True, vsync=True, caption=caption, visible=False)
         self.camera = Camera()
         self.camera.scale = 8
-        self.camera.x, self.camera.y = (0, 5)
+        self.camera.x, self.camera.y = (0, 6.5)
         self.renderer = Renderer(self.camera)
 
 
