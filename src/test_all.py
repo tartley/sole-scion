@@ -10,6 +10,7 @@ from controller.tests.gameloop_test import Gameloop_test
 from model.tests.chunk_test import Chunk_test
 from model.tests.room_test import Room_test
 from model.tests.world_test import World_test
+from model.tests.material_test import Material_test
 from model.shards.tests.disc_test import Disc_test
 from model.shards.tests.block_test import Block_test
 from testutils.tests.testimage_test import TestImage_test
@@ -31,6 +32,7 @@ def run_all_tests():
         Chunk_test,
         Room_test,
         World_test,
+        Material_test,
         Disc_test,
         Block_test,
         TestImage_test,
