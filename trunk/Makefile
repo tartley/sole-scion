@@ -1,13 +1,16 @@
 
-tags: clean
-	ctags -R .
+tags:
+	ctags -R -f solescion/tags solescion
 
 clean:
-	-find . -name '*.pyo' -exec rm {} \;
-	-find . -name '*.pyc' -exec rm {} \;
-	-rm tags
+	-find solescion \
+		-name '*.pyo' -o \
+		-name '*.pyc' -o \
+		-name 'tags' \
+		-exec rm {} \;
 
 install:
-	@echo 'There is no installer. Run with "python -O sole_scion.py"'
+	@echo 'There is no installer. To run: "python -O solescion/run.py"'
+	@echo '(or "bin/run" on Linux)'
 
 .PHONY: tags, clean, install
