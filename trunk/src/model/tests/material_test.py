@@ -4,15 +4,14 @@ import fixpath
 
 from testutils.testcase import MyTestCase, run_test
 
-from model.material import Materials
-
+from model import material
 
 class Material_test(MyTestCase):
 
     def test_materials(self):
         mats = set()
-        for name, mat in Materials.__dict__.iteritems():
-            if name.startswith('__'):
+        for name, mat in material.__dict__.iteritems():
+            if name.startswith('__') or name=='Material':
                 continue
             mats.add(mat)
             self.assertTrue(mat.density > 0, "bad density: %s" % (name,))

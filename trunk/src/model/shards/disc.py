@@ -1,7 +1,6 @@
 "Module for class 'Disc'"
 
 from math import pi
-from random import randint
 
 from pymunk import Circle, moment_for_circle
 
@@ -11,14 +10,14 @@ class Disc(object):
     Represents a circular shape with an offset from it's body's COG.
     """
 
-    def __init__(self, radius, offset=None):
+    def __init__(self, material, radius, offset=None):
         if offset == None:
             offset = (0, 0)
+        self.material = material
         self.radius = radius
         self.center = offset
-        self.mass = pi * self.radius * self.radius
+        self.mass = material.density * pi * self.radius * self.radius
         self.shape = None
-        self.color = (randint(0, 255), randint(0, 255), randint(0, 255))
 
 
     def get_offset(self):

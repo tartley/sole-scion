@@ -9,6 +9,7 @@ import fixpath
 from testutils.testcase import MyTestCase, run_test
 
 from model.shards.disc import Disc
+from model.material import gold
 
 
 class Disc_test(MyTestCase):
@@ -16,41 +17,42 @@ class Disc_test(MyTestCase):
     def test_constructor(self):
         radius = 5
         offset = (1, 2)
-        disc = Disc(radius, offset)
+        disc = Disc(gold, radius, offset)
 
+        self.assertEquals(disc.material, gold, "didnt store color")
         self.assertEquals(disc.radius, 5, "didnt store radius")
         self.assertEquals(disc.center, (1, 2), "didnt store offset")
-        self.assertEquals(disc.mass, pi * 25, "mass wrong")
+        self.assertAlmostEquals(disc.mass, gold.density * pi * 25,
+            msg="mass wrong")
         self.assertNone(disc.shape, "shape wrong")
-        self.assertValidColor(disc.color)
 
 
     def test_constructor_offset_defaults_to_zero(self):
-        disc = Disc(5)
+        disc = Disc(gold, 5)
         self.assertEquals(disc.center, (0, 0), "bad center")
 
 
     def test_get_moment(self):
         radius = 5
         offset = (1, 2)
-        disc = Disc(radius, offset)
+        disc = Disc(gold, radius, offset)
         expected = moment_for_circle(disc.mass, 0, radius, offset)
         self.assertEquals(disc.get_moment(), expected, "bad moment")
 
 
     def test_get_offset(self):
-        disc = Disc(10, (111, 222))
+        disc = Disc(gold, 10, (111, 222))
         self.assertEquals(disc.get_offset(), (111, 222), "bad offset")
 
 
     def test_offset(self):
-        disc = Disc(10, (11, 22))
+        disc = Disc(gold, 10, (11, 22))
         disc.offset((100, 200))
         self.assertEquals(disc.get_offset(), (111, 222), "didnt apply offset")
 
 
     def test_add_to_body(self):
-        disc = Disc(5, (1, 2))
+        disc = Disc(gold, 5, (1, 2))
         body = Body(0, 0)
         space = Space()
         space.add(body)

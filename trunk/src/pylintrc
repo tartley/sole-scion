@@ -16,6 +16,9 @@ attr-rgx=[a-z][a-zA-Z0-9]{2,30}$
 # Regular expression which should only match correct argument names
 argument-rgx=[a-z][a-zA-Z0-9]{2,30}$
 
+# module level names
+const-rgx=(([a-zA-Z_][a-zA-Z1-9_]*)|(__.*__))$
+
 # Regular expression which should only match correct variable names
 variable-rgx=[a-z][a-zA-Z0-9]{2,30}$
 
