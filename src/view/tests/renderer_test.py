@@ -36,8 +36,8 @@ class Renderer_test(MyTestCase):
 
         roomColor = (255,0,0)
         verts = [(-1, 0), (2,3), (4, 0)]
-        room1 = Room(roomColor, verts)
-        room2 = Room(roomColor, verts)
+        room1 = Room(verts)
+        room2 = Room(verts)
 
         body1 = Chunk()
         body2 = Chunk()
@@ -58,7 +58,7 @@ class Renderer_test(MyTestCase):
         renderer.draw(world, aspect)
 
         expected = [
-            ("clear", world.backColor),
+            ("clear", world.material.color),
             ("world_proj", aspect),
             ("draw_room", room2),
             ("draw_room", room1),

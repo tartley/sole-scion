@@ -22,7 +22,7 @@ class Renderer(object):
 
     def draw(self, world, aspect):
         "Draw the entire contents of the window"
-        self.clear(world.backColor)
+        self.clear(world.material.color)
         self.camera.world_projection(aspect)
         for room in world.rooms:
             self.draw_room(room)
@@ -42,7 +42,7 @@ class Renderer(object):
 
     def draw_room(self, room):
         "Draw the given room"
-        glColor3ub(*room.color)
+        glColor3ub(*room.material.color)
         glBegin(GL_TRIANGLE_FAN)
         for vert in room.verts:
             glVertex2f(*vert)
