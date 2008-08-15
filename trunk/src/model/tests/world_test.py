@@ -8,7 +8,7 @@ from testutils.listener import Listener
 from testutils.testcase import MyTestCase, run_test
 
 from model.chunk import Chunk
-from model.material import gold
+from model.material import granite, gold
 from model.room import Room
 from model.world import World
 from model.shards.disc import Disc
@@ -33,8 +33,7 @@ class World_test(MyTestCase):
             "should set gravity")
         self.assertEquals(type(world.staticBody), Body, "should create a body")
         self.assertEquals(world.rooms, set(), "should create empty room set")
-        self.assertEquals(world.backColor, (150, 100, 50),
-            "should set backcolor")
+        self.assertEquals(world.material, granite, "bad material")
 
 
     def test_populate(self):
@@ -46,8 +45,6 @@ class World_test(MyTestCase):
         self.assertEquals(world.add_room.triggerCount, 1, "should add 1 room")
         room = world.add_room.args[0]
         self.assertEquals(len(room.verts), 5, "room should be a pentagon")
-        self.assertEquals(room.color, (0, 50, 100),
-            "room should be brown")
 
 
     def test_add_room(self):
@@ -55,7 +52,7 @@ class World_test(MyTestCase):
         color = (50, 100, 200)
         v1, v2, v3 = (0, 0), (0, 100), (100, 0)
         verts = [v1, v2, v3]
-        room = Room(color, verts)
+        room = Room(verts)
         room.add_to_body = Listener()
 
         world.add_room(room)

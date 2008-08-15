@@ -1,7 +1,9 @@
 "Module for class 'Room'"
 
-from utils.geometry import assert_valid_poly
 from pymunk import Segment
+
+from model.material import air
+from utils.geometry import assert_valid_poly
 
 
 class Room(object):
@@ -10,10 +12,10 @@ class Room(object):
     within which Entities (such as the player) may move.
     """
 
-    def __init__(self, color, verts):
+    def __init__(self, verts):
         assert_valid_poly(verts)
         self.verts = verts
-        self.color = color
+        self.material = air
 
 
     def add_to_body(self, space, body):

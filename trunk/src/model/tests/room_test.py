@@ -9,6 +9,7 @@ from testutils.listener import Listener
 from testutils.testcase import MyTestCase, run_test
 
 from model.room import Room
+from model.material import air
 
 
 class Room_test(MyTestCase):
@@ -16,8 +17,8 @@ class Room_test(MyTestCase):
     def test_constructor(self):
         color = (0.1, 0.2, 0.3)
         verts = [(-1, -2), (-5, 6), (3, 4)]
-        room = Room(color, verts)
-        self.assertEquals(room.color, color, "should store color")
+        room = Room(verts)
+        self.assertEquals(room.material, air, "bad material")
         self.assertEquals(room.verts, verts, "should store verts")
 
 
@@ -29,7 +30,7 @@ class Room_test(MyTestCase):
         orig = room_module.assert_valid_poly
         room_module.assert_valid_poly = listener
         try:
-            room = Room(color, verts)
+            room = Room(verts)
         finally:
             room_module.assert_valid_poly = orig
         self.assertEquals(listener.args, (verts,), "didnt validate verts")
@@ -39,7 +40,7 @@ class Room_test(MyTestCase):
         color = (100, 150, 200)
         v1, v2, v3 = (0,1), (1,2), (2,0)
         verts = [v1, v2, v3]
-        room = Room(color, verts)
+        room = Room(verts)
         space = Space()
         body = Body(inf, inf)
 

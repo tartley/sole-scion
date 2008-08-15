@@ -23,12 +23,11 @@ class World(object):
         self.rooms = set()
         self.rigidBodies = set()
 
-        self.backColor = (150, 100, 50)
+        self.material = granite
 
 
     def populate(self):
         "Create some demo set of Rooms and Entities"
-        color = (0, 50, 100)
         verts = [
             (-12, 9),
             (+12, 14),
@@ -36,7 +35,7 @@ class World(object):
             (0, -1),
             (-10, 0),
         ]
-        room = Room(color, verts)
+        room = Room(verts)
         self.add_room(room)
 
         disc1 = Disc(bamboo, 2, (0, 0))
