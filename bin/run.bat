@@ -1,0 +1,1 @@
+python.exe -O solescion\run.py
