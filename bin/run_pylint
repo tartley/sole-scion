@@ -1,18 +1,22 @@
 #!/bin/bash
 
+cd solescion
+
 FILES=`find . -name '*.py' \
     ! -name '*_test.py' \
     ! -name 'AT*.py' \
     ! -name '__init__.py' \
     ! -name 'fixpath.py' \
-    ! -name 'test_all.py' \
+    ! -name 'run_tests.py' \
+    ! -name 'run.py' \
 `
 
 if [ -z "$FILES" ]
 then
     exit 1
 fi
-# echo $FILES
 
-pylint --rcfile=pylintrc $@ $FILES
+echo $FILES
+
+pylint --rcfile=../pylintrc $@ $FILES
 
