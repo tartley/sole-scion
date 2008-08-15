@@ -15,7 +15,6 @@ from pyglet.gl import (
 
 
 class Camera(object):
-    """Sole class of the camera module"""
 
     def __init__(self):
         self.x = 0.0
@@ -25,9 +24,9 @@ class Camera(object):
 
 
     def world_projection(self, aspect):
-        """Sets opengl projection and modelview matrices such that the window is
-        centered on (x,y), shows at least scale world units in every direction,
-        and oriented by rot."""
+        """Sets OpenGL projection and modelview matrices such that the window
+        is centered on self.(x,y), shows at least scale world units in every
+        direction, and is oriented by rot."""
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()
         gluOrtho2D(

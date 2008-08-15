@@ -1,5 +1,3 @@
-"Provides class 'MyTestCase', 'combine()' and 'run_test()'"
-
 from ctypes import Array
 from unittest import (
     TestCase as RealTestCase, TestLoader, TestSuite, TextTestRunner
@@ -7,7 +5,6 @@ from unittest import (
 
 
 def _is_int_indexable(item):
-    "Return true if item is indexable with integers"
     return (
         type(item) is not dict and
         hasattr(item, "__len__") and
@@ -16,7 +13,6 @@ def _is_int_indexable(item):
 
 
 def _tostr(item):
-    "Convert item to str, special casing types with rubbish defaults"
     if isinstance(item, Array):
         return "Array(%s)" % ", ".join(str(x) for x in item)
     else:
@@ -24,7 +20,6 @@ def _tostr(item):
 
 
 def _compare_lengths(actual, expected, message):
-    "Fail with a useful message if lengths differ"
     if len(actual) != len(expected):
         actualStr = _tostr(actual)
         expectedStr = _tostr(expected)
@@ -39,7 +34,6 @@ def _compare_lengths(actual, expected, message):
 
 
 def _compare_indexables(actual, expected, message):
-    "Fail with a useful message if content of indexable items differs"
     _compare_lengths(actual, expected, message)
     for index in range(len(actual)):
         if actual[index] != expected[index]:
@@ -57,10 +51,6 @@ def _compare_indexables(actual, expected, message):
 
 
 def _compare_types(actual, expected, message):
-    """
-    Fail if types differ, except in a few special cases where different
-    types are considered to be the same (eg Vec2d and tuple of 2)
-    """
     if type(actual) == type(expected):
         return
 
@@ -75,14 +65,12 @@ def _compare_types(actual, expected, message):
 
 
 class MyTestCase(RealTestCase):
-    "A TestCase with augmented assertions"
     # pylint: disable-msg=C0103
     #   Invalid method names: This class uses unittest.TestCase conventions
     # pylint: disable-msg=R0904
-    #   Too many public methods
+    #   Too many public methods: we are a subclass of unittest.TestCase
 
     def assertNone(self, item, message=None):
-        "Fail if item is not None"
         if not item is None:
             if message is None:
                 message = ""
@@ -90,7 +78,6 @@ class MyTestCase(RealTestCase):
 
 
     def assertNotNone(self, item, message=None):
-        "Fail if item is None"
         if item is None:
             if message is None:
                 message = ""
@@ -98,7 +85,6 @@ class MyTestCase(RealTestCase):
 
 
     def assertEquals(self, actual, expected, message=None):
-        "Fail with useful message if actual is not equal expected"
         if message is None:
             message = ""
 
@@ -113,7 +99,6 @@ class MyTestCase(RealTestCase):
 
 
     def assertValidColor(self, color, message=None):
-        "Fails if color is not a triplet of ints from 0 to 255"
         if message is None:
             message = ""
         if len(color) != 3:
@@ -125,10 +110,8 @@ class MyTestCase(RealTestCase):
 
 
     def _assertRaises_test_args(self, func, excClass):
-        "Raise TypeError on bad args to assertRaises"
 
         def is_exception(obj):
-            "return true if obj is an Exception class"
             return isinstance(obj, type) and issubclass(obj, Exception)
 
         msg = ""
@@ -148,7 +131,6 @@ class MyTestCase(RealTestCase):
 
     def assertRaises( \
         self, func, expectedException, expectedMessage=None):
-        "Fail if func doesn't raise expectedException"
 
         self._assertRaises_test_args(func, expectedException)
 
@@ -174,7 +156,7 @@ class MyTestCase(RealTestCase):
 
 
 def combine(*args):
-    "combine given list of TestCase classes and suite objects into a new suite"
+    "combine given TestCase classes and suite objects into a new suite"
     loader = TestLoader()
     suites = []
     for arg in args:
@@ -189,9 +171,7 @@ def combine(*args):
 
 
 def run_test(suite, verbosity=1):
-    "Use a TextTestRunner to run the given test suite"
     if isinstance(suite, type) and issubclass(suite, RealTestCase):
         suite = TestLoader().loadTestsFromTestCase(suite)
     TextTestRunner(verbosity=verbosity).run(suite)
-
 
