@@ -56,7 +56,7 @@ class Renderer(object):
         glRotatef(chunk.angle * 180 / pi, 0, 0, 1)
 
         for shard in chunk.shards:
-            glColor3ub(*shard.color)
+            glColor3ub(*shard.material.color)
             if type(shard) == Disc:
                 self.draw_disc(shard)
             elif type(shard) == Block:

@@ -1,7 +1,5 @@
 "Module for class 'Block'"
 
-from random import randint
-
 from pymunk import moment_for_poly, Poly
 
 from utils.geometry import (
@@ -11,18 +9,20 @@ from utils.geometry import (
 
 class Block(object):
     """
-    A convex polygonal shape, vert coords relative to it's body's COG.
+    A convex polygonal chunk, vert coords relative to it's body's COG.
     """
-    def __init__(self, verts, offset=None, center=False):
+    def __init__(
+        self, material, verts, offset=None, center=False):
+
         assert_valid_poly(verts)
         self.verts = verts
         if center:
             self._centralize_verts()
         if offset is not None:
             self.verts = offset_verts(self.verts, offset)
-        self.mass = poly_area(verts)
+        self.material = material
+        self.mass = material.density * poly_area(verts)
         self.shape = None
-        self.color = (randint(0, 255), randint(0, 255), randint(0, 255))
 
 
     def _centralize_verts(self):

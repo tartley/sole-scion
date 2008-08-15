@@ -8,6 +8,7 @@ from testutils.listener import Listener
 from testutils.testcase import MyTestCase, run_test
 
 from model.chunk import Chunk
+from model.material import gold
 from model.room import Room
 from model.world import World
 from model.shards.disc import Disc
@@ -67,7 +68,7 @@ class World_test(MyTestCase):
 
     def test_add_chunk(self):
         world = World()
-        chunk = Chunk(Disc(1))
+        chunk = Chunk(Disc(gold, 1))
         chunk.add_to_space = Listener()
 
         world.add_chunk(chunk, (1, 2), 0.5)
@@ -82,7 +83,7 @@ class World_test(MyTestCase):
 
     def test_add_chunk_default_angle(self):
         world = World()
-        rigidBody = Chunk(Disc(1))
+        rigidBody = Chunk(Disc(gold, 1))
 
         world.add_chunk(rigidBody, (10, 20))
 
