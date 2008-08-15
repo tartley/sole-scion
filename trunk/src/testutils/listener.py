@@ -1,5 +1,3 @@
-"module for the Listener class"
-
 class Listener(object):
     """
     A Listener is a callable object, which records how many times it gets
@@ -14,7 +12,6 @@ class Listener(object):
         self.reset()
 
     def reset(self):
-        "reset this instance as though it had just been created"
         self.argsList = []
         self.kwargsList = []
 
@@ -22,14 +19,12 @@ class Listener(object):
     triggerCount = property(lambda self: len(self.argsList))
 
     def _get_args(self):
-        "return args of the most recent call to this instance"
         if self.triggered:
             return self.argsList[-1]
 
     args = property(_get_args)
 
     def _get_kwargs(self):
-        "return kwargs of the most recent call to this instance"
         if self.triggered:
             return self.kwargsList[-1]
 

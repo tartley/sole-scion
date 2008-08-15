@@ -1,4 +1,3 @@
-"Module for class 'AcceptanceTest'"
 from __future__ import division
 
 from testutils.testcase import MyTestCase
@@ -29,17 +28,12 @@ class AcceptanceTest(MyTestCase):
 
 
     def set_conditions(self, conditions):
-        "Set the list of conditions to be evaluated during this test"
         self.conditions = conditions
         self.next_condition()
         clock.schedule(lambda dt: self.try_condition(dt))
 
 
     def next_condition(self):
-        """
-        Obtain the next current condition to be evaluated.
-        If there are no conditions left, the test has passed.
-        """
         if self.verbose:
             print "next_condition:",
         if len(self.conditions) > 0:
@@ -52,11 +46,6 @@ class AcceptanceTest(MyTestCase):
 
 
     def try_condition(self, deltaT):
-        """
-        Test the current condition. If it passes, get the next one.
-        If it fails and the timeout has been exceeded, fail.
-        """
-
         if self.verbose:
             print "try_condition"
         if self.condition():
@@ -70,15 +59,10 @@ class AcceptanceTest(MyTestCase):
 
 
     def get_windows(self):
-        "Utility to return all open Pyglet windows"
         return [w for w in app.windows]
 
 
     def get_window(self):
-        """
-        Utility to return a single open Pyglet window.
-        Fails if more than one window is open.
-        """
         windows = self.get_windows()
         if len(windows) == 1:
             return windows[0]
@@ -93,7 +77,6 @@ class AcceptanceTest(MyTestCase):
 
 
     def terminate(self):
-        "End the program under test by closing its Pyglet window."
         if self.verbose:
             print "terminate"
         win = self.get_window()

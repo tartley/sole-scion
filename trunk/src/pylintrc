@@ -29,9 +29,10 @@ good-names=i,j,x,y,_
 [MESSAGES CONTROL]
 
 # Disable the messages with the given ids:
-disable-msg=W0142, R0903, R0201, I0011
+disable-msg=W0142, R0903, R0201, I0011, C0111
 # W0142: Used * or ** magic
 # R0903: too few public methods
 # R0201: method could be a function
 # I0011: locally disabling <msgid>
+# C0111: missing docstring
 

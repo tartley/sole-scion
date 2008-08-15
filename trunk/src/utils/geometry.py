@@ -1,13 +1,9 @@
-"Module of geometry utility functions"
-
 from __future__ import division
 
 from pymunk.util import is_clockwise, is_convex
 
 
 def assert_valid_poly(verts):
-    "Raise TypeError if 'verts' not a valid convex clockwise poly"
-
     if len(verts) < 3:
         raise TypeError('need 3 or more verts: %s' % (verts,))
     if not is_convex(verts):
@@ -21,7 +17,6 @@ def assert_valid_poly(verts):
 
 
 def offset_verts(verts, offset):
-    "Return a new sequence of verts, each vert moved by 'offset'"
     return type(verts)(
         (verts[i][0] + offset[0], verts[i][1] + offset[1])
         for i in range(len(verts))
@@ -41,7 +36,6 @@ def poly_area(verts):
 
 
 def poly_centroid(verts):
-    "Return centroid of poly defined by verts"
     x, y = 0, 0
     for i in range(len(verts)):
         j = (i + 1) % len(verts)

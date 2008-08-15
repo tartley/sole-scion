@@ -1,11 +1,9 @@
-"Module for class 'Chunk'"
-
 from pymunk import Body
 
 class Chunk(object):
     """
     Represents an in-game rigid body, that has a position, orientation, and a
-    collection of shards, which provide geometry and mass.
+    collection of shards (Blocks and Discs), which provide geometry and mass.
     """
 
     def __init__(self, *shards):
@@ -19,7 +17,6 @@ class Chunk(object):
 
 
     def get_mass(self):
-        "Calculate this chunk's mass, the sum of its shard's masses"
         mass = 0.0
         for shard in self.shards:
             mass += shard.mass
@@ -27,7 +24,6 @@ class Chunk(object):
 
 
     def get_moment(self):
-        "Calculate this chunk's moment, the sum of its shard's moments"
         moment = 0.0
         for shard in self.shards:
             moment += shard.get_moment()
@@ -35,7 +31,6 @@ class Chunk(object):
 
 
     def _center_of_gravity(self):
-        "return center of gravity as (x, y)"
         x, y = 0, 0
         mass = self.get_mass()
         for shard in self.shards:
@@ -49,27 +44,17 @@ class Chunk(object):
 
 
     def _offset_shards(self, offset):
-        "Move all shards by the given offset."
         for shard in self.shards:
             shard.offset(offset)
 
 
     def set_shards(self, *shards):
-        """
-        Set this Chunk's collection of shards, updating the offset of
-        each shard so that they are centered around the collective
-        center of gravity.
-        """
         self.shards = shards
         cog = self._center_of_gravity()
         self._offset_shards((-cog[0], -cog[1]))
 
 
     def add_to_space(self, space, position, angle):
-        """
-        Add this Chunk to the given Chipmunk Space, as a single Body
-        and one or more Shapes attached to it.
-        """
         self.body = Body(self.get_mass(), self.get_moment())
         self.body.position = position
         self.body.angle = angle

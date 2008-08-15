@@ -1,7 +1,5 @@
-"Module for class 'Materials'"
-
 class Material(object):
-    "Define physical properties"
+
     def __init__(self, density, elast, frict, color):
         self.density = density
         self.elasticity = elast
