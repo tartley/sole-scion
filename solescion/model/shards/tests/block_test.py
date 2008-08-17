@@ -98,10 +98,13 @@ class Block_test(MyTestCase):
         shapeVerts = block.shape.get_points()
         expected = [Vec2d(v) for v in offset_verts(verts, offset)]
         self.assertEquals(shapeVerts, expected, "bad shape verts")
-        self.assertEquals(block.shape.friction, 0.5, "bad shape friction")
-        self.assertEquals(block.shape.elasticity, 0.5, "bad shape elasticity")
+        self.assertAlmostEquals(block.shape.friction, gold.friction,
+            msg="bad shape friction")
+        self.assertAlmostEquals(block.shape.elasticity, gold.elasticity,
+            msg="bad shape elasticity")
         spaceShape = [s for s in space.shapes][0]
-        self.assertEquals(block.shape, spaceShape, "didn't add shape to space")
+        self.assertEquals(block.shape, spaceShape,
+            "didn't add shape to space")
 
 
 if __name__ == "__main__":

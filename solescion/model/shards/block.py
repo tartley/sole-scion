@@ -43,7 +43,7 @@ class Block(object):
     def add_to_body(self, space, body):
         self.shape = Poly(
             body, self.verts, (0, 0))
-        self.shape.friction = 0.5
-        self.shape.elasticity = 0.5
+        self.shape.friction = self.material.friction
+        self.shape.elasticity = self.material.elasticity
         space.add(self.shape)
 

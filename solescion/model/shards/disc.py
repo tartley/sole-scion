@@ -34,7 +34,7 @@ class Disc(object):
 
     def add_to_body(self, space, body):
         self.shape = Circle(body, self.radius, self.center)
-        self.shape.friction = 0.5
-        self.shape.elasticity = 0.5
+        self.shape.friction = self.material.friction
+        self.shape.elasticity = self.material.elasticity
         space.add(self.shape)
 

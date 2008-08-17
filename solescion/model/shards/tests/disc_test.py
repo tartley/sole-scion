@@ -63,8 +63,10 @@ class Disc_test(MyTestCase):
         self.assertEquals(disc.shape.body, body, "didnt add shape to body")
         self.assertEquals(disc.shape.radius, 5.0, "bad radius")
         self.assertEquals(disc.shape.center, Vec2d(1.0, 2.0), "bad center")
-        self.assertEquals(disc.shape.friction, 0.5, "bad friction")
-        self.assertEquals(disc.shape.elasticity, 0.5, "bad elasticity")
+        self.assertAlmostEquals(disc.shape.friction, gold.friction,
+            msg="bad friction")
+        self.assertAlmostEquals(disc.shape.elasticity, gold.elasticity,
+            msg="bad elasticity")
         self.assertEquals(space.shapes, [disc.shape],
             "didn't add shape to space")
 
