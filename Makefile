@@ -1,6 +1,6 @@
 
 tags:
-	ctags -R -f solescion/tags solescion
+	(cd solescion; ctags -R .; )
 
 clean:
 	-find solescion \( \
@@ -17,4 +17,6 @@ install:
 	@echo 'There is no installer. To run: "python -O solescion/run.py"'
 	@echo '(or "bin/run" on Linux)'
 
-.PHONY: tags, clean, install
+
+.PHONY: clean, install, tags, zip
+
