@@ -48,9 +48,12 @@ class Renderer_test(MyTestCase):
         world.chunks = set([chunk1, chunk2])
 
         listener = Listener()
-        renderer.clear = lambda *args: listener("clear", *args)
-        camera.world_projection = lambda *args: listener("world_proj", *args)
-        renderer.draw_room = lambda *args: listener("draw_room", *args)
+        renderer.clear = \
+            lambda *args: listener("clear", *args)
+        camera.world_projection = \
+            lambda *args: listener("world_proj", *args)
+        renderer.draw_room = \
+            lambda *args: listener("draw_room", *args)
         renderer.draw_chunk = \
             lambda *args: listener("draw_chunk", *args)
 
@@ -65,11 +68,14 @@ class Renderer_test(MyTestCase):
             ("draw_chunk", chunk2),
             ("draw_chunk", chunk1),
         ]
-        self.assertEquals(listener.argsList, expected, "draw didnt call subfns")
+        self.assertEquals(listener.argsList, expected,
+            "draw didnt call subfns")
 
 
     def test_clear_fills_back_buffer_with_color(self):
-        self.window = Window(width=20, height=10, visible=False)
+        self.window = Window(
+            width=20, height=10, visible=False,
+            caption="renderer.test_clear_fills_back_buffer_with_color")
         self.window.dispatch_events()
         color = (100, 150, 200)
         renderer = Renderer(None)

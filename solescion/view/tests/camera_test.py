@@ -28,7 +28,7 @@ class Camera_test(MyTestCase):
         glClearColor(0, 0, 0, 1)
         self.window.clear()
         self.world = World()
-        self.camera = Camera()
+        self.camera = Camera((0, 0), 1)
 
 
     def tearDown(self):
@@ -36,10 +36,19 @@ class Camera_test(MyTestCase):
 
 
     def test_constructor(self):
-        self.assertEquals(self.camera.x, 0.0, "should init x")
-        self.assertEquals(self.camera.y, 0.0, "should init y")
-        self.assertEquals(self.camera.scale, 1.0, "should init scale")
-        self.assertEquals(self.camera.rot, 0.0, "should init rot")
+        camera = Camera((1, 2), 3, 4)
+        self.assertEquals(camera.x, 1, "should init x")
+        self.assertEquals(camera.y, 2, "should init y")
+        self.assertEquals(camera.scale, 3, "should init scale")
+        self.assertEquals(camera.angle, 4, "should init angle")
+
+
+    def test_constructor_defaults_angle(self):
+        camera = Camera((10, 20), 30)
+        self.assertEquals(camera.x, 10, "should init x")
+        self.assertEquals(camera.y, 20, "should init y")
+        self.assertEquals(camera.scale, 30, "should init scale")
+        self.assertEquals(camera.angle, 0.0, "should init angle")
 
 
     def _draw_rect(self, backColor, polyColor, left, bottom, right, top):
@@ -117,15 +126,15 @@ class Camera_test(MyTestCase):
         self.assert_world_projection(rect, expectedRect)
 
 
-    def test_world_projection_rot(self):
-        self.camera.rot = pi/2
+    def test_world_projection_angle(self):
+        self.camera.angle = pi/2
         rect = (-0.2, -0.4, +0.6, +0.8)
         expectedRect = (60, 20, 119, 59)
         self.assert_world_projection(rect, expectedRect)
 
 
     def test_world_projection_complicated(self):
-        self.camera.rot = -pi/2
+        self.camera.angle = -pi/2
         self.camera.scale = 10
         self.camera.x, self.camera.y = (5, 6)
         rect = (-1, -2, +3, +4)

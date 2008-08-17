@@ -23,7 +23,7 @@ class Gameloop(object):
         clock.set_fps_limit(FPS_LIMIT)
         self.world = World()
         self.world.populate()
-        self.camera = Camera()
+        self.camera = Camera((0, 6.5), 8)
         self.renderer = Renderer(self.camera)
         self.window = Window(
             caption=caption, fullscreen=True, visible=False)
