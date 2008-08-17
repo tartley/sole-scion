@@ -39,13 +39,13 @@ class Renderer_test(MyTestCase):
         room1 = Room(verts)
         room2 = Room(verts)
 
-        body1 = Chunk()
-        body2 = Chunk()
+        chunk1 = Chunk()
+        chunk2 = Chunk()
 
         world = World()
         world.backColor = (111, 22, 3)
         world.rooms = set([room1, room2])
-        world.rigidBodies = set([body1, body2])
+        world.chunks = set([chunk1, chunk2])
 
         listener = Listener()
         renderer.clear = lambda *args: listener("clear", *args)
@@ -62,8 +62,8 @@ class Renderer_test(MyTestCase):
             ("world_proj", aspect),
             ("draw_room", room2),
             ("draw_room", room1),
-            ("draw_chunk", body2),
-            ("draw_chunk", body1),
+            ("draw_chunk", chunk2),
+            ("draw_chunk", chunk1),
         ]
         self.assertEquals(listener.argsList, expected, "draw didnt call subfns")
 
