@@ -1,10 +1,17 @@
 See bottom of file for tasks that are 'done' but which have not yet been moved
-to HISTORY.txt
+to HISTORY.txt (*=planned task, +=unexpected task)
 
 for v0.3, Avatar
 
-  * Give the player control over one of the chunks: To move around, jump, and 
-    drag adjacent chunks about.
+  + Keypresses:
+    + quit (required to do explicitly now we no longer use default key handler)
+    + pause
+    + screenshot
+  * Give the player control over one of the chunks:
+    * to move left, right
+    * to jump
+    * to grab adjacent chunks and drag them about
+    * to hang on to walls and ceilings?
 
 for v0.4, Maze
 
@@ -13,11 +20,12 @@ for v0.4, Maze
 
 for v0.5, Performance
 
+  * measure performance
   * Render faster, using Vertex Object Buffers instead of glVertex() calls.
   * Render only rooms (and their contents) that are on-screen.
   * Render object decorations.
   * Tune pymunk parameters
-  * Another other easy win performance tweaks
+  * Any other easy win performance tweaks
 
 for v0.6, Quest
 
@@ -28,15 +36,20 @@ for v0.6, Quest
   * Game completion - return all eggs to the nest to win.
     Display stats. Restart.
 
-for v0.7, Death
+for v0.7, Sound
+
+    + sound effects
+    + music
+
+for v0.8, Death
 
     * Death - get squished to restart from a collected egg
     * Abandon - [esc] will give up, restarting from a collected egg.
         After a while, abandoned avatar is replaced by a skeleton.
     * Game over - no eggs left.
-        Display stats, restart.
+        Display stats, regen world, restart .
 
-for v0.8, Achievements
+for v0.9, Achievements
 
     * Persist highscores
     * Achievements
@@ -46,7 +59,7 @@ for v0.8, Achievements
         * Fastest game completion
         * Least bretheren lost at completion
 
-for v0.9, Install
+for v1.0, Install
 
   * Windows binary distributable.
   * Acceptance tests on Windows hopefully using VMWare to run from Linux.

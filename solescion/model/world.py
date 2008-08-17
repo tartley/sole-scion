@@ -44,7 +44,6 @@ class World(object):
         disc = Disc(rubber, 0.5)
         body = Chunk(disc)
         self.add_chunk(body, (4, 12))
-        disc.shape.elasticity
 
         verts = [(-1, 2), (3, 2), (2, 0), (0, 0)]
         block = Block(ice, verts)
