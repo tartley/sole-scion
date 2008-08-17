@@ -2,17 +2,16 @@
 
 from sys import argv, exit
 
-from application import name, version
-desc = "%s version %s" % (name, version)
+from application import title
 
 if '-v' in argv or '--version' in argv:
-    print desc
+    print title
     exit(0)
 
 from controller.gameloop import Gameloop
 
 def main():
-    Gameloop(desc).run()
+    Gameloop(title).run()
 
 if __name__ == "__main__":
     main()

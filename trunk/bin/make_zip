@@ -1,7 +1,7 @@
 #!/bin/bash
 
 NAME=SoleScion
-VERSION=`bin/run --version | cut -d' ' -f3`
+VERSION=`bin/run --version | cut -d' ' -f2`
 RELEASE=$NAME-$VERSION
 echo $RELEASE
 
