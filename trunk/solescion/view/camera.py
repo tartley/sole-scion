@@ -16,17 +16,18 @@ from pyglet.gl import (
 
 class Camera(object):
 
-    def __init__(self):
-        self.x = 0.0
-        self.y = 0.0
-        self.scale = 1.0
-        self.rot = 0.0
+    def __init__(self, offset, scale, angle=None):
+        if angle is None:
+            angle = 0.0
+        self.x, self.y = offset
+        self.scale = scale
+        self.angle = angle
 
 
     def world_projection(self, aspect):
         """Sets OpenGL projection and modelview matrices such that the window
         is centered on self.(x,y), shows at least scale world units in every
-        direction, and is oriented by rot."""
+        direction, and is oriented by angle."""
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()
         gluOrtho2D(
@@ -40,5 +41,5 @@ class Camera(object):
         gluLookAt(
             self.x, self.y, +1.0,
             self.x, self.y, -1.0,
-            sin(self.rot), cos(self.rot), 0.0)
+            sin(self.angle), cos(self.angle), 0.0)
 
