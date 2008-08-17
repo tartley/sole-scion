@@ -50,11 +50,11 @@ class Chunk_test(MyTestCase):
         self.assertNone(chunk.angle, "bad initial angle")
 
         space = Space()
+
         chunk.add_to_space(space, (11, 22), 0.456)
         self.assertEquals(chunk.position, Vec2d(11, 22), "bad position")
         self.assertAlmostEquals(chunk.angle, 0.456, places=7,
             msg="bad angle")
-        space = None
 
 
     def test_center_of_gravity(self):
@@ -175,12 +175,11 @@ class Chunk_test(MyTestCase):
         verts2 = [(0, 0), (0, 12), (24, 12), (24, 0)]
         block2 = Block(gold, verts2)
         chunk = Chunk(block1, block2)
-
         space = Space()
+
         chunk.add_to_space((100, 200), 0)
 
-        self.assertEquals(chunk.shards, (block1, block2,),
-            "shards not added")
+        self.assertEquals(chunk.shards, (block1, block2,), "shards not added")
 
         poly1 = chunk.shards[0].shard.get_points()
         expected = [

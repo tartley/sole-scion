@@ -37,17 +37,16 @@ class World(object):
         self.add_room(room)
 
         disc1 = Disc(bamboo, 2, (0, 0))
-        disc2 = Disc(bamboo, 1, (0, +2))
+        disc2 = Disc(bamboo, 1, (0, -2))
         body = Chunk(disc1, disc2)
         self.add_chunk(body, (-4, 8), 0)
-        disc1.shape.elasticity = 1.0
 
         disc = Disc(rubber, 0.5)
         body = Chunk(disc)
-        self.add_chunk(body, (8, 12))
-        disc.shape.elasticity = 2.0
+        self.add_chunk(body, (4, 12))
+        disc.shape.elasticity
 
-        verts = [(-1, 3), (3, 2), (2, 0), (0, 0)]
+        verts = [(-1, 2), (3, 2), (2, 0), (0, 0)]
         block = Block(ice, verts)
         body = Chunk(block)
         self.add_chunk(body, (8, 5.5), 0.55)
@@ -62,7 +61,7 @@ class World(object):
         verts2 = [(0, 0), (0, 1), (3, 1), (3, 0)]
         block2 = Block(gold, verts2)
         body = Chunk(block1, block2)
-        self.add_chunk(body, (+8.0, 8.5), 0.1)
+        self.add_chunk(body, (+6.0, 9.0), 0.4)
 
 
     def add_room(self, room):

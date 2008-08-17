@@ -17,23 +17,28 @@ from model.shards.disc import Disc
 class World_test(MyTestCase):
 
     def test_constructor(self):
+        world = World()
+        self.assertEquals(type(world.space), Space,
+            "should create a Space")
+        self.assertEquals(world.space.gravity, Vec2d(0, -10),
+            "should set gravity")
+        self.assertEquals(type(world.staticBody), Body,
+            "should create a body")
+        self.assertEquals(world.rooms, set(),
+            "should create empty room set")
+        self.assertEquals(world.material, granite, "bad material")
+
+
+    def test_constructor_initialises_pymunk(self):
         from model import world as world_module
         orig = world_module.init_pymunk
         world_module.init_pymunk = Listener()
         try:
             world = World()
-
             self.assertTrue(world_module.init_pymunk.triggered,
                 "should init_pymunk")
         finally:
             world_module.init_pymunk = orig
-
-        self.assertEquals(type(world.space), Space, "should create a Space")
-        self.assertEquals(world.space.gravity, Vec2d(0, -10),
-            "should set gravity")
-        self.assertEquals(type(world.staticBody), Body, "should create a body")
-        self.assertEquals(world.rooms, set(), "should create empty room set")
-        self.assertEquals(world.material, granite, "bad material")
 
 
     def test_populate(self):
@@ -70,8 +75,7 @@ class World_test(MyTestCase):
 
         world.add_chunk(chunk, (1, 2), 0.5)
 
-        self.assertEquals(world.chunks, set([chunk]),
-            "chunk not added")
+        self.assertEquals(world.chunks, set([chunk]), "chunk not added")
         self.assertEquals(
             chunk.add_to_space.args,
             (world.space, (1, 2), 0.5),
