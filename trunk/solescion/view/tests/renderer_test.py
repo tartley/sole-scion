@@ -31,7 +31,7 @@ class Renderer_test(MyTestCase):
 
 
     def test_draw_calls_subroutines_in_right_order(self):
-        camera = Camera()
+        camera = Camera((0, 1), 2)
         renderer = Renderer(camera)
 
         roomColor = (255,0,0)
