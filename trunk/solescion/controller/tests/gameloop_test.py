@@ -80,6 +80,7 @@ class Gameloop_test_without(MyTestCase):
         self.gameloop = Gameloop()
 
     def tearDown(self):
+        self.gameloop.world = None
         if self.gameloop.window:
             self.gameloop.window.close()
 
