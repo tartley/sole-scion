@@ -26,8 +26,8 @@ class Renderer(object):
         self.camera.world_projection(aspect)
         for room in world.rooms:
             self.draw_room(room)
-        for body in world.rigidBodies:
-            self.draw_chunk(body)
+        for chunk in world.chunks:
+            self.draw_chunk(chunk)
 
 
     def clear(self, color):

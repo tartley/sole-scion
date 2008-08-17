@@ -19,7 +19,7 @@ class World(object):
         self.staticBody = Body(inf, inf)
 
         self.rooms = set()
-        self.rigidBodies = set()
+        self.chunks = set()
 
         self.material = granite
 
@@ -72,7 +72,7 @@ class World(object):
 
     def add_chunk(self, chunk, position, angle=0):
         chunk.add_to_space(self.space, position, angle)
-        self.rigidBodies.add(chunk)
+        self.chunks.add(chunk)
 
 
     def tick(self, deltaT):

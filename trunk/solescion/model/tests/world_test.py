@@ -70,7 +70,7 @@ class World_test(MyTestCase):
 
         world.add_chunk(chunk, (1, 2), 0.5)
 
-        self.assertEquals(world.rigidBodies, set([chunk]),
+        self.assertEquals(world.chunks, set([chunk]),
             "chunk not added")
         self.assertEquals(
             chunk.add_to_space.args,
@@ -80,9 +80,9 @@ class World_test(MyTestCase):
 
     def test_add_chunk_default_angle(self):
         world = World()
-        rigidBody = Chunk(Disc(gold, 1))
+        chunk = Chunk(Disc(gold, 1))
 
-        world.add_chunk(rigidBody, (10, 20))
+        world.add_chunk(chunk, (10, 20))
 
         body = [b for b in world.space.bodies][0]
         self.assertEquals(body.angle, 0.0, "bad default angle")
