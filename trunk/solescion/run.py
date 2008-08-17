@@ -11,7 +11,11 @@ if '-v' in argv or '--version' in argv:
 from controller.gameloop import Gameloop
 
 def main():
-    Gameloop(title).run()
+    gameloop = Gameloop()
+    gameloop.init(title)
+    gameloop.run()
+    gameloop.dispose()
+
 
 if __name__ == "__main__":
     main()

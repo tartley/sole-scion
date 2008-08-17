@@ -8,37 +8,43 @@ from view.camera import Camera
 from view.renderer import Renderer
 
 
+FPS_LIMIT = 60
+
 class Gameloop(object):
 
-    def __init__(self, caption):
-        self.fpsLimit = 30
-        clock.set_fps_limit(self.fpsLimit)
-        self.deltaT = None
-        self.ticks = []
+    def __init__(self):
+        self.window = None
+        self.camera = None
+        self.world = None
+        self.renderer = None
+
+
+    def init(self, caption):
+        clock.set_fps_limit(FPS_LIMIT)
         self.world = World()
         self.world.populate()
-        self.window = Window( \
-            fullscreen=True, vsync=True, caption=caption, visible=False)
         self.camera = Camera()
-        self.camera.scale = 8
-        self.camera.x, self.camera.y = (0, 6.5)
         self.renderer = Renderer(self.camera)
+        self.window = Window(
+            caption=caption, fullscreen=True, visible=False)
 
 
     def dispose(self):
-        self.window.close()
+        if self.window:
+            self.window.close()
 
 
     def run(self):
-        self.window.set_visible(True)
         try:
+            self.window.set_visible()
             while not self.window.has_exit:
-                self.deltaT = clock.tick()
-                self.ticks.append(self.deltaT)
                 self.window.dispatch_events()
-                self.world.tick(1/self.fpsLimit)
+                clock.tick()
+                if self.world:
+                    self.world.tick(1/FPS_LIMIT)
                 aspect = self.window.width / self.window.height
-                self.renderer.draw(self.world, aspect)
+                if self.renderer:
+                    self.renderer.draw(self.world, aspect)
                 self.window.flip()
         finally:
             self.dispose()
