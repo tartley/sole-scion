@@ -18,5 +18,5 @@ fi
 
 echo $FILES
 
-pylint --rcfile=../pylintrc $@ $FILES
+pylint --rcfile=../pylintrc -i y $@ $FILES
 
