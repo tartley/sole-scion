@@ -1,27 +1,4 @@
-from os import fdopen
-from tempfile import mkstemp
-
-from pyglet.image import get_buffer_manager
-
-from PIL import Image
-
-
-def _create_tempfile():
-    "Caller's responsibility to close and/or delete the file after use"
-    filedesc, fname = mkstemp(prefix='testimage-', suffix='.png')
-    tempfile = fdopen(filedesc, "w+b")
-    return tempfile, fname
-
-
-def image_from_window(window):
-    "Convert given Pyglet Window into a PIL Image"
-    tempfile, fname = _create_tempfile()
-    window.switch_to()
-    colorBuffer = get_buffer_manager().get_color_buffer()
-    colorBuffer.save(filename=fname, file=tempfile)
-    tempfile.seek(0)
-    image = Image.open(tempfile)
-    return image
+from utils.screenshot import _create_tempfile
 
 
 def save_to_tempfile(image):
@@ -97,13 +74,13 @@ def assert_rectangle_at(image, rect, rectCol, backCol):
 
     for y in range(bottom, top+1):
         assert_pixel(left, y, rectCol)
-        assert_pixel(right, y, rectCol)
         assert_pixel(left-1, y, backCol)
+        assert_pixel(right, y, rectCol)
         assert_pixel(right+1, y, backCol)
 
     for x in range(left, right+1):
         assert_pixel(x, bottom, rectCol)
-        assert_pixel(x, top, rectCol)
         assert_pixel(x, bottom-1, backCol)
+        assert_pixel(x, top, rectCol)
         assert_pixel(x, top+1, backCol)
 

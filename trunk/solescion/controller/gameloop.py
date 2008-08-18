@@ -5,6 +5,7 @@ from pyglet.window import key, Window
 
 from controller.keyboard import on_key_press, handlers
 from model.world import World
+from utils.screenshot import save_screenshot
 from view.camera import Camera
 from view.renderer import Renderer
 
@@ -23,6 +24,11 @@ class Gameloop(object):
         self.world = None
         self.renderer = None
         self.paused = False
+        handlers.update({
+            key.ESCAPE: self.quit_game,
+            key.PAUSE: self.toggle_pause,
+            key.F12: lambda: save_screenshot(self.window),
+        })
 
 
     def init(self, caption):
@@ -34,10 +40,6 @@ class Gameloop(object):
         self.window = Window(
             caption=caption, fullscreen=True, visible=False)
         self.window.on_key_press = on_key_press
-        handlers.update({
-            key.ESCAPE: self.quit_game,
-            key.PAUSE: self.toggle_pause,
-        })
 
 
     def dispose(self):
@@ -66,5 +68,4 @@ class Gameloop(object):
 
     def quit_game(self):
         self.window.has_exit = True
-
 
