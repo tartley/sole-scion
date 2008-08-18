@@ -21,10 +21,8 @@ chunks. Each chunk has a material, which determines its physical properties
 http://sole-scion.googlecode.com/svn/trunk/screenshots/SoleScion-screenshot-v0.2.png
 
 
-A spike of v0.2, circles rain down on a polygonal surface. Note the current
-HEAD features arbitrary polygon shapes as well as circles, but does not look as
-cutesy as this, since it's missing some superficial features like the gradient
-fills, and stars in the background.
+A spike of v0.2, circles rain down on a polygonal surface. The current
+HEAD does not look as cutesy as this, since it's missing some superficial features like gradient fills and stars in the background.
 
 http://sole-scion.googlecode.com/svn/trunk/screenshots/SoleScion-screenshot-v0.1.1.spike.png
 
