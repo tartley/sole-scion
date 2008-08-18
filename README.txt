@@ -12,14 +12,21 @@ programmers. If it doesn't work for you or you have problems, please let me know
 Works on Linux and on Windows. Also works under PyPy, with functools installed. Has anyone tried it on a Mac?
 
 
-==Screenshot==
+==Screenshots==
+
+Version 0.2. Arbitary polygons made up from collections of circles and convex
+chunks. Each chunk has a material, which determines its physical properties
+(density, friction, elasticity, color.)
+
+http://sole-scion.googlecode.com/svn/trunk/screenshots/SoleScion-screenshot-v0.2.png
+
 
 A spike of v0.2, circles rain down on a polygonal surface. Note the current
 HEAD features arbitrary polygon shapes as well as circles, but does not look as
 cutesy as this, since it's missing some superficial features like the gradient
 fills, and stars in the background.
 
-http://sole-scion.googlecode.com/svn/trunk/screenshots/Screenshot-Sole-Scion-spike2.png
+http://sole-scion.googlecode.com/svn/trunk/screenshots/SoleScion-screenshot-v0.1.1.spike.png
 
 
 ==Dependencies==
