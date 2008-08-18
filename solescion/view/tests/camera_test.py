@@ -1,4 +1,5 @@
 #!/usr/bin/python -O
+from __future__ import division
 from math import pi
 
 from pyglet.image import get_buffer_manager
@@ -10,20 +11,19 @@ from pyglet.gl import (
 
 import fixpath
 
-from testutils.testimage import (
-    assert_rectangle_at, image_from_window,
-)
+from testutils.testimage import assert_rectangle_at
 from testutils.testcase import MyTestCase, run_test
 
 from model.world import World
+from utils.screenshot import image_from_window
 from view.camera import Camera
 
 
 class Camera_test(MyTestCase):
 
     def setUp(self):
-        self.window = Window(visible=False, caption="Camera_test setup")
-        self.window.set_size(200, 100)
+        self.window = Window(
+            width=200, height=100, visible=False, caption="Camera_test setup")
         self.window.dispatch_events()
         glClearColor(0, 0, 0, 1)
         self.window.clear()
@@ -45,9 +45,6 @@ class Camera_test(MyTestCase):
 
     def test_constructor_defaults_angle(self):
         camera = Camera((10, 20), 30)
-        self.assertEquals(camera.x, 10, "should init x")
-        self.assertEquals(camera.y, 20, "should init y")
-        self.assertEquals(camera.scale, 30, "should init scale")
         self.assertEquals(camera.angle, 0.0, "should init angle")
 
 
@@ -73,42 +70,48 @@ class Camera_test(MyTestCase):
 
 
     def assert_world_projection(self, drawnRect, expectedRect):
-        self.camera.world_projection(2)
+        # Python Imaging Library Image object measures Y from top,
+        # so expectedRect has y-axis inverted
+        left, bottom, right, top = expectedRect
+        expectedRect = left, bottom, right, top
+        aspect = self.window.width / self.window.height
+        self.camera.world_projection(aspect)
 
         backColor = (0, 0, 255)
         polyColor = (255, 255, 0)
         self._draw_rect(backColor, polyColor, *drawnRect)
         image = image_from_window(self.window)
+        # expectedRect[1] = self.window.height - expectedRect[3] - 1
+        # expectedRect[2] = expectedRect[2] - 1
+        # expectedRect[3] = self.window.height - expectedRect[1]
         assert_rectangle_at(image, expectedRect, polyColor, backColor)
 
 
     def test_world_projection_default(self):
         rect = (-0.2, -0.4, +0.6, +0.8)
-        # note pyglet/OpenGL measures y from bottom, but PIL measures from top,
-        # so expectedRect has y-axis inverted
         expectedRect = (90, 10, 129, 69)
         self.assert_world_projection(rect, expectedRect)
 
 
     def test_defect_pyglet_get_color_buffer_for_resized_windows(self):
-        self.window.set_size(100, 200)
+        self.window.set_size(111, 222)
+        self.window.dispatch_events()
         mgr = get_buffer_manager()
-        self.window.switch_to()
         col_buf = mgr.get_color_buffer()
         col_buf_size = col_buf.width, col_buf.height
-        self.assertEquals(col_buf_size, (200, 100), \
-            "pyglet bug has been fixed. Enable the test below")
+        self.assertEquals(col_buf_size, (111, 222), "pyglet bug regression")
 
 
-    # disabled due to pyglet bug: get_color_buffer() for resized window
-    # returns a buffer of the old window size.
-    def DONTtest_world_projection_strange_aspect(self):
-        self.window.set_size(100, 200)
+    def test_world_projection_strange_aspect(self):
+        # create a new window, since
+        # resizing the existing window doesn't work for some reason
+        # even if we dispatch events. Default handlers?
+        self.window.close()
+        self.window = Window(width=100, height=200, visible=False,
+            caption="world.test_projection_strange_aspect")
         self.window.dispatch_events()
         rect = (-0.2, -0.4, +0.6, +0.8)
         expectedRect = (40, 60, 79, 119)
-        self.fail("get_color_buffer() for resized windows is broke"
-            "fixed in pyglet subversion. expect this test to star.")
         self.assert_world_projection(rect, expectedRect)
 
 

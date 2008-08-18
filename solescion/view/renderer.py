@@ -88,4 +88,3 @@ class Renderer(object):
                 y + disc.radius * cos(theta))
         glEnd()
 
-

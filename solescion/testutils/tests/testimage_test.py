@@ -7,12 +7,14 @@ from pyglet.window import Window
 
 import fixpath
 
-from testutils.testcase import combine, MyTestCase, run_test
+from testutils.testcase import MyTestCase, run_test
 
 from testutils.testimage import (
     assert_contains, assert_entirely,
-    assert_rectangle_at, image_from_window, save_to_tempfile
+    assert_rectangle_at, save_to_tempfile
 )
+
+from utils.screenshot import image_from_window
 
 
 def draw_rectangle(image, left, bottom, right, top, rectCol):
@@ -21,57 +23,7 @@ def draw_rectangle(image, left, bottom, right, top, rectCol):
             image.putpixel((x,y), rectCol)
 
 
-class TestImage_from_window_test(MyTestCase):
-
-    def setUp(self):
-        self.pixCols = {
-            (0, 0): ( 0,    0,  40),
-            (0, 1): ( 0,  200,  80),
-            (1, 0): (100,   0, 120),
-            (1, 1): (100, 200, 160),
-            (2, 0): (200,   0, 200),
-            (2, 1): (200, 200, 240),
-        }
-
-        self.window = Window(
-            width=30, height=20, visible=False, caption="TestImage_from_window")
-        self.window.on_resize(30, 20)
-        self.window.dispatch_events()
-        self.window.clear()
-
-        gl.glBegin(gl.GL_POINTS)
-        for loc, color in self.pixCols.iteritems():
-            gl.glColor3ub(*color)
-            gl.glVertex2f(*loc)
-        gl.glEnd()
-
-
-    def tearDown(self):
-        self.window.close()
-
-
-    def test_image_from_window(self):
-        image = image_from_window(self.window)
-
-        self.assertEquals(image.size, (self.window.width, self.window.height),
-            "image size wrong")
-
-        for (x, y), col in self.pixCols.iteritems():
-            rgb = image.getpixel((x, self.window.height - 1 - y))[:3]
-            self.assertEquals(rgb, col, "bad color at %d,%d" % (x, y))
-
-
-    def test_image_from_window_returned_img_raises_on_bad_getpixel(self):
-        image = image_from_window(self.window)
-
-        invalidGet = lambda: image.getpixel((self.window.width+1, 0))
-        self.assertRaises(invalidGet, IndexError)
-
-        invalidGet = lambda: image.getpixel((0, self.window.height+1))
-        self.assertRaises(invalidGet, IndexError)
-
-
-class TestImage_assert_test(MyTestCase):
+class TestImage_test(MyTestCase):
 
     def test_assert_entirely(self):
         backCol = (111, 22, 3)
@@ -237,11 +189,6 @@ class TestImage_assert_test(MyTestCase):
         draw_rectangle(image, 2, 2, 17, 7, rectCol)
         assert_rectangle_at(image, (2, 2, 17, 7), rectCol, backCol)
 
-
-TestImage_test = combine(
-    TestImage_from_window_test,
-    TestImage_assert_test,
-)
 
 if __name__ == "__main__":
     run_test(TestImage_test)

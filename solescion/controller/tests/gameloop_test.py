@@ -1,6 +1,8 @@
 #!/usr/bin/python -O
 from __future__ import division
 
+from PIL import Image
+
 from pyglet import clock
 from pyglet.window import key, Window
 
@@ -99,6 +101,23 @@ class Gameloop_test_without(MyTestCase):
         self.assertNone(self.gameloop.renderer, "bad renderer")
 
 
+    def test_constructor_registers_handlers(self):
+        expectedKeys = set([
+            key.ESCAPE,
+            key.PAUSE,
+            key.F12,
+        ])
+        self.assertEquals(set(handlers.keys()), expectedKeys, "bad keys")
+
+        expectedHandlers = [
+            self.gameloop.toggle_pause,
+            self.gameloop.quit_game,
+        ]
+        for handler in expectedHandlers:
+            self.assertTrue(handler in handlers.values(),
+                "%s not in handlers" % handler)
+
+
     def test_init_sets_fps_limit(self):
         self.gameloop.init("Gameloop.test_init_sets_fps_limit")
 
@@ -116,15 +135,6 @@ class Gameloop_test_without(MyTestCase):
             "bad window title")
         self.assertEquals(self.gameloop.window.on_key_press, on_key_press,
             "bad key handler")
-
-
-    def test_init_registers_handlers(self):
-        self.gameloop.init("Gameloop.test_init_registers_handlers")
-        expected = {
-            key.ESCAPE: self.gameloop.quit_game,
-            key.PAUSE: self.gameloop.toggle_pause,
-        }
-        self.assertEquals(handlers, expected, "bad handlers")
 
 
     def test_init_creates_world(self):

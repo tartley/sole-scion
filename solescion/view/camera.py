@@ -3,7 +3,6 @@ Camera tracks a position, orientation and zoom level, and applies openGL
 transforms so that subsequent renders are drawn at the correct place, size
 and orientation on screen
 """
-
 from __future__ import division
 from math import sin, cos
 
@@ -30,11 +29,18 @@ class Camera(object):
         direction, and is oriented by angle."""
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()
-        gluOrtho2D(
-            -self.scale * aspect,
-            +self.scale * aspect,
-            -self.scale,
-            +self.scale)
+        if aspect < 1:
+            gluOrtho2D(
+                -self.scale,
+                +self.scale,
+                -self.scale / aspect,
+                +self.scale / aspect)
+        else:
+            gluOrtho2D(
+                -self.scale * aspect,
+                +self.scale * aspect,
+                -self.scale,
+                +self.scale)
 
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
