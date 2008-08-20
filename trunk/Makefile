@@ -12,11 +12,8 @@ clean:
 zip:
 	bin/make_zip
 
-
 install:
-	@echo 'There is no installer. To run: "python -O solescion/run.py"'
-	@echo '(or "bin/run" on Linux)'
+	@echo 'There is no installer. To run, type "bin/run"'
 
-
-.PHONY: clean, install, tags, zip
+.PHONY: clean, install, zip
 
