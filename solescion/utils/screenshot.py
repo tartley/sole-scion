@@ -40,6 +40,7 @@ def image_from_window(window):
 def save_screenshot(window):
     filename = _get_filename("%s-screenshot-" % name, ".png")
     if filename:
-        image_from_window(window).save(filename)
+        image = image_from_window(window)
+        image.save(filename)
         print "Saved screenshot at %s" % (filename)
 

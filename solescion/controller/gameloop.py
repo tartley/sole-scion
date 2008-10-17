@@ -3,7 +3,7 @@ from __future__ import division
 from pyglet import clock
 from pyglet.window import key, Window
 
-from controller.keyboard import on_key_press, handlers
+from controller.keyboard import keystate, handlers, on_key_press
 from model.world import World
 from utils.screenshot import save_screenshot
 from view.camera import Camera
@@ -35,11 +35,12 @@ class Gameloop(object):
         clock.set_fps_limit(FPS_LIMIT)
         self.world = World()
         self.world.populate()
-        self.camera = Camera((0, 6.5), 8)
+        self.camera = Camera((0, 0), 50)
         self.renderer = Renderer(self.camera)
         self.window = Window(
             caption=caption, fullscreen=True, visible=False)
         self.window.on_key_press = on_key_press
+        self.window.push_handlers(keystate)
 
 
     def dispose(self):
@@ -55,6 +56,7 @@ class Gameloop(object):
                 clock.tick()
                 if self.world and not self.paused:
                     self.world.tick(1/FPS_LIMIT)
+                self.camera.x, self.camera.y = self.world.player.chunks[0].body.position
                 if self.renderer:
                     aspect = self.window.width / self.window.height
                     self.renderer.draw(self.world, aspect)
@@ -65,6 +67,7 @@ class Gameloop(object):
 
     def toggle_pause(self):
         self.paused = not self.paused
+
 
     def quit_game(self):
         self.window.has_exit = True

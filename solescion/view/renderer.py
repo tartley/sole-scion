@@ -52,11 +52,10 @@ class Renderer(object):
     def draw_chunk(self, chunk):
         "Draw the given chunk"
         glPushMatrix()
-        glTranslatef(chunk.position.x, chunk.position.y, 0)
-        glRotatef(chunk.angle * 180 / pi, 0, 0, 1)
+        glTranslatef(chunk.body.position.x, chunk.body.position.y, 0)
+        glRotatef(chunk.body.angle * 180 / pi, 0, 0, 1)
 
         for shard in chunk.shards:
-            glColor3ub(*shard.material.color)
             if type(shard) == Disc:
                 self.draw_disc(shard)
             elif type(shard) == Block:
@@ -70,18 +69,37 @@ class Renderer(object):
     def draw_block(self, block):
         "Draw the given polygonal chunk"
         glBegin(GL_TRIANGLE_FAN)
+        glColor3ub(
+            int(block.material.color[0] * 0.25),
+            int(block.material.color[1] * 0.25),
+            int(block.material.color[2] * 0.25),
+        )
+        glVertex2f(0, 0)
+        glColor3ub(*block.material.color)
         for idx in range(len(block.verts)):
             glVertex2f(*block.verts[idx])
+        glVertex2f(*block.verts[0])
         glEnd()
 
 
     def draw_disc(self, disc):
         "Draw the given circular chunk"
-        numTris = 39
+        numTris = 32
         x, y = disc.get_offset()
         glBegin(GL_TRIANGLE_FAN)
+        darker = (
+            int(disc.material.color[0] * 0.75),
+            int(disc.material.color[1] * 0.75),
+            int(disc.material.color[2] * 0.75),
+        )
+        glColor3ub(0, 0, 0)
         glVertex2f(x, y)
+        colFreq = 4
         for idx in range(numTris+1):
+            if idx % (colFreq*2) == 0:
+                glColor3ub(*disc.material.color)
+            elif (idx + colFreq) % colFreq == 0:
+                glColor3ub(*darker)
             theta = 2 * pi / numTris * idx
             glVertex2f(
                 x + disc.radius * sin(theta),

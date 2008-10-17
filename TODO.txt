@@ -3,6 +3,7 @@ to HISTORY.txt (*=planned task, +=unexpected task)
 
 for v0.3, Avatar
 
+  + copy 'make zip' target from 'stretching pyglets wings'
   + Keypresses:
     + quit (required to do explicitly now we no longer use default key handler)
     + pause
@@ -12,6 +13,11 @@ for v0.3, Avatar
     * to jump
     * to grab adjacent chunks and drag them about
     * to hang on to walls and ceilings?
+  + use michael foord's Mock instead of our own 'Listener' - for its additional
+    ability to conveniently patch out attributes of modules
+  + check out wossname's cheat sheet of python standard practices,
+    for example using __version__ attribute.
+    http://panela.blog-city.com/more_beginner_python_cheatsheets.htm
 
 for v0.4, Maze
 
@@ -38,8 +44,8 @@ for v0.6, Quest
 
 for v0.7, Sound
 
-    + sound effects
-    + music
+    * sound effects
+    * music
 
 for v0.8, Death
 
