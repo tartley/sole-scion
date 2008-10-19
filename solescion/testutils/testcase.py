@@ -1,7 +1,8 @@
 from ctypes import Array
 from unittest import (
-    TestCase as RealTestCase, TestLoader, TestSuite, TextTestRunner
+    TestCase as RealTestCase, TestLoader, TestSuite, TextTestRunner,
 )
+from testutils.ColoredStream import ColoredStream
 
 
 def _is_int_indexable(item):
@@ -170,8 +171,27 @@ def combine(*args):
     return TestSuite(suites)
 
 
-def run_test(suite, verbosity=1):
+def run_test(suite, verbosity=2):
+
+    from TerminalController import TerminalController
+    term = TerminalController()
+
+    highlights = [
+        ['^Ran \d+ tests in \d+\.\d+s$', term.CYAN + term.BOLD],
+        ['^OK$', term.GREEN + term.BOLD],
+        ['ok$', term.GREEN + term.BOLD],
+        ['^=+$', term.CYAN],
+        ['^-+$', term.CYAN],
+        [' \(.*\)$', term.CYAN],
+        ['^ \.\.\. $', term.CYAN],
+        ['^ERROR: ', term.RED + term.BOLD],
+        ['^FAIL: ', term.YELLOW+ term.BOLD],
+        ['FAIL$', term.YELLOW+ term.BOLD],
+        ['ERROR$', term.RED + term.BOLD],
+    ]
+    stream = ColoredStream(highlights)
+
     if isinstance(suite, type) and issubclass(suite, RealTestCase):
         suite = TestLoader().loadTestsFromTestCase(suite)
-    TextTestRunner(verbosity=verbosity).run(suite)
+    TextTestRunner(stream=stream, verbosity=verbosity).run(suite)
 
