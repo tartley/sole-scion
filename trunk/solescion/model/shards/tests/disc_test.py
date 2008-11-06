@@ -2,7 +2,9 @@
 
 from math import pi
 
-from pymunk import Body, Circle, moment_for_circle, Shape, Space, Vec2d
+from pymunk import (
+    Body, Circle, moment_for_circle, Shape, Space, Vec2d,
+)
 
 import fixpath
 
