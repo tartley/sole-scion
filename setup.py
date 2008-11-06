@@ -1,14 +1,15 @@
 import os
 from distutils.core import setup
 import py2exe
+
 import pymunk
 
-pymunk_dir = os.path.dirname(pymunk.__file__)
+chipmunk_dll = os.path.join(os.path.dirname(pymunk.__file__), 'chipmunk.dll')
 
 setup(
     windows=['run.py'],
     data_files=[
-        ('.', [os.path.join(pymunk_dir, 'chipmunk.dll')]),
+        ('.', [chipmunk_dll]),
     ],
     options={
         "py2exe":{
