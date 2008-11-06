@@ -1,7 +1,7 @@
 from pymunk import Segment
 
-from model.material import air
-from utils.geometry import assert_valid_poly
+from solescion.model.material import air
+from solescion.utils.geometry import assert_valid_poly
 
 
 class Room(object):

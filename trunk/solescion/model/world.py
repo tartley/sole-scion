@@ -4,14 +4,14 @@ from math import pi, sin, cos
 from pyglet.window import key
 from pymunk import Body, inf, init_pymunk, PivotJoint, Space
 
-from controller.keyboard import keystate
-from model.chunk import Chunk
-from model.material import (
+from solescion.controller.keyboard import keystate
+from solescion.model.chunk import Chunk
+from solescion.model.material import (
     Material, bamboo, flesh, gold, granite, ice, rubber, steel,
 )
-from model.room import Room
-from model.shards.block import Block
-from model.shards.disc import Disc
+from solescion.model.room import Room
+from solescion.model.shards.block import Block
+from solescion.model.shards.disc import Disc
 
 
 def generate_ship():
