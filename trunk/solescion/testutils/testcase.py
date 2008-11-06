@@ -2,7 +2,7 @@ from ctypes import Array
 from unittest import (
     TestCase as RealTestCase, TestLoader, TestSuite, TextTestRunner,
 )
-from testutils.ColoredStream import ColoredStream
+from solescion.testutils.ColoredStream import ColoredStream
 
 
 def _is_int_indexable(item):
