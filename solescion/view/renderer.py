@@ -9,8 +9,8 @@ from pyglet.gl import (
     GL_COLOR_BUFFER_BIT, GL_TRIANGLE_FAN,
 )
 
-from model.shards.block import Block
-from model.shards.disc import Disc
+from solescion.model.shards.block import Block
+from solescion.model.shards.disc import Disc
 
 
 class Renderer(object):

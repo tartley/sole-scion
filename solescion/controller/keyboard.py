@@ -9,10 +9,7 @@ keystate = KeyStateHandler()
 handlers = {
 }
 
-
 def on_key_press(symbol, modifiers):
     if symbol in handlers:
         handlers[symbol]()
-    else:
-        print "key:", symbol_string(symbol), modifiers_string(modifiers)
 

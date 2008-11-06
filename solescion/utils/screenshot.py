@@ -6,7 +6,7 @@ from PIL import Image
 
 from pyglet.image import get_buffer_manager
 
-from application import name
+from solescion.application import name
 
 
 def _get_filename(prefix, extension):

@@ -1,1 +1,1 @@
-python.exe -O solescion\run.py
+python2.5 -O run.py
