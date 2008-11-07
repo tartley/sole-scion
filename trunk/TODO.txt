@@ -3,6 +3,7 @@ to HISTORY.txt (*=planned task, +=unexpected task)
 
 for v0.3, Avatar
 
+  + make win-binary target to zip win binary
   + copy 'make zip' target from 'stretching pyglets wings'
   + Keypresses:
     + quit (required to do explicitly now we no longer use default key handler)
@@ -15,9 +16,11 @@ for v0.3, Avatar
     * to hang on to walls and ceilings?
   + use michael foord's Mock instead of our own 'Listener' - for its additional
     ability to conveniently patch out attributes of modules
+  + consider using svn externals rather than a copy of dependancies
   + check out wossname's cheat sheet of python standard practices,
     for example using __version__ attribute.
     http://panela.blog-city.com/more_beginner_python_cheatsheets.htm
+  + for fun: randomly generate in-room objects, rather than same old set
 
 for v0.4, Maze
 

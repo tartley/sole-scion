@@ -7,6 +7,9 @@ dist/run.exe: run.py setup.py
 tags:
 	(cd solescion; ctags -R .; )
 
+zip:
+	bin/make_zip
+
 clean:
 	rm -rf build dist
 	-find solescion \( \
@@ -14,12 +17,9 @@ clean:
 		-name '*.pyc' -o \
 		-name '*.pyo' \
 		\) -exec rm {} \;
-    
-zip:
-	bin/make_zip
 
 install:
-	@echo 'There is no installer. To run, type "bin/run"'
+	@echo 'There is no installer.'
 
-.PHONY: clean, install, zip
+.PHONY: clean, install, zip, exe, win-binary
 
