@@ -1,77 +1,110 @@
 See bottom of file for tasks that are 'done' but which have not yet been moved
 to HISTORY.txt (*=planned task, +=unexpected task)
 
-for v0.3, Avatar
+Technical Debt
 
-  + make win-binary target to zip win binary
-  + copy 'make zip' target from 'stretching pyglets wings'
-  + Keypresses:
-    + quit (required to do explicitly now we no longer use default key handler)
-    + pause
-    + screenshot
-  * Give the player control over one of the chunks:
-    * to move left, right
-    * to jump
-    * to grab adjacent chunks and drag them about
-    * to hang on to walls and ceilings?
-  + use michael foord's Mock instead of our own 'Listener' - for its additional
-    ability to conveniently patch out attributes of modules
-  + consider using svn externals rather than a copy of dependancies
-  + check out wossname's cheat sheet of python standard practices,
-    for example using __version__ attribute.
-    http://panela.blog-city.com/more_beginner_python_cheatsheets.htm
-  + for fun: randomly generate in-room objects, rather than same old set
+  + fix failing tests
+  + tidy up run* all over the place
+  * Windows binary distributable.
+  + source distribution using setuptools instead of zip
 
-for v0.4, Maze
+Maze
 
   * Handle multiple connected room polygons.
   * Autogenerate a set of rooms to form a maze of sorts.
+  + randomly generate in-room rocks
 
-for v0.5, Performance
+Interaction
 
-  * measure performance
-  * Render faster, using Vertex Object Buffers instead of glVertex() calls.
-  * Render only rooms (and their contents) that are on-screen.
-  * Render object decorations.
-  * Tune pymunk parameters
-  * Any other easy win performance tweaks
+  + Keypresses:
+    + quit
+    + pause
+    + screenshot
+    + toggle fullscreen
 
-for v0.6, Quest
+Infrastructure
 
-  * Other objects in the maze.
-  * Rocks: High density, high friction, low elasticity.
-  * Eggs: Low density, low friction, high elasticity.
-  * Eggs are tough, but can be broken.
-  * Game completion - return all eggs to the nest to win.
-    Display stats. Restart.
+  + use michael foord's Mock instead of our own 'Listener' - for its additional
+    ability to conveniently patch out attributes of modules
+  + check out wossname's cheat sheet of python standard practices,
+    for example using __version__ attribute.
+    http://panela.blog-city.com/more_beginner_python_cheatsheets.htm
 
-for v0.7, Sound
+Svg Loader
 
-    * sound effects
-    * music
+  * Load svg from Inkscape to define rigid bodies and their appearance
 
-for v0.8, Death
+Levels
 
-    * Death - get squished to restart from a collected egg
-    * Abandon - [esc] will give up, restarting from a collected egg.
-        After a while, abandoned avatar is replaced by a skeleton.
-    * Game over - no eggs left.
-        Display stats, regen world, restart .
+  * draw levels instead of randomidsing them?
+  * random levels earn resources to access drawn levels?
 
-for v0.9, Achievements
+Vehicle
+
+  * vehicle: 2 wheels plus chassis
+  * drives left, right
+  * opposite direction brakes to a standstill
+  * traction / rev control
+
+Sound
+
+  * sound effects
+  * music
+
+Rendering & performance
+
+  * Render using GL_TRIANGLES in pyglet batches
+  * Render only rooms, and their contents, that are on-screen.
+  * Read up on BSPs, scene graphs, spatial indexes.
+
+Harpoon
+
+  * add turret to vehicle
+  * rendered so you can see direction it points
+  * swivels with mouse or keys
+  * fired with mouse or key
+  * embeds on impact
+  * first pass: vanishes when key released
+  * cable rendering
+  * cable physics
+  * cable reeled with up/down (mouse or keys)
+  * releases & rewinds when key is released
+  * laser sights?
+
+Performance
+
+  * measure
+  * improve
+
+Rescuees
+
+  * guys (a single quad with bitmap animations?)
+  * Scatter maze with guys to rescue
+  * guys wander left / right on flat surfaces
+  * guys die in heavy collisions
+  * guys climb into vehicle
+
+Completion / Death / Structure
+
+  * ?
+
+Achievements
 
     * Persist highscores
     * Achievements
         * Longest free-fall
+        * Farthest jump (horizontal)
+        * Farthest fall (downwards)
+        * Fastest speed
         * Hardest impact
-        * Most brethren rescued
-        * Fastest game completion
-        * Least bretheren lost at completion
+        * Longest balance on one wheel
 
-for v1.0, Install
+Frills
 
-  * Windows binary distributable.
-  * Acceptance tests on Windows hopefully using VMWare to run from Linux.
+  * down key grabs the ground, useful for pulling things with the cable
+  * suspension
+  * brake lights
+  * damage
 
 
 == DONE ==
