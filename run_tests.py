@@ -1,9 +1,7 @@
 #!/usr/bin/python -O
 "Run all unit and acceptance tests"
 
-from unittest import TextTestRunner
-
-from solescion.testutils.testcase import combine
+from solescion.testutils.testcase import combine, run_test
 
 from solescion.acceptancetests.tests.acceptancetest_test import AcceptanceTest_test
 from solescion.controller.tests.gameloop_test import Gameloop_test
@@ -24,7 +22,6 @@ from solescion.acceptancetests.AT001_app_opens_a_fullscreen_window import \
 
 
 def run_all_tests():
-    runner = TextTestRunner(verbosity=2)
     suite = combine(
         AcceptanceTest_test,
         Gameloop_test,
@@ -41,8 +38,9 @@ def run_all_tests():
         Renderer_test,
         AT001_app_opens_a_fullscreen_window,
     )
-    runner.run(suite)
+    run_test(suite)
 
 
 if __name__ == "__main__":
     run_all_tests()
+

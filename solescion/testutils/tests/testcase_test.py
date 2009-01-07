@@ -3,13 +3,13 @@ from unittest import (
     main, TestLoader, TestCase as RealTestCase, TestSuite, TextTestRunner)
 from ctypes import Array
 
+import fixpath
+
 from pyglet.gl import GLint
 from pymunk import Vec2d
 
-import fixpath
-
-from testutils.listener import Listener
-from testutils.testcase import (
+from solescion.testutils.listener import Listener
+from solescion.testutils.testcase import (
     _compare_indexables, _compare_lengths, _compare_types, _is_int_indexable,
     _tostr,
     combine, MyTestCase, run_test,
@@ -441,7 +441,7 @@ class run_test_test(MyTestCase):
         mockRunner.returnValue = TextTestRunner()
         mockRun = Listener()
         mockRunner.returnValue.run = mockRun
-        from testutils import testcase as testcase_module
+        from solescion.testutils import testcase as testcase_module
         orig = testcase_module.TextTestRunner
         testcase_module.TextTestRunner = mockRunner
         try:
@@ -449,7 +449,7 @@ class run_test_test(MyTestCase):
             run_test(suite, verbosity=33)
         finally:
             testcase_module.TextTestRunner = orig
-        self.assertEquals(mockRunner.kwargs, {"verbosity": 33},
+        self.assertEquals(mockRunner.kwargs['verbosity'], 33,
             "didnt create a verbose runner")
         self.assertEquals(mockRun.args, (suite,), "didnt run suite")
 

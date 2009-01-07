@@ -2,16 +2,16 @@
 
 from math import pi
 
+import fixpath
+
 from pymunk import (
     Body, Circle, moment_for_circle, Shape, Space, Vec2d,
 )
 
-import fixpath
+from solescion.testutils.testcase import MyTestCase, run_test
 
-from testutils.testcase import MyTestCase, run_test
-
-from model.shards.disc import Disc
-from model.material import gold
+from solescion.model.shards.disc import Disc
+from solescion.model.material import gold
 
 
 class Disc_test(MyTestCase):

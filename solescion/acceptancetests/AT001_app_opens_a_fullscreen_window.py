@@ -4,8 +4,8 @@ from unittest import TestCase
 
 import fixpath
 
-from acceptancetest import AcceptanceTest
-from testutils.testcase import run_test
+from solescion.acceptancetests.acceptancetest import AcceptanceTest
+from solescion.testutils.testcase import run_test
 
 from run import main
 

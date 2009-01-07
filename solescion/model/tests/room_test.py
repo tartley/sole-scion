@@ -1,15 +1,15 @@
 #!/usr/bin/python -O
 
+import fixpath
+
 from pyglet.window import Window
 from pymunk import Body, inf, Space
 
-import fixpath
+from solescion.testutils.listener import Listener
+from solescion.testutils.testcase import MyTestCase, run_test
 
-from testutils.listener import Listener
-from testutils.testcase import MyTestCase, run_test
-
-from model.room import Room
-from model.material import air
+from solescion.model.room import Room
+from solescion.model.material import air
 
 
 class Room_test(MyTestCase):
@@ -26,7 +26,7 @@ class Room_test(MyTestCase):
         listener = Listener()
         color = (0.1, 0.2, 0.3)
         verts = [(-1, -2), (3, 4), (-5, 6)]
-        from model import room as room_module
+        from solescion.model import room as room_module
         orig = room_module.assert_valid_poly
         room_module.assert_valid_poly = listener
         try:

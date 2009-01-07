@@ -11,12 +11,12 @@ from pyglet.gl import (
 
 import fixpath
 
-from testutils.testimage import assert_rectangle_at
-from testutils.testcase import MyTestCase, run_test
+from solescion.testutils.testimage import assert_rectangle_at
+from solescion.testutils.testcase import MyTestCase, run_test
 
-from model.world import World
-from utils.screenshot import image_from_window
-from view.camera import Camera
+from solescion.model.world import World
+from solescion.utils.screenshot import image_from_window
+from solescion.view.camera import Camera
 
 
 class Camera_test(MyTestCase):

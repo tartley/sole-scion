@@ -127,6 +127,7 @@ class World(object):
 
 
     def tick(self, deltaT):
-        self.player.move()
+        if hasattr(self, 'player'):
+            self.player.move()
         self.space.step(deltaT)
 

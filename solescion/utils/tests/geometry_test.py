@@ -5,9 +5,9 @@ from math import cos, sin, pi
 
 import fixpath
 
-from testutils.testcase import combine, MyTestCase, run_test
+from solescion.testutils.testcase import combine, MyTestCase, run_test
 
-from utils.geometry import (
+from solescion.utils.geometry import (
     assert_valid_poly, offset_verts, poly_area, poly_centroid
 )
 

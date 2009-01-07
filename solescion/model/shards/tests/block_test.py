@@ -1,15 +1,15 @@
 #!/usr/bin/python -O
 
-from pymunk import Body, moment_for_poly, Poly, Shape, Space, Vec2d
-
 import fixpath
 
-from testutils.listener import Listener
-from testutils.testcase import MyTestCase, run_test
+from pymunk import Body, moment_for_poly, Poly, Shape, Space, Vec2d
 
-from utils.geometry import offset_verts, poly_area
-from model.shards.block import Block
-from model.material import gold
+from solescion.testutils.listener import Listener
+from solescion.testutils.testcase import MyTestCase, run_test
+
+from solescion.utils.geometry import offset_verts, poly_area
+from solescion.model.shards.block import Block
+from solescion.model.material import gold
 
 
 class Block_test(MyTestCase):
@@ -28,7 +28,7 @@ class Block_test(MyTestCase):
     def test_constructor_validates_verts(self):
         listener = Listener()
         verts = [(-1, -1), (-1, +1), (+1, +1), (+1, -1)]
-        from model.shards import block as block_module
+        from solescion.model.shards import block as block_module
         orig = block_module.assert_valid_poly
         block_module.assert_valid_poly = listener
         try:

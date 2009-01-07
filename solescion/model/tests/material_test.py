@@ -2,9 +2,9 @@
 
 import fixpath
 
-from testutils.testcase import MyTestCase, run_test
+from solescion.testutils.testcase import MyTestCase, run_test
 
-from model import material
+from solescion.model import material
 
 class Material_test(MyTestCase):
 

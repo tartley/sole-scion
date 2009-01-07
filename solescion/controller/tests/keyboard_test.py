@@ -1,13 +1,13 @@
 #!/usr/bin/python -O
 
-from pyglet.window import key
-
 import fixpath
 
-from testutils.listener import Listener
-from testutils.testcase import MyTestCase, run_test
+from pyglet.window import key
 
-from controller.keyboard import handlers, on_key_press
+from solescion.testutils.listener import Listener
+from solescion.testutils.testcase import MyTestCase, run_test
+
+from solescion.controller.keyboard import handlers, on_key_press
 
 
 class Keyboard_test(MyTestCase):

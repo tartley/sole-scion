@@ -1,8 +1,8 @@
 from __future__ import division
 
-from testutils.testcase import MyTestCase
-
 from pyglet import app, clock
+
+from solescion.testutils.testcase import MyTestCase
 
 
 class AcceptanceTest(MyTestCase):
