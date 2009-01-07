@@ -5,7 +5,9 @@
 output-format=colorized
 
 # Tells whether to display a full report or only the messages
-reports=no
+reports=yes
+disable-report=R0001, R0002, R0003, R0101, R0401, R0402, R0801, R0701
+enable-report=R0004
 
 
 [BASIC]

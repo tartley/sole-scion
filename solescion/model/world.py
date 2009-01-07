@@ -2,12 +2,12 @@ from __future__ import division
 from math import pi, sin, cos
 
 from pyglet.window import key
-from pymunk import Body, inf, init_pymunk, PivotJoint, Space
+from pymunk import Body, inf, init_pymunk, Space
 
 from solescion.controller.keyboard import keystate
 from solescion.model.chunk import Chunk
 from solescion.model.material import (
-    Material, bamboo, flesh, gold, granite, ice, rubber, steel,
+    bamboo, gold, granite, ice, rubber, steel,
 )
 from solescion.model.room import Room
 from solescion.model.shards.block import Block
@@ -37,7 +37,7 @@ class Player(object):
 
 
     def add_to_space(self, space, position, angle):
-        self.chunks[0].add_to_space(space, (position[0]+1, position[1]), 0)
+        self.chunks[0].add_to_space(space, (position[0]+1, position[1]), angle)
 
 
     def move(self):
@@ -67,6 +67,7 @@ class World(object):
 
         self.rooms = set()
         self.chunks = set()
+        self.player = None
 
         self.material = granite
 
@@ -83,37 +84,37 @@ class World(object):
         room = Room(verts)
         self.add_room(room)
 
-        if 1:
-            disc1 = Disc(bamboo, 20, (0, 0))
-            disc2 = Disc(bamboo, 10, (0, -20))
-            chunk = Chunk(disc2, disc1)
-            self.add_chunk(chunk, (-40, 80))
+        disc1 = Disc(bamboo, 20, (0, 0))
+        disc2 = Disc(bamboo, 10, (0, -20))
+        chunk = Chunk(disc2, disc1)
+        self.add_chunk(chunk, (-40, 80))
 
-            disc = Disc(rubber, 5)
-            chunk = Chunk(disc)
-            self.add_chunk(chunk, (40, 120))
+        disc = Disc(rubber, 5)
+        chunk = Chunk(disc)
+        self.add_chunk(chunk, (40, 120))
 
-            verts = [(-10, 20), (30, 20), (20, 0), (0, 0)]
-            block = Block(ice, verts)
-            chunk = Chunk(block)
-            self.add_chunk(chunk, (80, 55), 0.55)
+        verts = [(-10, 20), (30, 20), (20, 0), (0, 0)]
+        block = Block(ice, verts)
+        chunk = Chunk(block)
+        self.add_chunk(chunk, (80, 55), 0.55)
 
-            verts = [(-10, 20), (-10, 30), (10, 40), (20, 30), (20, 20), (10, 0), (0, 0)]
-            block = Block(granite, verts)
-            chunk = Chunk(block)
-            self.add_chunk(chunk, (-50, 15), -0.1)
+        verts = [
+            (-10, 20), (-10, 30), (10, 40), (20, 30),
+            (20, 20), (10, 0), (0, 0)]
+        block = Block(granite, verts)
+        chunk = Chunk(block)
+        self.add_chunk(chunk, (-50, 15), -0.1)
 
-            verts1 = [(0, 0), (0, 30), (10, 30), (10, 0)]
-            block1 = Block(gold, verts1)
-            verts2 = [(0, 0), (0, 10), (30, 10), (30, 0)]
-            block2 = Block(gold, verts2)
-            chunk = Chunk(block1, block2)
-            self.add_chunk(chunk, (60, 90), 0.4)
+        verts1 = [(0, 0), (0, 30), (10, 30), (10, 0)]
+        block1 = Block(gold, verts1)
+        verts2 = [(0, 0), (0, 10), (30, 10), (30, 0)]
+        block2 = Block(gold, verts2)
+        chunk = Chunk(block1, block2)
+        self.add_chunk(chunk, (60, 90), 0.4)
 
         self.player = Player()
         self.player.add_to_space(self.space, (0, 0), 0)
         self.chunks.update(self.player.chunks)
-
 
 
     def add_room(self, room):

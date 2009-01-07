@@ -1,7 +1,9 @@
 import re
 from sys import stdout
 
-from TerminalController import TerminalController
+from solescion.testutils.TerminalController import TerminalController
+
+
 term = TerminalController()
 
 class ColoredStream(object):
