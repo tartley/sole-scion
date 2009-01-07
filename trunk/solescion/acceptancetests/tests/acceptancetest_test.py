@@ -2,7 +2,7 @@
 
 import fixpath
 
-from testutils.testcase import MyTestCase, run_test
+from solescion.testutils.testcase import MyTestCase, run_test
 
 class AcceptanceTest_test(MyTestCase):
 

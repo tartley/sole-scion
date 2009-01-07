@@ -3,17 +3,17 @@ from pyglet.window import key, Window
 
 import fixpath
 
-from testutils.listener import Listener
-from testutils.testcase import MyTestCase, run_test
-from testutils.testimage import assert_entirely
+from solescion.testutils.listener import Listener
+from solescion.testutils.testcase import MyTestCase, run_test
+from solescion.testutils.testimage import assert_entirely
 
-from controller.keyboard import handlers
-from model.world import Chunk, Room, World
-from model.shards.disc import Disc
-from utils.screenshot import image_from_window
+from solescion.controller.keyboard import handlers
+from solescion.model.world import Chunk, Room, World
+from solescion.model.shards.disc import Disc
+from solescion.utils.screenshot import image_from_window
 
-from view.camera import Camera
-from view.renderer import Renderer
+from solescion.view.camera import Camera
+from solescion.view.renderer import Renderer
 
 
 class Renderer_test(MyTestCase):

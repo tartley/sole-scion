@@ -3,17 +3,17 @@
 from __future__ import division
 from math import pi
 
-from pymunk import Body, Circle, moment_for_circle, Space, Vec2d
-
 import fixpath
 
-from testutils.listener import Listener
-from testutils.testcase import MyTestCase, run_test
+from pymunk import Body, Circle, moment_for_circle, Space, Vec2d
 
-from model.chunk import Chunk
-from model.material import gold
-from model.shards.block import Block
-from model.shards.disc import Disc
+from solescion.testutils.listener import Listener
+from solescion.testutils.testcase import MyTestCase, run_test
+
+from solescion.model.chunk import Chunk
+from solescion.model.material import gold
+from solescion.model.shards.block import Block
+from solescion.model.shards.disc import Disc
 
 
 class Chunk_test(MyTestCase):

@@ -1,17 +1,17 @@
 #!/usr/bin/python -O
 
-from pymunk import Body, inf, Space, Vec2d
-
 import fixpath
 
-from testutils.listener import Listener
-from testutils.testcase import MyTestCase, run_test
+from pymunk import Body, inf, Space, Vec2d
 
-from model.chunk import Chunk
-from model.material import granite, gold
-from model.room import Room
-from model.world import World
-from model.shards.disc import Disc
+from solescion.testutils.listener import Listener
+from solescion.testutils.testcase import MyTestCase, run_test
+
+from solescion.model.chunk import Chunk
+from solescion.model.material import granite, gold
+from solescion.model.room import Room
+from solescion.model.world import World
+from solescion.model.shards.disc import Disc
 
 
 class World_test(MyTestCase):
@@ -30,7 +30,7 @@ class World_test(MyTestCase):
 
 
     def test_constructor_initialises_pymunk(self):
-        from model import world as world_module
+        from solescion.model import world as world_module
         orig = world_module.init_pymunk
         world_module.init_pymunk = Listener()
         try:

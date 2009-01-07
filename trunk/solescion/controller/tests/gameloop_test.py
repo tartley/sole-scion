@@ -3,20 +3,20 @@ from __future__ import division
 
 from PIL import Image
 
+import fixpath
+
 from pyglet import clock
 from pyglet.window import key, Window
 
-import fixpath
+from solescion.testutils.listener import Listener
+from solescion.testutils.testcase import combine, MyTestCase, run_test
 
-from testutils.listener import Listener
-from testutils.testcase import combine, MyTestCase, run_test
-
-from application import title
-from controller.gameloop import FPS_LIMIT, Gameloop
-from controller.keyboard import handlers, on_key_press
-from model.world import World
-from view.camera import Camera
-from view.renderer import Renderer
+from solescion.application import title
+from solescion.controller.gameloop import FPS_LIMIT, Gameloop
+from solescion.controller.keyboard import handlers, on_key_press
+from solescion.model.world import World
+from solescion.view.camera import Camera
+from solescion.view.renderer import Renderer
 
 
 class Mock(object):

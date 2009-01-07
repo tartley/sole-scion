@@ -2,9 +2,8 @@
 
 import fixpath
 
-from testutils.testcase import MyTestCase, run_test
-
-from testutils.listener import Listener
+from solescion.testutils.testcase import MyTestCase, run_test
+from solescion.testutils.listener import Listener
 
 
 class Listener_test(MyTestCase):

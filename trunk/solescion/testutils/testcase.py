@@ -173,17 +173,17 @@ def combine(*args):
 
 def run_test(suite, verbosity=2):
 
-    from TerminalController import TerminalController
+    from solescion.testutils.TerminalController import TerminalController
     term = TerminalController()
 
     highlights = [
-        ['^Ran \d+ tests in \d+\.\d+s$', term.CYAN + term.BOLD],
+        ['^Ran \d+ tests in \d+\.\d+s$', term.WHITE+ term.BOLD],
         ['^OK$', term.GREEN + term.BOLD],
         ['ok$', term.GREEN + term.BOLD],
-        ['^=+$', term.CYAN],
-        ['^-+$', term.CYAN],
-        [' \(.*\)$', term.CYAN],
-        ['^ \.\.\. $', term.CYAN],
+        ['^=+$', term.BLACK + term.BOLD],
+        ['^-+$', term.BLACK + term.BOLD],
+        [' \(.*\)$', term.BLACK + term.BOLD],
+        ['^ \.\.\. $', term.BLACK + term.BOLD],
         ['^ERROR: ', term.RED + term.BOLD],
         ['^FAIL: ', term.YELLOW+ term.BOLD],
         ['FAIL$', term.YELLOW+ term.BOLD],

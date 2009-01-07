@@ -8,15 +8,15 @@ from pyglet import gl
 
 import fixpath
 
-from testutils.testcase import combine, MyTestCase, run_test
+from solescion.testutils.testcase import combine, MyTestCase, run_test
 
-from utils.screenshot import _get_filename, image_from_window, save_screenshot
+from solescion.utils.screenshot import _get_filename, image_from_window, save_screenshot
 
 
 class Save_screenshot_test(MyTestCase):
 
     def test_get_filename(self):
-        import utils.screenshot as screenshot_module
+        import solescion.utils.screenshot as screenshot_module
         orig = screenshot_module.listdir
         screenshot_module.listdir = lambda *_: ["A00.png"]
         try:
@@ -29,7 +29,7 @@ class Save_screenshot_test(MyTestCase):
 
 
     def test_get_filename_none_left(self):
-        import utils.screenshot as screenshot_module
+        import solescion.utils.screenshot as screenshot_module
         orig = screenshot_module.listdir
         screenshot_module.listdir = \
             lambda *_: ["A%02d.png" % idx for idx in range(100)]
@@ -42,7 +42,7 @@ class Save_screenshot_test(MyTestCase):
     def test_save_screenshot(self):
         window = Window(width=12, height=34, visible=False)
 
-        import utils.screenshot as screenshot_module
+        import solescion.utils.screenshot as screenshot_module
         orig_get = screenshot_module._get_filename
         filename = join(expanduser("~"), "test_save_screenshot.png")
         screenshot_module._get_filename = lambda *_: filename

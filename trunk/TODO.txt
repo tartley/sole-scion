@@ -4,9 +4,12 @@ to HISTORY.txt (*=planned task, +=unexpected task)
 Technical Debt
 
   + fix failing tests
-  + tidy up run* all over the place
-  * Windows binary distributable.
+  + fix pylint
   + source distribution using setuptools instead of zip
+  * Windows binary distributable.
+  + tidy up run* all over the place
+  + move dependancies inside solescion dir
+  + use michael's Mock instead of our Listener
 
 Maze
 

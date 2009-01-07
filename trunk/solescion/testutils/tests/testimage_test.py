@@ -2,19 +2,19 @@
 from __future__ import division
 
 from PIL import Image
-from pyglet import gl
-from pyglet.window import Window
 
 import fixpath
 
-from testutils.testcase import MyTestCase, run_test
+from pyglet import gl
+from pyglet.window import Window
 
-from testutils.testimage import (
+from solescion.testutils.testcase import MyTestCase, run_test
+from solescion.testutils.testimage import (
     assert_contains, assert_entirely,
     assert_rectangle_at, save_to_tempfile
 )
 
-from utils.screenshot import image_from_window
+from solescion.utils.screenshot import image_from_window
 
 
 def draw_rectangle(image, left, bottom, right, top, rectCol):

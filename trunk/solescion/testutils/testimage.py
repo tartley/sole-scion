@@ -1,4 +1,4 @@
-from utils.screenshot import _create_tempfile
+from solescion.utils.screenshot import _create_tempfile
 
 
 def save_to_tempfile(image):

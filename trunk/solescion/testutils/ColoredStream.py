@@ -16,3 +16,4 @@ class ColoredStream(object):
         for regex, highlight in self.highlights:
             text = regex.sub(highlight + '\g<1>' + term.NORMAL, text)
         self.stream.write(text, *args)
+

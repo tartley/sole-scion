@@ -3,8 +3,7 @@ from __future__ import division
 from pyglet import clock
 from pyglet.window import key, Window
 
-from solescion.controller.keyboard import (
-    keystate, handlers, on_key_press)
+from solescion.controller.keyboard import keystate, handlers, on_key_press
 from solescion.model.world import World
 from solescion.utils.screenshot import save_screenshot
 from solescion.view.camera import Camera
@@ -57,8 +56,9 @@ class Gameloop(object):
                 clock.tick()
                 if self.world and not self.paused:
                     self.world.tick(1/FPS_LIMIT)
-                self.camera.x, self.camera.y = \
-                    self.world.player.chunks[0].body.position
+                if self.world and hasattr(self.world, 'player'):
+                    self.camera.x, self.camera.y = \
+                        self.world.player.chunks[0].body.position
                 if self.renderer:
                     aspect = (
                         self.window.width / self.window.height)
