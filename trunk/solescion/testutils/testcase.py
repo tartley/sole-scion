@@ -2,7 +2,8 @@ from ctypes import Array
 from unittest import (
     TestCase as RealTestCase, TestLoader, TestSuite, TextTestRunner,
 )
-from solescion.testutils.ColoredStream import ColoredStream
+
+from .ColoredStream import ColoredStream
 
 
 def _is_int_indexable(item):
@@ -22,14 +23,14 @@ def _tostr(item):
 
 def _compare_lengths(actual, expected, message):
     if len(actual) != len(expected):
-        actualStr = _tostr(actual)
-        expectedStr = _tostr(expected)
+        actual_str = _tostr(actual)
+        expected_str = _tostr(expected)
         msg = (
             "not equal, lengths differ: %d != %d\n"
             "  %s\n"
             "  %s\n"
             "%s" %
-            (len(actual), len(expected), actualStr, expectedStr, message)
+            (len(actual), len(expected), actual_str, expected_str, message)
         )
         raise AssertionError(msg)
 
@@ -38,15 +39,15 @@ def _compare_indexables(actual, expected, message):
     _compare_lengths(actual, expected, message)
     for index in range(len(actual)):
         if actual[index] != expected[index]:
-            actualStr = _tostr(actual)
-            expectedStr = _tostr(expected)
+            actual_str = _tostr(actual)
+            expected_str = _tostr(expected)
             msg = (
                 "%s != %s at index %d\n"
                 "  %s\n"
                 "  %s\n"
                 "%s" %
                 (actual[index], expected[index], index,
-                    actualStr, expectedStr, message)
+                    actual_str, expected_str, message)
             )
             raise AssertionError(msg)
 
@@ -70,6 +71,8 @@ class MyTestCase(RealTestCase):
     #   Invalid method names: This class uses unittest.TestCase conventions
     # pylint: disable-msg=R0904
     #   Too many public methods: we are a subclass of unittest.TestCase
+    # pylint: disable-msg=R0201
+    #   Method could be a function: acknowledged.
 
     def assertNone(self, item, message=None):
         if not item is None:
@@ -171,7 +174,7 @@ def combine(*args):
     return TestSuite(suites)
 
 
-def run_test(suite, verbosity=2):
+def run(suite, verbosity=2):
 
     from solescion.testutils.TerminalController import TerminalController
     term = TerminalController()

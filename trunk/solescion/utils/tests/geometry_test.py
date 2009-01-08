@@ -5,7 +5,7 @@ from math import cos, sin, pi
 
 import fixpath
 
-from solescion.testutils.testcase import combine, MyTestCase, run_test
+from solescion.testutils.testcase import combine, MyTestCase, run
 
 from solescion.utils.geometry import (
     assert_valid_poly, offset_verts, poly_area, poly_centroid
@@ -179,5 +179,5 @@ Geometry_test = combine(
 )
 
 if __name__ == "__main__":
-    run_test(Geometry_test)
+    run(Geometry_test)
 

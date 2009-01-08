@@ -5,36 +5,36 @@ class Listener(object):
     callable during a unittest.
     """
     def __init__(self):
-        self.argsList = None
-        self.kwargsList = None
-        self.returnValue = None
-        self.returnValueList = []
+        self.args_list = None
+        self.kwargs_list = None
+        self.return_value = None
+        self.return_value_list = []
         self.reset()
 
     def reset(self):
-        self.argsList = []
-        self.kwargsList = []
+        self.args_list = []
+        self.kwargs_list = []
 
-    triggered = property(lambda self: len(self.argsList) > 0)
-    triggerCount = property(lambda self: len(self.argsList))
+    triggered = property(lambda self: len(self.args_list) > 0)
+    triggerCount = property(lambda self: len(self.args_list))
 
     def _get_args(self):
         if self.triggered:
-            return self.argsList[-1]
+            return self.args_list[-1]
 
     args = property(_get_args)
 
     def _get_kwargs(self):
         if self.triggered:
-            return self.kwargsList[-1]
+            return self.kwargs_list[-1]
 
     kwargs = property(_get_kwargs)
 
     def __call__(self, *args, **kwargs):
-        self.argsList.append(args)
-        self.kwargsList.append(kwargs)
-        if self.returnValueList:
-            return self.returnValueList.pop(0)
+        self.args_list.append(args)
+        self.kwargs_list.append(kwargs)
+        if self.return_value_list:
+            return self.return_value_list.pop(0)
         else:
-            return self.returnValue
+            return self.return_value
 

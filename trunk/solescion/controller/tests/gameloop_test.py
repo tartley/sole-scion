@@ -9,11 +9,10 @@ from pyglet import clock
 from pyglet.window import key, Window
 
 from solescion.testutils.listener import Listener
-from solescion.testutils.testcase import combine, MyTestCase, run_test
+from solescion.testutils.testcase import combine, MyTestCase, run
 
-from solescion.application import title
 from solescion.controller.gameloop import FPS_LIMIT, Gameloop
-from solescion.controller.keyboard import handlers, on_key_press
+from solescion.controller.keyboard import Keyboard, on_key_press
 from solescion.model.world import World
 from solescion.view.camera import Camera
 from solescion.view.renderer import Renderer
@@ -107,14 +106,15 @@ class Gameloop_test_without(MyTestCase):
             key.PAUSE,
             key.F12,
         ])
-        self.assertEquals(set(handlers.keys()), expectedKeys, "bad keys")
+        self.assertEquals(set(Keyboard.handlers.keys()), expectedKeys,
+            "bad keys")
 
         expectedHandlers = [
             self.gameloop.toggle_pause,
             self.gameloop.quit_game,
         ]
         for handler in expectedHandlers:
-            self.assertTrue(handler in handlers.values(),
+            self.assertTrue(handler in Keyboard.handlers.values(),
                 "%s not in handlers" % handler)
 
 
@@ -189,7 +189,7 @@ class Gameloop_test_without(MyTestCase):
             (3, self.gameloop.world, aspect),
             (4,),
         ]
-        self.assertEquals(listener.argsList, expected, "should call some fns")
+        self.assertEquals(listener.args_list, expected, "should call some fns")
 
 
     def test_run_skips_world_tick_when_paused(self):
@@ -233,5 +233,5 @@ Gameloop_test = combine(
 )
 
 if __name__ == "__main__":
-    run_test(Gameloop_test)
+    run(Gameloop_test)
 

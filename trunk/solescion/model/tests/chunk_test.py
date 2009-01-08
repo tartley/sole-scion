@@ -8,10 +8,10 @@ import fixpath
 from pymunk import Body, Circle, moment_for_circle, Space, Vec2d
 
 from solescion.testutils.listener import Listener
-from solescion.testutils.testcase import MyTestCase, run_test
+from solescion.testutils.testcase import MyTestCase, run
 
 from solescion.model.chunk import Chunk
-from solescion.model.material import gold
+from solescion.model.material import Material
 from solescion.model.shards.block import Block
 from solescion.model.shards.disc import Disc
 
@@ -32,12 +32,12 @@ class Chunk_test(MyTestCase):
         orig = Chunk.set_shards
         Chunk.set_shards = Listener()
         try:
-            shard1 = Disc(gold, 1)
-            shard2 = Disc(gold, 2)
-            shard3 = Disc(gold, 3)
+            shard1 = Disc(Material.gold, 1)
+            shard2 = Disc(Material.gold, 2)
+            shard3 = Disc(Material.gold, 3)
             chunk = Chunk(shard1, shard2, shard3)
             self.assertEquals(
-                chunk.set_shards.argsList,
+                chunk.set_shards.args_list,
                 [(shard1, shard2, shard3),],
                 "shards not addded")
         finally:
@@ -61,7 +61,7 @@ class Chunk_test(MyTestCase):
         chunk = Chunk()
         self.assertEquals(chunk._center_of_gravity(), (0, 0), "bad COG0")
 
-        shard1 = Disc(gold, 2, (10, 20))
+        shard1 = Disc(Material.gold, 2, (10, 20))
         chunk = Chunk()
         chunk.shards = (shard1,)
         cog = chunk._center_of_gravity()
@@ -69,7 +69,7 @@ class Chunk_test(MyTestCase):
         self.assertAlmostEquals(cog[1], 20, msg="bad COG1 y")
 
         verts = [(99, 49), (99, 51), (101, 51), (101, 49)]
-        shard2 = Block(gold, verts)
+        shard2 = Block(Material.gold, verts)
         chunk.shards = (shard2,)
         self.assertEquals(chunk._center_of_gravity(), (100, 50), "bad COG2")
 
@@ -82,8 +82,8 @@ class Chunk_test(MyTestCase):
 
     def test_offset_shards(self):
         chunk = Chunk()
-        shard1 = Disc(gold, 5, (10, 20))
-        shard2 = Block(gold, self.unitsquare, (30, 40), center=True)
+        shard1 = Disc(Material.gold, 5, (10, 20))
+        shard2 = Block(Material.gold, self.unitsquare, (30, 40), center=True)
         chunk.shards = [shard1, shard2]
 
         chunk._offset_shards((+2, -3))
@@ -98,8 +98,8 @@ class Chunk_test(MyTestCase):
         chunk = Chunk()
         self.assertEquals(chunk.get_moment(), 0.0, "bad initial moment")
 
-        shard1 = Disc(gold, 2, (10, 20))
-        shard2 = Block(gold, self.unitsquare, (100, 200))
+        shard1 = Disc(Material.gold, 2, (10, 20))
+        shard2 = Block(Material.gold, self.unitsquare, (100, 200))
         chunk.shards = [shard1, shard2]
 
         expected = shard1.get_moment() + shard2.get_moment()
@@ -110,16 +110,17 @@ class Chunk_test(MyTestCase):
         chunk = Chunk()
         self.assertEquals(chunk.get_mass(), 0.0, "bad initial mass")
 
-        shard1 = Disc(gold, 5)
-        shard2 = Block(gold, self.unitsquare)
+        shard1 = Disc(Material.gold, 5)
+        shard2 = Block(Material.gold, self.unitsquare)
         chunk.shards = [shard1, shard2]
-        self.assertEquals(chunk.get_mass(), (25*pi+1)*gold.density, "bad mass")
+        self.assertEquals(chunk.get_mass(), (25*pi+1)*Material.gold.density,
+            "bad mass")
 
 
     def test_set_shards_disc(self):
         radius = 4
         offset = (3, 2)
-        disc = Disc(gold, radius, offset)
+        disc = Disc(Material.gold, radius, offset)
         chunk = Chunk()
         chunk.set_shards(disc)
 
@@ -129,8 +130,8 @@ class Chunk_test(MyTestCase):
 
 
     def test_set_shards_two_discs(self):
-        disc1 = Disc(gold, 4, (+100, +200))
-        disc2 = Disc(gold, 2, (+115, +225))
+        disc1 = Disc(Material.gold, 4, (+100, +200))
+        disc2 = Disc(Material.gold, 2, (+115, +225))
 
         chunk = Chunk()
         chunk.set_shards(disc1, disc2)
@@ -146,7 +147,7 @@ class Chunk_test(MyTestCase):
     def test_set_shards_block(self):
         verts = [(0, 0), (0, 1), (1, 1), (1, 0)]
         offset = (10, 20)
-        block = Block(gold, verts, offset)
+        block = Block(Material.gold, verts, offset)
         self.assertEquals(block.get_offset(), (10.5, 20.5), "bad offset")
 
         chunk = Chunk()
@@ -159,9 +160,9 @@ class Chunk_test(MyTestCase):
 
     def test_set_shards_two_blocks(self):
         verts1 = [(0, 0), (0, 4), (4, 4), (4, 0)]
-        block1 = Block(gold, verts1, (8, 0))
+        block1 = Block(Material.gold, verts1, (8, 0))
         verts2 = [(0, 0), (0, 4), (12, 4), (12, 0)]
-        block2 = Block(gold, verts2, (0, 4))
+        block2 = Block(Material.gold, verts2, (0, 4))
         chunk = Chunk(block1, block2)
 
         self.assertEquals(chunk.shards, (block1, block2,), "shards not added")
@@ -171,9 +172,9 @@ class Chunk_test(MyTestCase):
 
     def DONTtest_add_to_space_blocks(self):
         verts1 = [(0, 0), (0, 12), (12, 12), (12, 0)]
-        block1 = Block(gold, verts1, (0, +12))
+        block1 = Block(Material.gold, verts1, (0, +12))
         verts2 = [(0, 0), (0, 12), (24, 12), (24, 0)]
-        block2 = Block(gold, verts2)
+        block2 = Block(Material.gold, verts2)
         chunk = Chunk(block1, block2)
         space = Space()
 
@@ -196,9 +197,9 @@ class Chunk_test(MyTestCase):
 
 
     def test_add_to_space_discs(self):
-        disc1 = Disc(gold, 1)
-        disc2 = Disc(gold, 2)
-        disc3 = Disc(gold, 3)
+        disc1 = Disc(Material.gold, 1)
+        disc2 = Disc(Material.gold, 2)
+        disc3 = Disc(Material.gold, 3)
         space = Space()
         chunk = Chunk(disc1, disc2, disc3)
 
@@ -222,5 +223,5 @@ class Chunk_test(MyTestCase):
 
 
 if __name__ == "__main__":
-    run_test(Chunk_test)
+    run(Chunk_test)
 

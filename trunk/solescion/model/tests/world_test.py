@@ -5,10 +5,10 @@ import fixpath
 from pymunk import Body, inf, Space, Vec2d
 
 from solescion.testutils.listener import Listener
-from solescion.testutils.testcase import MyTestCase, run_test
+from solescion.testutils.testcase import MyTestCase, run
 
 from solescion.model.chunk import Chunk
-from solescion.model.material import granite, gold
+from solescion.model.material import Material
 from solescion.model.room import Room
 from solescion.model.world import World
 from solescion.model.shards.disc import Disc
@@ -22,11 +22,11 @@ class World_test(MyTestCase):
             "should create a Space")
         self.assertEquals(world.space.gravity, Vec2d(0, -10),
             "should set gravity")
-        self.assertEquals(type(world.staticBody), Body,
+        self.assertEquals(type(world.static_body), Body,
             "should create a body")
         self.assertEquals(world.rooms, set(),
             "should create empty room set")
-        self.assertEquals(world.material, granite, "bad material")
+        self.assertEquals(world.material, Material.granite, "bad material")
 
 
     def test_constructor_initialises_pymunk(self):
@@ -63,14 +63,14 @@ class World_test(MyTestCase):
         world.add_room(room)
 
         self.assertEquals(world.rooms, set([room]), "room not added")
-        expected = (world.space, world.staticBody)
+        expected = (world.space, world.static_body)
         self.assertEquals(room.add_to_body.args, expected,
             "room walls not added to space")
 
 
     def test_add_chunk(self):
         world = World()
-        chunk = Chunk(Disc(gold, 1))
+        chunk = Chunk(Disc(Material.gold, 1))
         chunk.add_to_space = Listener()
 
         world.add_chunk(chunk, (1, 2), 0.5)
@@ -84,7 +84,7 @@ class World_test(MyTestCase):
 
     def test_add_chunk_default_angle(self):
         world = World()
-        chunk = Chunk(Disc(gold, 1))
+        chunk = Chunk(Disc(Material.gold, 1))
 
         world.add_chunk(chunk, (10, 20))
 
@@ -95,6 +95,10 @@ class World_test(MyTestCase):
     def test_tick(self):
         world = World()
         world.space.step = Listener()
+        class Mock(object):
+            pass
+        world.player = Mock()
+        world.player.move = lambda *_: None
 
         world.tick(1/42)
 
@@ -102,4 +106,4 @@ class World_test(MyTestCase):
 
 
 if __name__ == "__main__":
-    run_test(World_test)
+    run(World_test)

@@ -4,11 +4,9 @@ from math import pi, sin, cos
 from pyglet.window import key
 from pymunk import Body, inf, init_pymunk, Space
 
-from solescion.controller.keyboard import keystate
+from solescion.controller.keyboard import Keyboard
 from solescion.model.chunk import Chunk
-from solescion.model.material import (
-    bamboo, gold, granite, ice, rubber, steel,
-)
+from solescion.model.material import Material
 from solescion.model.room import Room
 from solescion.model.shards.block import Block
 from solescion.model.shards.disc import Disc
@@ -19,10 +17,10 @@ def generate_ship():
     return verts
 
 
-def generate_circle(radius, numSegments):
+def generate_circle(radius, num_segments):
     verts = []
-    for idx in range(numSegments):
-        theta = 2*pi / numSegments * idx
+    for idx in range(num_segments):
+        theta = 2*pi / num_segments * idx
         verts.append((radius * sin(theta), radius * cos(theta)))
     return verts
 
@@ -32,7 +30,7 @@ class Player(object):
 
     def __init__(self):
         verts = generate_ship()
-        block = Block(steel, verts)
+        block = Block(Material.steel, verts)
         self.chunks = [Chunk(block)]
 
 
@@ -42,17 +40,17 @@ class Player(object):
 
     def move(self):
         body = self.chunks[0].body
-        if keystate[key.RIGHT]:
+        if Keyboard.keystate[key.RIGHT]:
             torque = -3000
-        elif keystate[key.LEFT]:
+        elif Keyboard.keystate[key.LEFT]:
             torque = +3000
         else:
             torque = -body.angular_velocity * 1000
         body.torque = torque
 
-        if keystate[key.UP]:
+        if Keyboard.keystate[key.UP]:
             body.apply_impulse(body.rotation_vector.rotated(90) * 150, (0, 0))
-        elif keystate[key.DOWN]:
+        elif Keyboard.keystate[key.DOWN]:
             body.apply_impulse(body.rotation_vector.rotated(-90) * 100, (0, 0))
 
 
@@ -63,13 +61,13 @@ class World(object):
         init_pymunk()
         self.space = Space()
         self.space.gravity = (0, -10)
-        self.staticBody = Body(inf, inf)
+        self.static_body = Body(inf, inf)
 
         self.rooms = set()
         self.chunks = set()
         self.player = None
 
-        self.material = granite
+        self.material = Material.granite
 
 
     def populate(self):
@@ -84,31 +82,31 @@ class World(object):
         room = Room(verts)
         self.add_room(room)
 
-        disc1 = Disc(bamboo, 20, (0, 0))
-        disc2 = Disc(bamboo, 10, (0, -20))
+        disc1 = Disc(Material.bamboo, 20, (0, 0))
+        disc2 = Disc(Material.bamboo, 10, (0, -20))
         chunk = Chunk(disc2, disc1)
         self.add_chunk(chunk, (-40, 80))
 
-        disc = Disc(rubber, 5)
+        disc = Disc(Material.rubber, 5)
         chunk = Chunk(disc)
         self.add_chunk(chunk, (40, 120))
 
         verts = [(-10, 20), (30, 20), (20, 0), (0, 0)]
-        block = Block(ice, verts)
+        block = Block(Material.ice, verts)
         chunk = Chunk(block)
         self.add_chunk(chunk, (80, 55), 0.55)
 
         verts = [
             (-10, 20), (-10, 30), (10, 40), (20, 30),
             (20, 20), (10, 0), (0, 0)]
-        block = Block(granite, verts)
+        block = Block(Material.granite, verts)
         chunk = Chunk(block)
         self.add_chunk(chunk, (-50, 15), -0.1)
 
         verts1 = [(0, 0), (0, 30), (10, 30), (10, 0)]
-        block1 = Block(gold, verts1)
+        block1 = Block(Material.gold, verts1)
         verts2 = [(0, 0), (0, 10), (30, 10), (30, 0)]
-        block2 = Block(gold, verts2)
+        block2 = Block(Material.gold, verts2)
         chunk = Chunk(block1, block2)
         self.add_chunk(chunk, (60, 90), 0.4)
 
@@ -118,7 +116,7 @@ class World(object):
 
 
     def add_room(self, room):
-        room.add_to_body(self.space, self.staticBody)
+        room.add_to_body(self.space, self.static_body)
         self.rooms.add(room)
 
 
@@ -127,8 +125,8 @@ class World(object):
         self.chunks.add(chunk)
 
 
-    def tick(self, deltaT):
+    def tick(self, delta_t):
         if hasattr(self, 'player'):
             self.player.move()
-        self.space.step(deltaT)
+        self.space.step(delta_t)
 

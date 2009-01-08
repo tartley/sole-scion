@@ -4,10 +4,9 @@ from pyglet.window import key, Window
 import fixpath
 
 from solescion.testutils.listener import Listener
-from solescion.testutils.testcase import MyTestCase, run_test
+from solescion.testutils.testcase import MyTestCase, run
 from solescion.testutils.testimage import assert_entirely
 
-from solescion.controller.keyboard import handlers
 from solescion.model.world import Chunk, Room, World
 from solescion.model.shards.disc import Disc
 from solescion.utils.screenshot import image_from_window
@@ -70,7 +69,7 @@ class Renderer_test(MyTestCase):
             ("draw_chunk", chunk2),
             ("draw_chunk", chunk1),
         ]
-        self.assertEquals(listener.argsList, expected,
+        self.assertEquals(listener.args_list, expected,
             "draw didnt call subfns")
 
 
@@ -94,9 +93,8 @@ class Renderer_test(MyTestCase):
 
     def test_draw_chunk(self):
         self.fail("not tested")
-        self.fail("TODO: set and restore modelview projection")
 
 
 if __name__ == "__main__":
-    run_test(Renderer_test)
+    run(Renderer_test)
 

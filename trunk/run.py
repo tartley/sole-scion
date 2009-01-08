@@ -2,14 +2,14 @@
 
 from sys import argv, exit, path
 
-from solescion.application import title
+from solescion.application import TITLE
 from solescion.controller.gameloop import Gameloop
 
 
 def main():
 
     if '-v' in argv or '--version' in argv:
-        print title
+        print TITLE
         import pymunk
         print 'pymunk:', pymunk.version
         import pyglet
@@ -17,7 +17,7 @@ def main():
         exit(0)
 
     gameloop = Gameloop()
-    gameloop.init(title)
+    gameloop.init(TITLE)
     try:
         gameloop.run()
     finally:

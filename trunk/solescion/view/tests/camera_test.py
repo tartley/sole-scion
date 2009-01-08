@@ -12,7 +12,7 @@ from pyglet.gl import (
 import fixpath
 
 from solescion.testutils.testimage import assert_rectangle_at
-from solescion.testutils.testcase import MyTestCase, run_test
+from solescion.testutils.testcase import MyTestCase, run
 
 from solescion.model.world import World
 from solescion.utils.screenshot import image_from_window
@@ -147,5 +147,5 @@ class Camera_test(MyTestCase):
 
 
 if __name__ == "__main__":
-    run_test(Camera_test)
+    run(Camera_test)
 

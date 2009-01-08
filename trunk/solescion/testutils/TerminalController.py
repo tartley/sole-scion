@@ -7,6 +7,16 @@ from http://code.activestate.com/recipes/475116
 
 import sys, re
 
+
+def _tigetstr(cap_name):
+    # String capabilities can include "delays" of the form "$<2>".
+    # For any modern terminal, we should be able to just ignore
+    # these, so strip them out.
+    import curses
+    cap = curses.tigetstr(cap_name) or ''
+    return re.sub(r'\$<\d+>[/*]?', '', cap)
+
+
 class TerminalController:
     """
     A class that can be used to portably generate formatted output to
@@ -39,7 +49,7 @@ class TerminalController:
         ...     print 'This terminal supports clearning the screen.'
 
     Finally, if the width and height of the terminal are known, then
-    they will be stored in the `COLS` and `LINES` attributes.
+    they will be stored in the `cols` and `lines` attributes.
     """
     # Cursor movement:
     BOL = ''             #: Move the cursor to the beginning of the line
@@ -84,60 +94,57 @@ class TerminalController:
     _COLORS = """BLACK BLUE GREEN CYAN RED MAGENTA YELLOW WHITE""".split()
     _ANSICOLORS = "BLACK RED GREEN YELLOW BLUE MAGENTA CYAN WHITE".split()
 
-    def __init__(self, term_stream=sys.stdout):
+    def __init__(self, termstream=sys.stdout):
         """
         Create a `TerminalController` and initialize its attributes
         with appropriate values for the current terminal.
-        `term_stream` is the stream that will be used for terminal
+        `termstream` is the stream that will be used for terminal
         output; if this stream is not a tty, then the terminal is
         assumed to be a dumb terminal (i.e., have no capabilities).
         """
         # Curses isn't available on all platforms
-        try: import curses
-        except: return
+        try:
+            import curses
+        except ImportError:
+            return
 
         # If the stream isn't a tty, then assume it has no capabilities.
-        if not term_stream.isatty(): return
+        if not termstream.isatty():
+            return
 
         # Check the terminal type.  If we fail, then assume that the
         # terminal has no capabilities.
-        try: curses.setupterm()
-        except: return
+        try:
+            curses.setupterm()
+        except curses.error:
+            return
 
         # Look up numeric capabilities.
-        self.COLS = curses.tigetnum('cols')
-        self.LINES = curses.tigetnum('lines')
+        self.cols = curses.tigetnum('cols')
+        self.lines = curses.tigetnum('lines')
 
         # Look up string capabilities.
         for capability in self._STRING_CAPABILITIES:
             (attrib, cap_name) = capability.split('=')
-            setattr(self, attrib, self._tigetstr(cap_name) or '')
+            setattr(self, attrib, _tigetstr(cap_name) or '')
 
         # Colors
-        set_fg = self._tigetstr('setf')
+        set_fg = _tigetstr('setf')
         if set_fg:
-            for i,color in zip(range(len(self._COLORS)), self._COLORS):
+            for i, color in zip(range(len(self._COLORS)), self._COLORS):
                 setattr(self, color, curses.tparm(set_fg, i) or '')
-        set_fg_ansi = self._tigetstr('setaf')
+        set_fg_ansi = _tigetstr('setaf')
         if set_fg_ansi:
-            for i,color in zip(range(len(self._ANSICOLORS)), self._ANSICOLORS):
+            for i, color in zip(range(len(self._ANSICOLORS)), self._ANSICOLORS):
                 setattr(self, color, curses.tparm(set_fg_ansi, i) or '')
-        set_bg = self._tigetstr('setb')
+        set_bg = _tigetstr('setb')
         if set_bg:
-            for i,color in zip(range(len(self._COLORS)), self._COLORS):
+            for i, color in zip(range(len(self._COLORS)), self._COLORS):
                 setattr(self, 'BG_'+color, curses.tparm(set_bg, i) or '')
-        set_bg_ansi = self._tigetstr('setab')
+        set_bg_ansi = _tigetstr('setab')
         if set_bg_ansi:
-            for i,color in zip(range(len(self._ANSICOLORS)), self._ANSICOLORS):
+            for i, color in zip(range(len(self._ANSICOLORS)), self._ANSICOLORS):
                 setattr(self, 'BG_'+color, curses.tparm(set_bg_ansi, i) or '')
-
-    def _tigetstr(self, cap_name):
-        # String capabilities can include "delays" of the form "$<2>".
-        # For any modern terminal, we should be able to just ignore
-        # these, so strip them out.
-        import curses
-        cap = curses.tigetstr(cap_name) or ''
-        return re.sub(r'\$<\d+>[/*]?', '', cap)
 
     def render(self, template):
         """
@@ -148,54 +155,9 @@ class TerminalController:
         return re.sub(r'\$\$|\${\w+}', self._render_sub, template)
 
     def _render_sub(self, match):
-        s = match.group()
-        if s == '$$': return s
-        else: return getattr(self, s[2:-1])
-
-#######################################################################
-# Example use case: progress bar
-#######################################################################
-
-class ProgressBar:
-    """
-    A 3-line progress bar, which looks like::
-
-                                Header
-        20% [===========----------------------------------]
-                           progress message
-
-    The progress bar is colored, if the terminal supports color
-    output; and adjusts to the width of the terminal.
-    """
-    BAR = '%3d%% ${GREEN}[${BOLD}%s%s${NORMAL}${GREEN}]${NORMAL}\n'
-    HEADER = '${BOLD}${CYAN}%s${NORMAL}\n\n'
-
-    def __init__(self, term, header):
-        self.term = term
-        if not (self.term.CLEAR_EOL and self.term.UP and self.term.BOL):
-            raise ValueError("Terminal isn't capable enough -- you "
-                             "should use a simpler progress dispaly.")
-        self.width = self.term.COLS or 75
-        self.bar = term.render(self.BAR)
-        self.header = self.term.render(self.HEADER % header.center(self.width))
-        self.cleared = 1 #: true if we haven't drawn the bar yet.
-        self.update(0, '')
-
-    def update(self, percent, message):
-        if self.cleared:
-            sys.stdout.write(self.header)
-            self.cleared = 0
-        n = int((self.width-10)*percent)
-        sys.stdout.write(
-            self.term.BOL + self.term.UP + self.term.CLEAR_EOL +
-            (self.bar % (100*percent, '='*n, '-'*(self.width-10-n))) +
-            self.term.CLEAR_EOL + message.center(self.width))
-
-    def clear(self):
-        if not self.cleared:
-            sys.stdout.write(self.term.BOL + self.term.CLEAR_EOL +
-                             self.term.UP + self.term.CLEAR_EOL +
-                             self.term.UP + self.term.CLEAR_EOL)
-            self.cleared = 1
-
+        sub = match.group()
+        if sub == '$$':
+            return sub
+        else:
+            return getattr(self, sub[2:-1])
 
