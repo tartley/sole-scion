@@ -3,7 +3,7 @@ from __future__ import division
 from pyglet import clock
 from pyglet.window import key, Window
 
-from solescion.controller.keyboard import keystate, handlers, on_key_press
+from solescion.controller.keyboard import Keyboard, on_key_press
 from solescion.model.world import World
 from solescion.utils.screenshot import save_screenshot
 from solescion.view.camera import Camera
@@ -24,7 +24,7 @@ class Gameloop(object):
         self.world = None
         self.renderer = None
         self.paused = False
-        handlers.update({
+        Keyboard.handlers.update({
             key.ESCAPE: self.quit_game,
             key.PAUSE: self.toggle_pause,
             key.F12: lambda: save_screenshot(self.window),
@@ -40,7 +40,7 @@ class Gameloop(object):
         self.window = Window(
             caption=caption, fullscreen=True, visible=False)
         self.window.on_key_press = on_key_press
-        self.window.push_handlers(keystate)
+        self.window.push_handlers(Keyboard.keystate)
 
 
     def dispose(self):

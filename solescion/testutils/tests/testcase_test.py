@@ -8,11 +8,11 @@ import fixpath
 from pyglet.gl import GLint
 from pymunk import Vec2d
 
-from solescion.testutils.listener import Listener
-from solescion.testutils.testcase import (
+from ..listener import Listener
+from ..testcase import (
     _compare_indexables, _compare_lengths, _compare_types, _is_int_indexable,
     _tostr,
-    combine, MyTestCase, run_test,
+    combine, MyTestCase, run,
 )
 
 
@@ -434,19 +434,19 @@ class combine_test(RealTestCase):
         self.assert_combine_behaviour(manyTests, 6, [1, 2, 1, 2, 3, 3])
 
 
-class run_test_test(MyTestCase):
+class run_test(MyTestCase):
 
     def test_passes_verbosity(self):
         mockRunner = Listener()
-        mockRunner.returnValue = TextTestRunner()
+        mockRunner.return_value = TextTestRunner()
         mockRun = Listener()
-        mockRunner.returnValue.run = mockRun
+        mockRunner.return_value.run = mockRun
         from solescion.testutils import testcase as testcase_module
         orig = testcase_module.TextTestRunner
         testcase_module.TextTestRunner = mockRunner
         try:
             suite = ClassUnderTest("testAlwaysPasses")
-            run_test(suite, verbosity=33)
+            run(suite, verbosity=33)
         finally:
             testcase_module.TextTestRunner = orig
         self.assertEquals(mockRunner.kwargs['verbosity'], 33,
@@ -460,7 +460,7 @@ TestCase_test = combine(
     TestCase_assertRaises_test,
     TestCase_assertValidColor_test,
     combine_test,
-    run_test_test,
+    run_test,
 )
 
 if __name__ == "__main__":

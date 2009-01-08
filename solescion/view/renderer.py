@@ -1,5 +1,3 @@
-"Module of the 'Renderer' class"
-
 from __future__ import division
 from math import cos, sin, pi
 
@@ -15,6 +13,8 @@ from solescion.model.shards.disc import Disc
 
 class Renderer(object):
     "Draws OpenGL primitives to represent the current state of the model"
+    # pylint: disable-msg=R0201
+    #   Method could be a function: acknowledged.
 
     def __init__(self, camera):
         self.camera = camera
@@ -84,7 +84,7 @@ class Renderer(object):
 
     def draw_disc(self, disc):
         "Draw the given circular chunk"
-        numTris = 32
+        num_tris = 32
         x, y = disc.get_offset()
         glBegin(GL_TRIANGLE_FAN)
         darker = (
@@ -94,13 +94,13 @@ class Renderer(object):
         )
         glColor3ub(0, 0, 0)
         glVertex2f(x, y)
-        colFreq = 4
-        for idx in range(numTris+1):
-            if idx % (colFreq*2) == 0:
+        col_freq = 4
+        for idx in range(num_tris + 1):
+            if idx % (col_freq * 2) == 0:
                 glColor3ub(*disc.material.color)
-            elif (idx + colFreq) % colFreq == 0:
+            elif (idx + col_freq) % col_freq == 0:
                 glColor3ub(*darker)
-            theta = 2 * pi / numTris * idx
+            theta = 2 * pi / num_tris * idx
             glVertex2f(
                 x + disc.radius * sin(theta),
                 y + disc.radius * cos(theta))

@@ -2,7 +2,7 @@
 
 import fixpath
 
-from solescion.testutils.testcase import MyTestCase, run_test
+from solescion.testutils.testcase import MyTestCase, run
 
 class AcceptanceTest_test(MyTestCase):
 
@@ -10,4 +10,4 @@ class AcceptanceTest_test(MyTestCase):
         self.fail("not tested")
 
 if __name__ == "__main__":
-    run_test(AcceptanceTest_test)
+    run(AcceptanceTest_test)

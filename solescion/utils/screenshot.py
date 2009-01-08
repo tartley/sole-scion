@@ -6,7 +6,7 @@ from PIL import Image
 
 from pyglet.image import get_buffer_manager
 
-from solescion.application import name
+from solescion.application import NAME
 
 
 def _get_filename(prefix, extension):
@@ -30,15 +30,14 @@ def image_from_window(window):
     "Convert given Pyglet Window into a PIL Image"
     tempfile, fname = _create_tempfile()
     window.switch_to()
-    colorBuffer = get_buffer_manager().get_color_buffer()
-    colorBuffer.save(filename=fname, file=tempfile)
+    get_buffer_manager().get_color_buffer().save(filename=fname, file=tempfile)
     tempfile.seek(0)
     image = Image.open(tempfile)
     return image
 
 
 def save_screenshot(window):
-    filename = _get_filename("%s-screenshot-" % name, ".png")
+    filename = _get_filename("%s-screenshot-" % NAME, ".png")
     if filename:
         image = image_from_window(window)
         image.save(filename)

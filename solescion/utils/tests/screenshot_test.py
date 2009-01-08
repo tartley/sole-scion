@@ -8,7 +8,7 @@ from pyglet import gl
 
 import fixpath
 
-from solescion.testutils.testcase import combine, MyTestCase, run_test
+from solescion.testutils.testcase import combine, MyTestCase, run
 
 from solescion.utils.screenshot import _get_filename, image_from_window, save_screenshot
 
@@ -115,4 +115,4 @@ Screenshot_test = combine(
 )
 
 if __name__ == '__main__':
-    run_test(Screenshot_test)
+    run(Screenshot_test)

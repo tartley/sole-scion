@@ -4,12 +4,12 @@
 from pyglet.window.key import KeyStateHandler
 
 
-keystate = KeyStateHandler()
+class Keyboard(object):
+    keystate = KeyStateHandler()
+    handlers = {}
 
-handlers = {
-}
 
 def on_key_press(symbol, _):
-    if symbol in handlers:
-        handlers[symbol]()
+    if symbol in Keyboard.handlers:
+        Keyboard.handlers[symbol]()
 

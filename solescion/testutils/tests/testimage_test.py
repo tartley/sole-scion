@@ -8,7 +8,7 @@ import fixpath
 from pyglet import gl
 from pyglet.window import Window
 
-from solescion.testutils.testcase import MyTestCase, run_test
+from solescion.testutils.testcase import MyTestCase, run
 from solescion.testutils.testimage import (
     assert_contains, assert_entirely,
     assert_rectangle_at, save_to_tempfile
@@ -191,5 +191,5 @@ class TestImage_test(MyTestCase):
 
 
 if __name__ == "__main__":
-    run_test(TestImage_test)
+    run(TestImage_test)
 

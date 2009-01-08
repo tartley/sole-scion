@@ -1,3 +1,4 @@
-name = "SoleScion"
-version = "0.2.0-svn"
-title = "%s %s" % (name, version)
+NAME = "SoleScion"
+VERSION = "0.2.2-dev"
+TITLE = "%s %s" % (NAME, VERSION)
+

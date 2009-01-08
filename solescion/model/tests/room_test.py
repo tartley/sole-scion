@@ -6,10 +6,10 @@ from pyglet.window import Window
 from pymunk import Body, inf, Space
 
 from solescion.testutils.listener import Listener
-from solescion.testutils.testcase import MyTestCase, run_test
+from solescion.testutils.testcase import MyTestCase, run
 
 from solescion.model.room import Room
-from solescion.model.material import air
+from solescion.model.material import Material
 
 
 class Room_test(MyTestCase):
@@ -18,7 +18,7 @@ class Room_test(MyTestCase):
         color = (0.1, 0.2, 0.3)
         verts = [(-1, -2), (-5, 6), (3, 4)]
         room = Room(verts)
-        self.assertEquals(room.material, air, "bad material")
+        self.assertEquals(room.material, Material.air, "bad material")
         self.assertEquals(room.verts, verts, "should store verts")
 
 
@@ -59,4 +59,4 @@ class Room_test(MyTestCase):
 
 
 if __name__ == "__main__":
-    run_test(Room_test)
+    run(Room_test)

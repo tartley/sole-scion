@@ -5,22 +5,22 @@ import fixpath
 from pymunk import Body, moment_for_poly, Poly, Shape, Space, Vec2d
 
 from solescion.testutils.listener import Listener
-from solescion.testutils.testcase import MyTestCase, run_test
+from solescion.testutils.testcase import MyTestCase, run
 
 from solescion.utils.geometry import offset_verts, poly_area
 from solescion.model.shards.block import Block
-from solescion.model.material import gold
+from solescion.model.material import Material
 
 
 class Block_test(MyTestCase):
 
     def test_constructor(self):
         verts = [(-1, -2), (-3, +4), (+5, +6), (+7, -8)]
-        block = Block(gold, verts)
+        block = Block(Material.gold, verts)
         self.assertEquals(block.verts, verts, "bad verts")
-        self.assertEquals(block.material, gold)
+        self.assertEquals(block.material, Material.gold)
 
-        expectedMass = gold.density * poly_area(verts)
+        expectedMass = Material.gold.density * poly_area(verts)
         self.assertEquals(block.mass, expectedMass, "mass wrong")
         self.assertNone(block.shape, "bad shape")
 
@@ -32,7 +32,7 @@ class Block_test(MyTestCase):
         orig = block_module.assert_valid_poly
         block_module.assert_valid_poly = listener
         try:
-            block = Block(gold, verts)
+            block = Block(Material.gold, verts)
         finally:
             block_module.assert_valid_poly = orig
         self.assertEquals(listener.args, (verts,), "didnt validate verts")
@@ -41,7 +41,7 @@ class Block_test(MyTestCase):
     def test_constructor_applies_offset(self):
         verts = [(-1, -2), (-3, +4), (+5, +6), (+7, -8)]
         offset = (5, 6)
-        block = Block(gold, verts, offset)
+        block = Block(Material.gold, verts, offset)
 
         expected = offset_verts(verts, offset)
         self.assertEquals(block.verts, expected, "didnt apply offset")
@@ -49,14 +49,14 @@ class Block_test(MyTestCase):
 
     def test_constructor_centers(self):
         verts = [(0, 0), (9, 12), (6, 0)]
-        block = Block(gold, verts, center=True)
+        block = Block(Material.gold, verts, center=True)
         expected = [(-5, -4), (4, 8), (1, -4)]
         self.assertEquals(block.verts, expected, "didnt centralize verts")
 
 
     def test_constructor_centres_then_offsets(self):
         verts = [(0, 0), (9, 12), (6, 0)]
-        block = Block(gold, verts, center=True, offset=(10, 20))
+        block = Block(Material.gold, verts, center=True, offset=(10, 20))
         expected = [(5, 16), (14, 28), (11, 16)]
         self.assertEquals(block.verts, expected,
             "didnt apply center and offset right")
@@ -65,20 +65,20 @@ class Block_test(MyTestCase):
     def test_get_moment(self):
         verts = [(-1, -1), (-1, +1), (+1, +1), (+1, -1)]
         offset = (5, 6)
-        block = Block(gold, verts, offset)
+        block = Block(Material.gold, verts, offset)
         expected = moment_for_poly(block.mass, verts, offset)
         self.assertEquals(block.get_moment(), expected, "moment wrong")
 
 
     def test_get_offset(self):
         verts = [(10, 20), (10, 24), (12, 24), (12, 20)]
-        block = Block(gold, verts, (100, 200))
+        block = Block(Material.gold, verts, (100, 200))
         self.assertEquals(block.get_offset(), (111, 222), "bad offset")
 
 
     def test_offset(self):
         verts = [(-1, -2), (-3, +4), (+5, +6), (+7, -8)]
-        block = Block(gold, verts, (10, 20))
+        block = Block(Material.gold, verts, (10, 20))
         block.offset((100, 200))
         expected = [(109, 218), (107, 224), (115, 226), (117, 212)]
         self.assertEquals(block.verts, expected, "didnt apply offset")
@@ -89,7 +89,7 @@ class Block_test(MyTestCase):
         body = Body(10, 20)
         verts = [(-1, -1), (-1, +1), (+1, +1), (+1, -1)]
         offset = (1, 2)
-        block = Block(gold, verts, offset)
+        block = Block(Material.gold, verts, offset)
 
         block.add_to_body(space, body)
 
@@ -98,9 +98,10 @@ class Block_test(MyTestCase):
         shapeVerts = block.shape.get_points()
         expected = [Vec2d(v) for v in offset_verts(verts, offset)]
         self.assertEquals(shapeVerts, expected, "bad shape verts")
-        self.assertAlmostEquals(block.shape.friction, gold.friction,
+        self.assertAlmostEquals(block.shape.friction, Material.gold.friction,
             msg="bad shape friction")
-        self.assertAlmostEquals(block.shape.elasticity, gold.elasticity,
+        self.assertAlmostEquals(
+            block.shape.elasticity, Material.gold.elasticity,
             msg="bad shape elasticity")
         spaceShape = [s for s in space.shapes][0]
         self.assertEquals(block.shape, spaceShape,
@@ -108,6 +109,6 @@ class Block_test(MyTestCase):
 
 
 if __name__ == "__main__":
-    run_test(Block_test)
+    run(Block_test)
 
 

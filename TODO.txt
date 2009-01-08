@@ -3,13 +3,12 @@ to HISTORY.txt (*=planned task, +=unexpected task)
 
 Technical Debt
 
-  + fix failing tests
-  + fix pylint
+
   + source distribution using setuptools instead of zip
   * Windows binary distributable.
-  + tidy up run* all over the place
-  + move dependancies inside solescion dir
+  + move dependancies inside solescion dir?
   + use michael's Mock instead of our Listener
+  + use nose to run tests. delete 'all tests' and the like
 
 Maze
 
@@ -111,5 +110,6 @@ Frills
 
 
 == DONE ==
-
-
+  + fix failing tests
+  + tidy up run* all over the place
+  + fix pylint
