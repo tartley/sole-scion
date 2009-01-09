@@ -3,92 +3,84 @@ to HISTORY.txt (*=planned task, +=unexpected task)
 
 Technical Debt
 
-
-  + source distribution using setuptools instead of zip
-  * Windows binary distributable.
-  + move dependancies inside solescion dir?
-  + use michael's Mock instead of our Listener
-  + use nose to run tests. delete 'all tests' and the like
+    + source distribution using setuptools instead of zip
+    * Windows binary distributable.
+    + update pymunk to 0.8.2
+    + check latest pyglet
+    + use michael's Mock instead of our Listener
+    + use nose to run tests. delete 'all tests' and the like
+    + check out wossname's cheat sheet of python standard practices,
+        for example using __version__ attribute and parsing cmd line args.
+        http://panela.blog-city.com/more_beginner_python_cheatsheets.htm
 
 Maze
 
-  * Handle multiple connected room polygons.
-  * Autogenerate a set of rooms to form a maze of sorts.
-  + randomly generate in-room rocks
+    * Handle multiple connected room polygons.
+    * Autogenerate a set of rooms to form a maze of sorts.
+    + randomly generate in-room rocks
+
 
 Interaction
-
-  + Keypresses:
-    + quit
-    + pause
-    + screenshot
+    + pause key pause
     + toggle fullscreen
-
-Infrastructure
-
-  + use michael foord's Mock instead of our own 'Listener' - for its additional
-    ability to conveniently patch out attributes of modules
-  + check out wossname's cheat sheet of python standard practices,
-    for example using __version__ attribute.
-    http://panela.blog-city.com/more_beginner_python_cheatsheets.htm
+    + handle window resize
 
 Svg Loader
 
-  * Load svg from Inkscape to define rigid bodies and their appearance
+    * Load svg from Inkscape to define rigid bodies and their appearance?
 
 Levels
 
-  * draw levels instead of randomidsing them?
-  * random levels earn resources to access drawn levels?
+    * draw levels instead of randomidsing them?
+    * random levels earn resources to access drawn levels?
 
 Vehicle
 
-  * vehicle: 2 wheels plus chassis
-  * drives left, right
-  * opposite direction brakes to a standstill
-  * traction / rev control
+    * vehicle: 2 wheels plus chassis
+    * drives left, right
+    * opposite direction brakes to a standstill
+    * traction / rev control
 
 Sound
 
-  * sound effects
-  * music
+    * music
+    * sound effects
 
 Rendering & performance
 
-  * Render using GL_TRIANGLES in pyglet batches
-  * Render only rooms, and their contents, that are on-screen.
-  * Read up on BSPs, scene graphs, spatial indexes.
+    * Render using GL_TRIANGLES in pyglet batches
+    * Render only rooms, and their contents, that are on-screen.
+    * Read up on BSPs, scene graphs, spatial indexes.
 
 Harpoon
 
-  * add turret to vehicle
-  * rendered so you can see direction it points
-  * swivels with mouse or keys
-  * fired with mouse or key
-  * embeds on impact
-  * first pass: vanishes when key released
-  * cable rendering
-  * cable physics
-  * cable reeled with up/down (mouse or keys)
-  * releases & rewinds when key is released
-  * laser sights?
+    * add harpoon to vehicle
+    * rendered so you can see direction it points
+    * swivels with mouse or keys
+    * fired with mousebutton or key
+    * embeds on impact
+    * first pass: vanishes when key released
+    * cable rendering
+    * cable physics - first pass, no collision with walls
+    * cable reeled with up/down (mouse or keys)
+    * releases & rewinds when key is released
 
 Performance
 
-  * measure
-  * improve
+    * measure
+    * improve
 
 Rescuees
 
-  * guys (a single quad with bitmap animations?)
-  * Scatter maze with guys to rescue
-  * guys wander left / right on flat surfaces
-  * guys die in heavy collisions
-  * guys climb into vehicle
+    * guys. Physics: a disc? Render: a textured quad?
+    * Scatter maze with guys to rescue
+    * guys wander left / right on flat surfaces
+    * guys die in heavy collisions
+    * guys climb into vehicle
 
 Completion / Death / Structure
 
-  * ?
+    * ?
 
 Achievements
 
@@ -103,13 +95,31 @@ Achievements
 
 Frills
 
-  * down key grabs the ground, useful for pulling things with the cable
-  * suspension
-  * brake lights
-  * damage
+    + down key grabs the ground, useful for pulling things with the cable
+    + suspension
+    + brake lights
+    + damage
+    + dents (in body and wheels)
+    + traction control
+    + cool skids
+    + smoke/dust on cool skids
+    + nitro boost
+    + harpoon laser sights
+    + harpoon collision with room walls
 
 
 == DONE ==
-  + fix failing tests
-  + tidy up run* all over the place
-  + fix pylint
+
+Technical Debt
+
+    + fix failing tests
+    + tidy up run* all over the place
+    + fix pylint
+    + move dependancies inside solescion dir?
+        I think not. Searches, pylint, nose would all include dependancies
+
+Keypresses:
+
+    + quit (done)
+    + screenshot (done)
+
