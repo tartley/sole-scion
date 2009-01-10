@@ -94,7 +94,7 @@ def zip_directory():
     def zip_dir(archive, prefix, path):
         '''
         archive=zip file to write to
-        prefix+path=directory to write to zip file
+        prefix+path=directory to be zipped
         prefix is stripped from the paths within the zip
         '''
         fullpath = join(prefix, path)
