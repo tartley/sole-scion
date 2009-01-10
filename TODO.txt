@@ -1,13 +1,6 @@
 See bottom of file for tasks that are 'done' but which have not yet been moved
 to HISTORY.txt (*=planned task, +=unexpected task)
 
-Packaging
-    + test failures on Windows
-    + upload new source/binary versions as featured downloads
-    + quick architecture diagram
-    + consistently use either abs or rel imports for solescion packages
-    + dependancies as svn:externals ?
-
 Maze
     * Handle multiple connected room polygons.
     * Autogenerate a set of rooms to form a maze of sorts.
@@ -30,6 +23,10 @@ Testing
     + use nose to run tests. delete 'all tests' and the like
 
 Infrastructure
+    + test failures on Windows
+    + quick architecture diagram
+    + consistently use either abs or rel imports for solescion packages
+    + dependancies as svn:externals ?
     + check out wossname's cheat sheet of python standard practices,
       http://panela.blog-city.com/more_beginner_python_cheatsheets.htm
     + try out using virtualenv to install dependancies, and get distools
@@ -119,6 +116,7 @@ Technical Debt
     + application takes version number from setup.py
     * setup.py py2exe_zip() creates archive with unwanted 'dist' path cmpt.
     * Windows binary distributable.
+    + upload new source/binary versions as featured downloads
 
 Keypresses:
     + quit (done)
