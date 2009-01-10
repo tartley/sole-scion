@@ -2,12 +2,9 @@ See bottom of file for tasks that are 'done' but which have not yet been moved
 to HISTORY.txt (*=planned task, +=unexpected task)
 
 Packaging
-    + test failures on Windows
-    + source distribution using setuptools instead of zip
     + setup takes version from application.py
-    + py2exe should maybe use a separate, nondistributed setup.py
-    + use sys.platform == 'win32', not platform.system()
     * Windows binary distributable.
+    + test failures on Windows
     + upload new source/binary versions as featured downloads
     + quick architecture diagram
     + consistently use either abs or rel imports for solescion packages
@@ -42,6 +39,7 @@ Infrastructure
     + remove #! lines if tests can't be called directly, or if -O flag
       can't be used
     + auto upload source/binary distributions? set as featured downloads?
+      http://code.google.com/p/support/source/browse/trunk/scripts/googlecode_distutils_upload.py
 
 Svg Loader
     * Load svg from Inkscape to define rigid bodies and their appearance?
@@ -118,6 +116,7 @@ Technical Debt
     + fix pylint
     + move dependancies inside solescion dir?
         I think not. Searches, pylint, nose would all include dependancies
+    + source distribution using setuptools instead of zip
 
 Keypresses:
     + quit (done)
