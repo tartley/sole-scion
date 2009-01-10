@@ -31,7 +31,7 @@ def _other():
         url = 'http://code.google.com/p/sole-scion/',
         author = 'Jonathan Hartley',
         author_email = 'tartley@tartley.com',
-        description = 'A game with 2D vector graphics and rigid-body physics.',
+        description = 'A game with 2D vector graphics and rigid body physics.',
 
         py_modules = [
             'run',
