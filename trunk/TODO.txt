@@ -2,7 +2,6 @@ See bottom of file for tasks that are 'done' but which have not yet been moved
 to HISTORY.txt (*=planned task, +=unexpected task)
 
 Packaging
-    + setup takes version from application.py
     * Windows binary distributable.
     + test failures on Windows
     + upload new source/binary versions as featured downloads
@@ -117,6 +116,7 @@ Technical Debt
     + move dependancies inside solescion dir?
         I think not. Searches, pylint, nose would all include dependancies
     + source distribution using setuptools instead of zip
+    + application takes version number from setup.py
 
 Keypresses:
     + quit (done)

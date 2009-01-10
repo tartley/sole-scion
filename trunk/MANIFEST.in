@@ -1,0 +1,6 @@
+include pymunk/chipmunk.dll
+include pymunk/libchipmunk.so
+include LICENSE.txt
+include Makefile
+include pylint.rc
+
