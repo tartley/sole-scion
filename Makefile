@@ -1,7 +1,13 @@
 all: exe
 .PHONY: all
 
-exe: dist/run.exe
+pylint:
+	pylint --rcfile=pylintrc -i y solescion
+
+tests:
+	python -O run_tests.py
+
+py2exe: dist/run.exe
 .PHONY: exe
 
 dist/run.exe: run.py setup.py
@@ -10,20 +16,19 @@ dist/run.exe: run.py setup.py
 tags:
 	(cd solescion; ctags -R .; )
 
-zip:
-	bin/make_zip
-.PHONY: zip
+sdist:
+	python setup.py sdist
+.PHONY: sdist
+
+install:
+	python setup.py install
+.PHONY: install
 
 clean:
-	rm -rf build dist run.py?
-	-find solescion \( \
-		-name 'tags' -o \
+	rm -rf build dist solescion\tags
+	-find . \( \
 		-name '*.pyc' -o \
 		-name '*.pyo' \
 		\) -exec rm {} \;
 .PHONY: clean
-
-install:
-	@echo 'There is no installer.'
-.PHONY: install
 
