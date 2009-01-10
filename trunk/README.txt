@@ -2,68 +2,69 @@
 
 http://code.google.com/p/sole-scion/
 
-A three month project to write a 2D vector graphic adventure game with
-Newtonian rigid-body dynamics, and a vision to exploit the scaling, toppling,
-sliding and rolling of vector shapes. 
+A game with 2D vector graphics and rigid body physics, and a vision to exploit the scaling, toppling, sliding and rolling of vector shapes.
 
-Currently at a very early stage of development. Only of interest to enthusiastic
-programmers. If it doesn't work for you or you have problems, please let me know - see the 'Contact' section.
+Currently at a very early stage of development. Only of interest to the geekiest of my friends and to enthusiastic programmers.
 
-Works on Linux and on Windows. Also works under PyPy, with functools installed. Has anyone tried it on a Mac?
+Works on Windows and Macs and Linux (and under [http://codespeak.net/pypy/dist/pypy/doc/home.html PyPy], with functools installed.)
 
 
 ==Screenshots==
 
-Version 0.2. Arbitary polygons made up from collections of circles and convex
+http://sole-scion.googlecode.com/svn/trunk/screenshots/SoleScion-screenshot-v0.2.png
+
+Version 0.2. Arbitrary polygons made up from collections of circles and convex
 chunks. Each chunk has a material, which determines its physical properties
 (density, friction, elasticity, color.)
 
-http://sole-scion.googlecode.com/svn/trunk/screenshots/SoleScion-screenshot-v0.2.png
 
+http://sole-scion.googlecode.com/svn/trunk/screenshots/SoleScion-screenshot-v0.1.1.spike.png
 
 A spike of v0.2, circles rain down on a polygonal surface. The current
 HEAD does not look as cutesy as this, since it's missing some superficial features like gradient fills and stars in the background.
 
-http://sole-scion.googlecode.com/svn/trunk/screenshots/SoleScion-screenshot-v0.1.1.spike.png
+
+==To play==
+
+If the following doesn't work for you, please let me know about it - see the 'Contact' section.
 
 
-==Dependencies==
+===On Windows===
 
-You must install these manually.
+Download the [http://code.google.com/p/sole-scion/downloads/list?can=3&q=binary featured Windows binary download], unzip and double-click 'run.bat'.
 
-  * Python 2.5, (or a lower version with the ctypes module.) http://python.org
+===On Linux or Mac==
 
-  * Pymunk 0.8, Python bindings to Chipmunk physics library, which provides 2D collision detection and rigid body dynamics. Includes a binary of Chipmunk 4.0.2. http://code.google.com/p/pymunk.
- 
-  * Pyglet 1.1, game library, providing output window, OpenGL graphics, keyboard and mouse input, sound, etc. http://www.pyglet.org
+Install Python 2.5 or 2.6 from [http://python.org python.org].
 
+Download the [http://code.google.com/p/sole-scion/downloads/list?can=3&q=source featured source code download].
 
-==Install / Running==
+Untar it and run the game by opening a command-line terminal and typing something like:
 
-There is no install. To run, you must be in the SoleScion directory, then:
-
-    bin/run        (Linux)
-
-    bin\run.bat    (Windows)
-
-
-==Current Status==
-
-v0.2, 6 Aug 08, week 10 of 12
-  * A handful of circular and polygonal entities bounce around inside a single polygonal room.
-  * Arbitary polygons are supported by composing one or more convex polys and/or circles.
-  * Each component part of a poly has a material, which determines its physical properties: density, friction, elasticity and color.
-  * Rendering is very plain indeed.
-  * Is now unit tested, and has a basic acceptance test.
-  * Internal architecture now defined (v0.1 spike was just one big script)
+{{{
+  tar -xzf SoleScion-X.X.X.tar.gz
+  cd SoleScion-X.X.X
+  python -O run.py
+}}}
 
 
 ==Known Problems==
 
-  * It is possible for a fast-moving object to make it through a Room wall from one frame to the next. Possible solution is to use fat line segments (ie. width>0) for wall collision shapes to help prevent this. This would have the amusing side-effect that walls at the intersection between rooms would have rounded corners, which is fine, but might be slightly troublesome to render.
+  * It's still very early days. Lower your expectations.
+  * It is possible for a very fast-moving object to make it through a Room wall from one frame to the next. One possible solution is to use fat line segments (ie. width>0) to define the outline of rooms.
+
+
+==Dependencies==
+
+Many thanks to the creators of the following invaluable libraries, upon which
+this project is built:
+
+  * [http://code.google.com/p/pymunk Pymunk], Python bindings to the [http://code.google.com/p/chipmunk-physics/ Chipmunk] physics library, which provides brilliant 2D rigid body dynamics.
+ 
+  * [http://www.pyglet.org Pyglet] game library, providing output window, OpenGL graphics, keyboard and mouse input, sound. 
 
 
 ==Contact==
 
-Jonathan Hartley, http://tartley.com, tartley at tartley dot com
+Jonathan Hartley, http://tartley.com, tartley at tartley dot com, twitter:tartley
 
