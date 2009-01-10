@@ -10,7 +10,7 @@ def _py2exe():
 
     import py2exe
 
-    args = dict(
+    setup(
         windows=['run.py'],
         options={
             "py2exe":{
@@ -76,6 +76,7 @@ def main():
         _py2exe()
     else:
         _other()
+
 
 if __name__ == '__main__':
     main()
