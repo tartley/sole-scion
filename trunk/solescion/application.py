@@ -1,4 +1,4 @@
-NAME = "SoleScion"
-VERSION = "0.2.2-dev"
+from setup import NAME, VERSION
+
 TITLE = "%s %s" % (NAME, VERSION)
 
