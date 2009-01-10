@@ -1,7 +1,12 @@
 from distutils.core import setup
 from sys import argv
 
-if 'py2exe' in argv:
+
+NAME = "SoleScion"
+VERSION = "0.2.2dev"
+
+
+def _py2exe():
 
     import py2exe
 
@@ -18,11 +23,11 @@ if 'py2exe' in argv:
         ],
     )
 
-else:
+def _other():
 
-    args = dict(
-        name = 'solescion',
-        version = '0.2.2dev',
+    setup(
+        name = NAME,
+        version = VERSION,
         url = 'http://code.google.com/p/sole-scion/',
         author = 'Jonathan Hartley',
         author_email = 'tartley@tartley.com',
@@ -65,5 +70,14 @@ else:
         ],
     )
 
-setup(**args)
+
+def main():
+    if 'py2exe' in argv:
+        _py2exe()
+    else:
+        _other()
+
+if __name__ == '__main__':
+    main()
+
 
