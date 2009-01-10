@@ -61,10 +61,11 @@ this project is built:
 
   * [http://code.google.com/p/pymunk Pymunk], Python bindings to the [http://code.google.com/p/chipmunk-physics/ Chipmunk] physics library, which provides brilliant 2D rigid body dynamics.
  
-  * [http://www.pyglet.org Pyglet] game library, providing output window, OpenGL graphics, keyboard and mouse input, sound. 
+  * [http://www.pyglet.org Pyglet] game library, providing fantastic facilities for creating windows, OpenGL graphics, keyboard and mouse input, sound, etc.
 
 
 ==Contact==
 
 Jonathan Hartley, http://tartley.com, tartley at tartley dot com, twitter:tartley
+
 

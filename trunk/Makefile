@@ -3,15 +3,21 @@ all: exe
 
 pylint:
 	pylint --rcfile=pylintrc -i y solescion
+.PHONY: pylint
 
 tests:
 	python -O run_tests.py
+.PHONY: tests
 
 py2exe: dist/run.exe
 .PHONY: exe
 
 dist/run.exe: run.py setup.py
-	python2.5 setup.py py2exe
+	python setup.py py2exe
+
+winzip: dist/run.exe
+	python setup.py winzip
+.PHONY: winzip
 
 tags:
 	(cd solescion; ctags -R .; )
