@@ -42,7 +42,7 @@ Svg Loader
     (check out squirtle)
 
 Levels
-    * draw levels instead of randomidsing them?
+    * draw levels instead of randomising them?
     * random levels earn resources to access drawn levels?
 
 Sound

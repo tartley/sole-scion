@@ -8,20 +8,7 @@ Currently at a very early stage of development. Only of interest to the geekiest
 
 Works on Windows and Macs and Linux (and under [http://codespeak.net/pypy/dist/pypy/doc/home.html PyPy], with functools installed.)
 
-
-==Screenshots==
-
-http://sole-scion.googlecode.com/svn/trunk/screenshots/SoleScion-screenshot-v0.2.png
-
-Version 0.2. Arbitrary polygons made up from collections of circles and convex
-chunks. Each chunk has a material, which determines its physical properties
-(density, friction, elasticity, color.)
-
-
-http://sole-scion.googlecode.com/svn/trunk/screenshots/SoleScion-screenshot-v0.1.1.spike.png
-
-A spike of v0.2, circles rain down on a polygonal surface. The current
-HEAD does not look as cutesy as this, since it's missing some superficial features like gradient fills and stars in the background.
+Screenshots are [http://code.google.com/p/sole-scion/wiki/Screenshots here].
 
 
 ==To play==
