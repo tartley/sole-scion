@@ -1,8 +1,5 @@
-#summary Screenshots
+#summary Screenshots.
 #labels Featured
-
-= Screenshots =
-
 
 == Version 0.2.2 ==
 
