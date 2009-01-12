@@ -1,5 +1,5 @@
 #summary Screenshots.
-#labels Featured
+#labels Phase-Requirements
 
 == Version 0.2.2 ==
 
