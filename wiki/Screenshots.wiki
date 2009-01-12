@@ -6,27 +6,29 @@
 
 == Version 0.2.2 ==
 
-http://sole-scion.googlecode.com/svn/trunk/screenshots/SoleScion-screenshot-v0.2.2.png
-
 Superficial gradient fills added.
+
+http://sole-scion.googlecode.com/svn/trunk/screenshots/SoleScion-screenshot-v0.2.2.png
 
 
 == Version 0.2.0 ==
 
+Objects with different density, elasticity, friction bounce around inside a polygonal room.
+
 http://sole-scion.googlecode.com/svn/trunk/screenshots/SoleScion-screenshot-v0.2.0.png
 
-Objects with different density, elasticity, friction bounce around inside a polygonal room.
 
 
 == Version 0.1.1 ==
 
+Circles rain down on a polygonal surface. Some superficial pretty, like the gradient fill sky and objects, and stars in the background.
+
 http://sole-scion.googlecode.com/svn/trunk/screenshots/SoleScion-screenshot-v0.1.1.png
 
-Circles rain down on a polygonal surface. Some superficial pretty, like the gradient fill sky and objects, and stars in the background.
 
 
 == Version 0.1.0 ==
 
-http://sole-scion.googlecode.com/svn/trunk/screenshots/SoleScion-screenshot-v0.1.0.png
-
 Circles rain down on an inclined plane. They bounce!
+
+http://sole-scion.googlecode.com/svn/trunk/screenshots/SoleScion-screenshot-v0.1.0.png
