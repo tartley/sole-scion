@@ -4,6 +4,7 @@ from math import pi, sin, cos
 from pymunk import Body, inf, init_pymunk, Space
 
 from solescion.model.chunk import Chunk
+from solescion.model.levelbuilder import LevelBuilder
 from solescion.model.material import Material
 from solescion.model.player import Player
 from solescion.model.room import Room
@@ -29,7 +30,7 @@ class World(object):
         self.space.gravity = (0, -10)
         self.static_body = Body(inf, inf)
 
-        self.rooms = set()
+        self.rooms = {}
         self.chunks = set()
         self.player = None
 
@@ -38,15 +39,8 @@ class World(object):
 
     def populate(self):
         "Create some demo set of Rooms and Entities"
-        verts = [
-            (-120, 90),
-            (+120, 140),
-            (+100, 50),
-            (0, -10),
-            (-100, 0),
-        ]
-        room = Room(verts)
-        self.add_room(room)
+        builder = LevelBuilder()
+        builder.build(self)
 
         disc1 = Disc(Material.bamboo, 20, (0, 0))
         disc2 = Disc(Material.bamboo, 10, (0, -20))
@@ -83,7 +77,7 @@ class World(object):
 
     def add_room(self, room):
         room.add_to_body(self.space, self.static_body)
-        self.rooms.add(room)
+        self.rooms[room.id] = room
 
 
     def add_chunk(self, chunk, position, angle=0):

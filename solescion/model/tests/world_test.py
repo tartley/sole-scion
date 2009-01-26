@@ -24,7 +24,7 @@ class World_test(MyTestCase):
             "should set gravity")
         self.assertEquals(type(world.static_body), Body,
             "should create a body")
-        self.assertEquals(world.rooms, set(),
+        self.assertEquals(world.rooms, {},
             "should create empty room set")
         self.assertEquals(world.material, Material.granite, "bad material")
 
@@ -58,11 +58,12 @@ class World_test(MyTestCase):
         v1, v2, v3 = (0, 0), (0, 100), (100, 0)
         verts = [v1, v2, v3]
         room = Room(verts)
+        room.id = 9876
         room.add_to_body = Listener()
 
         world.add_room(room)
 
-        self.assertEquals(world.rooms, set([room]), "room not added")
+        self.assertEquals(world.rooms, {room.id: room}, "room not added")
         expected = (world.space, world.static_body)
         self.assertEquals(room.add_to_body.args, expected,
             "room walls not added to space")

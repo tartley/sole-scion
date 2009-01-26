@@ -4,7 +4,7 @@ from math import cos, sin, pi
 from pyglet.gl import (
     glBegin, glClear, glClearColor, glColor3ub, glEnd, glPopMatrix,
     glPushMatrix, glTranslatef, glRotatef, glVertex2f,
-    GL_COLOR_BUFFER_BIT, GL_TRIANGLE_FAN,
+    GL_COLOR_BUFFER_BIT, GL_TRIANGLE_FAN, GL_LINE_STRIP,
 )
 
 from solescion.model.shards.block import Block
@@ -24,7 +24,7 @@ class Renderer(object):
         "Draw the entire contents of the window"
         self.clear(world.material.color)
         self.camera.world_projection(aspect)
-        for room in world.rooms:
+        for room in world.rooms.values():
             self.draw_room(room)
         for chunk in world.chunks:
             self.draw_chunk(chunk)
@@ -46,6 +46,12 @@ class Renderer(object):
         glBegin(GL_TRIANGLE_FAN)
         for vert in room.verts:
             glVertex2f(*vert)
+        glEnd()
+        glColor3ub(255, 255, 255)
+        glBegin(GL_LINE_STRIP)
+        for vert in room.verts:
+            glVertex2f(*vert)
+        glVertex2f(*room.verts[0])
         glEnd()
 
 

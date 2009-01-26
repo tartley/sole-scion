@@ -4,9 +4,14 @@ to HISTORY.txt (*=planned task, +=unexpected task)
 Maze
     * Handle multiple connected room polygons.
     * Autogenerate a set of rooms to form a maze of sorts.
+        * create a regular poly room from num_faces and first two points
+        * choose a random wall from all existing rooms
+        * add new room onto chosen wall
+        * iterate
+        * test for intersections and reject
     + randomly generate in-room rocks
 
-Vehicle
+Vehicle ?
     * keep the thrustship somewhere
     * vehicle: 2 wheels plus chassis
     * drives left, right

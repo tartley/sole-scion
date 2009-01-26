@@ -22,6 +22,16 @@ class Listener_test(MyTestCase):
         self.assert_is_reset(listener)
 
 
+    def test_constructor_return_value(self):
+        listener = Listener(return_value=456)
+        self.assertEquals(listener.return_value, 456)
+
+
+    def test_constructor_return_values(self):
+        listener = Listener(return_values=[4, 5, 6])
+        self.assertEquals(listener.return_values, [4, 5, 6])
+
+
     def test_call_no_args(self):
         listener = Listener()
         listener()
@@ -75,9 +85,9 @@ class Listener_test(MyTestCase):
         self.assertEquals(listener(), 456, "set return value 2")
 
 
-    def test_return_value_list(self):
+    def test_return_values(self):
         listener = Listener()
-        listener.return_value_list = [4, 3, 2]
+        listener.return_values = [4, 3, 2]
         self.assertEquals(listener(), 4, "set return value list 1")
         self.assertEquals(listener(), 3, "set return value list 2")
         self.assertEquals(listener(), 2, "set return value list 3")
@@ -85,9 +95,9 @@ class Listener_test(MyTestCase):
         self.assertEquals(listener(), None, "set return value list over 2")
 
 
-    def test_return_value_list_with_return_value(self):
+    def test_return_values_with_return_value(self):
         listener = Listener()
-        listener.return_value_list = [4, 3, 2]
+        listener.return_values = [4, 3, 2]
         listener.return_value = 456
         self.assertEquals(listener(), 4, "set return value list 1")
         self.assertEquals(listener(), 3, "set return value list 2")
@@ -98,13 +108,13 @@ class Listener_test(MyTestCase):
 
     def test_reset(self):
         listener = Listener()
-        listener.return_value_list = [4, 3, 2]
+        listener.return_values = [4, 3, 2]
         listener.return_value = 456
         listener(1, 2, 3, a=7, b=8, c=9)
         listener(4, 5, 6, c=10, d=11, e=12)
         listener.reset()
         self.assert_is_reset(listener)
-        self.assertEquals(listener(), 2, "reset messed with return_value_list")
+        self.assertEquals(listener(), 2, "reset messed with return_values")
         self.assertEquals(listener(), 456, "reset messed with return_value")
 
 

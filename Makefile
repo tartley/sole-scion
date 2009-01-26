@@ -31,7 +31,7 @@ install:
 .PHONY: install
 
 clean:
-	rm -rf build dist solescion/tags
+	rm -rf build dist tags
 	-find . \( \
 		-name '*.pyc' -o \
 		-name '*.pyo' \
