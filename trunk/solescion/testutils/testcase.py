@@ -1,4 +1,5 @@
 from ctypes import Array
+from types import FloatType
 from unittest import (
     TestCase as RealTestCase, TestLoader, TestSuite, TextTestRunner,
 )
@@ -33,6 +34,13 @@ def _compare_lengths(actual, expected, message):
             (len(actual), len(expected), actual_str, expected_str, message)
         )
         raise AssertionError(msg)
+
+
+def _compare_scalars(actual, expected, epsilon):
+    if isinstance(actual, FloatType):
+        return abs(actual - expected) <= epsilon
+    else:
+        return actual == expected
 
 
 def _compare_indexables(actual, expected, message):
@@ -88,16 +96,18 @@ class MyTestCase(RealTestCase):
             raise AssertionError("is None\n  %s" % (message))
 
 
-    def assertEquals(self, actual, expected, message=None):
+    def assertEquals(self, actual, expected, message=None, epsilon=0):
         if message is None:
             message = ""
 
         _compare_types(actual, expected, message)
 
-        if actual != expected:
-            if _is_int_indexable(actual):
-                _compare_indexables(actual, expected, message)
-            else:
+        if _is_int_indexable(actual):
+            _compare_indexables(actual, expected, message)
+        else:
+
+            passed = _compare_scalars(actual, expected, epsilon)
+            if not passed:
                 msg = "%s != %s\n  %s" % (actual, expected, message)
                 raise AssertionError(msg)
 
@@ -111,6 +121,31 @@ class MyTestCase(RealTestCase):
             cpt = color[i]
             if not isinstance(cpt, int) or not 0 <= cpt <= 255:
                 self.fail("bad color: %s\n%s" % (color, message))
+
+
+    def assertVertsEqual(self, actual, expected, message=None):
+        if len(actual) != len(expected):
+            self.fail('verts differ in len: %d, %d'
+                % (len(actual), len(expected)))
+
+        for index in xrange(len(actual)):
+            a = actual[index]
+            e = expected[index]
+
+            if len(a) != 2:
+                self.fail('actual verts badly formed at v%d: %s'
+                    % (index, a))
+            if len(e) != 2:
+                self.fail('expected verts badly formed at v%d: %s'
+                    % (index, e))
+
+            if not (
+                _compare_scalars(a[0], e[0], epsilon=10**-6)
+                and
+                _compare_scalars(a[1], e[1], epsilon=10**-6)
+                ):
+
+                self.fail('verts differ at v%d: %s, %s' % (index, a, e))
 
 
     def _assertRaises_test_args(self, func, excClass):

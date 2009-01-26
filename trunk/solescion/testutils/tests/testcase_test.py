@@ -8,8 +8,8 @@ import fixpath
 from pyglet.gl import GLint
 from pymunk import Vec2d
 
-from ..listener import Listener
-from ..testcase import (
+from solescion.testutils.listener import Listener
+from solescion.testutils.testcase import (
     _compare_indexables, _compare_lengths, _compare_types, _is_int_indexable,
     _tostr,
     combine, MyTestCase, run,
@@ -210,6 +210,22 @@ class TestCase_assertEquals_test(RealTestCase):
             "set([2, 4, 6]) != set([2, 99, 4])\n  desc")
 
 
+    def testAssertEquals_epsilon(self):
+        self.mytestcase.assertRaises(
+            lambda: self.mytestcase.assertEquals (1.230, 1.239),
+            AssertionError)
+
+        self.mytestcase.assertEquals(1.23, 1.24, epsilon=0.011),
+        self.mytestcase.assertEquals(1.24, 1.23, epsilon=0.011),
+
+        self.mytestcase.assertRaises(
+            lambda: self.mytestcase.assertEquals (1.23, 1.24001, epsilon=0.01),
+            AssertionError)
+        self.mytestcase.assertRaises(
+            lambda: self.mytestcase.assertEquals (1.24001, 1.23, epsilon=0.01),
+            AssertionError)
+
+
 
 class TestCase_assertRaises_test(RealTestCase):
 
@@ -332,6 +348,57 @@ class TestCase_assertRaises_test(RealTestCase):
         self.assert_warns_on_bad_args(raisePlease, object(), arg2)
         self.assert_warns_on_bad_args(raisePlease, lambda: None, arg2)
         self.assert_warns_on_bad_args(Exception, lambda: None, arg1+arg2)
+
+
+class TestCase_assertVertsEqual(RealTestCase):
+
+    def setUp(self):
+        self.mytestcase = ClassUnderTest("testAlwaysPasses")
+
+    def test_assertVertsEqual_equal(self):
+        v1 = [(1, 2), (2, 3), (4, 5)]
+        v2 = [(1, 2), (2, 3), (4, 5)]
+        self.mytestcase.assertVertsEqual(v1, v2)
+        self.mytestcase.assertVertsEqual(v1, v2, 'x')
+
+
+    def test_assertVertsEqual_notequal(self):
+        v1 = [(1, 2), (2, 3), (4, 5)]
+        v2 = [(1, 2), (2, 3), (4, 66)]
+        self.mytestcase.assertRaises(
+            lambda: self.mytestcase.assertVertsEqual(v1, v2),
+            AssertionError,
+            'verts differ at v2: (4, 5), (4, 66)')
+
+
+    def test_assertVertsEqual_wronglen(self):
+        v1 = [(1, 2), (2, 3)]
+        v2 = [(1, 2), (2, 3), (4, 5)]
+        self.mytestcase.assertRaises(
+            lambda: self.mytestcase.assertVertsEqual(v1, v2),
+            AssertionError,
+            'verts differ in len: 2, 3')
+
+
+    def test_assertVertsEqual_badlyformed(self):
+        v1 = [(1, 2), (3,)]
+        v2 = [(1, 2), (2, 3)]
+        self.mytestcase.assertRaises(
+            lambda: self.mytestcase.assertVertsEqual(v1, v2),
+            AssertionError,
+            'actual verts badly formed at v1: (3,)')
+
+        v1 = [(1, 2), (3, 4), (5, 6)]
+        v2 = [(1, 2), (3, 4), (5, 6, 7)]
+        self.mytestcase.assertRaises(
+            lambda: self.mytestcase.assertVertsEqual(v1, v2),
+            AssertionError,
+            'expected verts badly formed at v2: (5, 6, 7)')
+
+
+    def test_assertVertsEqual_degen(self):
+        self.mytestcase.assertVertsEqual([], [])
+
 
 
 class TestCase_assertValidColor_test(RealTestCase):

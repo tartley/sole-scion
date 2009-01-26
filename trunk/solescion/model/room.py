@@ -17,15 +17,27 @@ class Room(object):
     within which Entities (such as the player) may move.
     """
 
+    _nextRoomId = 0
+
     def __init__(self, verts):
+        self.id = Room._nextRoomId
+        Room._nextRoomId += 1
         assert_valid_poly(verts)
         self.verts = verts
         self.material = Material.air
+        self.neighbours = {}
+
+
+    def attach(self, wall, other, otherwall):
+        self.neighbours[wall] = other
+        other.neighbours[otherwall] = self
 
 
     def add_to_body(self, space, body):
         for idx in range(len(self.verts) - 1):
-            _add_wall_to(space, body, self.verts[idx], self.verts[idx+1])
+            if idx not in self.neighbours.keys():
+                _add_wall_to(
+                    space, body, self.verts[idx], self.verts[idx+1])
         _add_wall_to(space, body, self.verts[-1], self.verts[0])
 
 

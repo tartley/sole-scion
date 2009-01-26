@@ -4,12 +4,13 @@ class Listener(object):
     called, and with what arguments. It is useful for mocking out a
     callable during a unittest.
     """
-    def __init__(self):
-        self.args_list = None
-        self.kwargs_list = None
-        self.return_value = None
-        self.return_value_list = []
+    def __init__(self, return_value=None, return_values=None):
         self.reset()
+
+        self.return_value = return_value
+        if return_values is None:
+            return_values = []
+        self.return_values = return_values
 
     def reset(self):
         self.args_list = []
@@ -33,8 +34,8 @@ class Listener(object):
     def __call__(self, *args, **kwargs):
         self.args_list.append(args)
         self.kwargs_list.append(kwargs)
-        if self.return_value_list:
-            return self.return_value_list.pop(0)
+        if self.return_values:
+            return self.return_values.pop(0)
         else:
             return self.return_value
 

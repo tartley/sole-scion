@@ -4,29 +4,28 @@ http://code.google.com/p/sole-scion/
 
 A game with 2D vector graphics and rigid body physics, and a vision to exploit the scaling, toppling, sliding and rolling of vector shapes.
 
-Currently at a very early stage of development. Only of interest to the geekiest of my friends and to enthusiastic programmers.
-
 Works on Windows and Macs and Linux (and under [http://codespeak.net/pypy/dist/pypy/doc/home.html PyPy], with functools installed.)
 
-Screenshots are [http://code.google.com/p/sole-scion/wiki/Screenshots here].
+Currently at a very early stage of development. Only of interest to the geekiest of my friends and to enthusiastic programmers.
 
 
-==To play==
+==Screenshots==
 
-If the following doesn't work for you, please let me know about it - see the 'Contact' section.
+Are [http://code.google.com/p/sole-scion/wiki/Screenshots here].
 
 
-===On Windows===
+==To Play on Windows==
 
 Download the [http://code.google.com/p/sole-scion/downloads/list?can=3&q=binary featured Windows binary download], unzip and double-click 'run.bat'.
 
-===On Linux or Mac==
 
-Install Python 2.5 or 2.6 from [http://python.org python.org].
+==To Play on Linux or Mac==
+
+First install Python 2.5 or 2.6 from [http://python.org python.org]. You probably already have this installed. To check, start a command-line prompt, type 'python', and check the version number displayed is 2.5.x or 2.6.x.
 
 Download the [http://code.google.com/p/sole-scion/downloads/list?can=3&q=source featured source code download].
 
-Untar it and run the game by opening a command-line terminal and typing something like:
+Untar it and run the game from the command line with something like:
 
 {{{
   tar -xzf SoleScion-X.X.X.tar.gz
@@ -37,8 +36,8 @@ Untar it and run the game by opening a command-line terminal and typing somethin
 
 ==Known Problems==
 
-  * It's still very early days. Lower your expectations.
-  * It is possible for a very fast-moving object to make it through a Room wall from one frame to the next. One possible solution is to use fat line segments (ie. width>0) to define the outline of rooms.
+  * It's still very early days. There isn't a game there yet. Lower your expectations.
+  * See the [http://code.google.com/p/sole-scion/issues/list issues page].
 
 
 ==Dependencies==
