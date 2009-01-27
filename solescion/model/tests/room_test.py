@@ -75,7 +75,7 @@ class Room_test(MyTestCase):
         v1, v2, v3 = (0,1), (1,2), (2,0)
         verts = [v1, v2, v3]
         room = Room(verts)
-        room.neighbours = {1: object()}
+        room.neighbours = {1: object(), 2: object()}
         space = Space()
         body = Body(inf, inf)
 
@@ -85,8 +85,8 @@ class Room_test(MyTestCase):
             ((seg.a[0], seg.a[1]), (seg.b[0], seg.b[1]))
             for seg in space.static_shapes
         ])
-        self.assertEquals(segs, set([(v1, v2), (v3, v1)]),
-            "room walls not added to space")
+        self.assertEquals(segs, set([(v1, v2)]),
+            "wrong room walls added to space")
 
         for seg in space.static_shapes:
             self.assertEquals(seg.friction, 0.5, "bad wall friction")
