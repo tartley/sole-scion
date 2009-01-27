@@ -47,9 +47,12 @@ class World_test(MyTestCase):
 
         world.populate()
 
-        self.assertEquals(world.add_room.triggerCount, 1, "should add 1 room")
-        room = world.add_room.args[0]
-        self.assertEquals(len(room.verts), 5, "room should be a pentagon")
+        self.assertTrue(world.add_room.triggerCount >= 1,
+            "should add rooms")
+        for args in world.add_room.args_list:
+            room = args[0]
+            self.assertTrue(len(room.verts) >= 3,
+                "room should be a polygon")
 
 
     def test_add_room(self):

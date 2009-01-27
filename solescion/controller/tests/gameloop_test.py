@@ -131,7 +131,8 @@ class Gameloop_test_without(MyTestCase):
         self.assertFalse(window.visible, "window should be not visible")
         self.assertTrue(window.fullscreen, "window should be fullscreen")
         self.assertTrue(window.vsync, "window should be vsync")
-        self.assertEquals(window.caption, "Gameloop.test_init_creates_window",
+        self.assertEquals(window.caption,
+            "Gameloop.test_init_creates_window",
             "bad window title")
         self.assertEquals(self.gameloop.window.on_key_press, on_key_press,
             "bad key handler")
@@ -141,7 +142,7 @@ class Gameloop_test_without(MyTestCase):
         self.gameloop.init("Gameloop.test_init_creates_wold")
         world = self.gameloop.world
         self.assertEquals(type(world), World, "should create world")
-        self.assertEquals(len(world.rooms), 1, "should create a room")
+        self.assertTrue(len(world.rooms) >= 1, "should create a room")
         self.assertTrue(len(world.chunks) > 0, "should create some chunks")
 
 
@@ -154,7 +155,8 @@ class Gameloop_test_without(MyTestCase):
     def test_init_creates_renderer(self):
         self.gameloop.init("Gameloop.test_init_creates_renderer")
         renderer = self.gameloop.renderer
-        self.assertEquals(type(renderer), Renderer, "should create renderer")
+        self.assertEquals(type(renderer), Renderer,
+            "should create renderer")
         self.assertEquals(renderer.camera, self.gameloop.camera,
             "should create renderer with camera")
 
@@ -189,7 +191,8 @@ class Gameloop_test_without(MyTestCase):
             (3, self.gameloop.world, aspect),
             (4,),
         ]
-        self.assertEquals(listener.args_list, expected, "should call some fns")
+        self.assertEquals(listener.args_list, expected,
+            "should call some fns")
 
 
     def test_run_skips_world_tick_when_paused(self):
