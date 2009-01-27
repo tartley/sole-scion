@@ -45,7 +45,7 @@ class Renderer_test(MyTestCase):
 
         world = World()
         world.backColor = (111, 22, 3)
-        world.rooms = set([room1, room2])
+        world.rooms = {1: room1, 2: room2}
         world.chunks = set([chunk1, chunk2])
 
         listener = Listener()
@@ -64,8 +64,8 @@ class Renderer_test(MyTestCase):
         expected = [
             ("clear", world.material.color),
             ("world_proj", aspect),
-            ("draw_room", room2),
             ("draw_room", room1),
+            ("draw_room", room2),
             ("draw_chunk", chunk2),
             ("draw_chunk", chunk1),
         ]
