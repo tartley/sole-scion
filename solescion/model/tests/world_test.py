@@ -22,6 +22,9 @@ class World_test(MyTestCase):
             "should create a Space")
         self.assertEquals(world.space.gravity, Vec2d(0, -10),
             "should set gravity")
+        self.assertEquals(
+            world.space._space.contents.elasticIterations, 10,
+            "should set elasticIterations")
         self.assertEquals(type(world.static_body), Body,
             "should create a body")
         self.assertEquals(world.rooms, {},
