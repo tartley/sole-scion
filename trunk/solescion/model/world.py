@@ -28,6 +28,7 @@ class World(object):
         init_pymunk()
         self.space = Space()
         self.space.gravity = (0, -10)
+        self.space._space.contents.elasticIterations = 10
         self.static_body = Body(inf, inf)
 
         self.rooms = {}
