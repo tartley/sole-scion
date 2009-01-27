@@ -34,11 +34,12 @@ class Room(object):
 
 
     def add_to_body(self, space, body):
-        for idx in range(len(self.verts) - 1):
+        maxwall = len(self.verts) - 1
+        for idx in xrange(maxwall):
             if idx not in self.neighbours:
                 _add_wall_to(
                     space, body, self.verts[idx], self.verts[idx+1])
-        if len(self.verts) - 1 not in self.neighbours:
+        if maxwall not in self.neighbours:
             _add_wall_to(space, body, self.verts[-1], self.verts[0])
 
 
