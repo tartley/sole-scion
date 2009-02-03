@@ -8,6 +8,8 @@ from pymunk import Body, inf, Space
 from solescion.testutils.listener import Listener
 from solescion.testutils.testcase import MyTestCase, run
 
+from solescion.geom.poly import poly_centroid
+
 from solescion.model.room import Room
 from solescion.model.material import Material
 
@@ -23,7 +25,9 @@ class Room_test(MyTestCase):
         self.assertEquals(Room._nextRoomId, 1000, "should inc next room id")
         self.assertEquals(room.material, Material.air, "bad material")
         self.assertEquals(room.verts, verts, "should store verts")
-        self.assertEquals(room.neighbours, {})
+        self.assertEquals(room.neighbours, {}, 'bad neighbours')
+        self.assertEquals(room.centroid, poly_centroid(room.verts),
+            'bad centroid')
 
 
     def test_constructor_validates_verts(self):

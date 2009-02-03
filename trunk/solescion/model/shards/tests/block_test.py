@@ -7,7 +7,7 @@ from pymunk import Body, moment_for_poly, Poly, Shape, Space, Vec2d
 from solescion.testutils.listener import Listener
 from solescion.testutils.testcase import MyTestCase, run
 
-from solescion.utils.geometry import offset_verts, poly_area
+from solescion.geom.poly import offset_verts, poly_area
 from solescion.model.shards.block import Block
 from solescion.model.material import Material
 

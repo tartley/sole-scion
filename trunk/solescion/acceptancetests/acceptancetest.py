@@ -23,6 +23,7 @@ def get_window():
         raise AssertionError(msg)
 
 
+# TODO not tested
 class AcceptanceTest(MyTestCase):
     """
     A TestCase which fires up the entire application, then proceeds to

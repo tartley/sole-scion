@@ -4,6 +4,8 @@ from pyglet import clock
 from pyglet.window import key, Window
 
 from solescion.controller.keyboard import Keyboard, on_key_press
+from solescion.model.levelbuilder import LevelBuilder
+from solescion.model.player import Player
 from solescion.model.world import World
 from solescion.utils.screenshot import save_screenshot
 from solescion.view.camera import Camera
@@ -33,14 +35,21 @@ class Gameloop(object):
 
     def init(self, caption):
         clock.set_fps_limit(FPS_LIMIT)
-        self.world = World()
-        self.world.populate()
+
         self.camera = Camera((0, 0), 50)
         self.renderer = Renderer(self.camera)
         self.window = Window(
             caption=caption, fullscreen=True, visible=False)
         self.window.on_key_press = on_key_press
         self.window.push_handlers(Keyboard.keystate)
+
+        self.world = World()
+        builder = LevelBuilder()
+        builder.build(self.world)
+
+        self.world.player = Player()
+        self.world.player.add_to_space(self.world.space, (0, 0), 0)
+        self.world.chunks.update(self.world.player.chunks)
 
 
     def dispose(self):

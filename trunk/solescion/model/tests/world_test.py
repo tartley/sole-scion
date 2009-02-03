@@ -44,20 +44,6 @@ class World_test(MyTestCase):
             world_module.init_pymunk = orig
 
 
-    def test_populate(self):
-        world = World()
-        world.add_room = Listener()
-
-        world.populate()
-
-        self.assertTrue(world.add_room.triggerCount >= 1,
-            "should add rooms")
-        for args in world.add_room.args_list:
-            room = args[0]
-            self.assertTrue(len(room.verts) >= 3,
-                "room should be a polygon")
-
-
     def test_add_room(self):
         world = World()
         color = (50, 100, 200)
