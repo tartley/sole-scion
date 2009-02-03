@@ -124,20 +124,23 @@ class MyTestCase(RealTestCase):
 
 
     def assertVertsEqual(self, actual, expected, message=None):
+        if message is None:
+            message = ''
+
         if len(actual) != len(expected):
-            self.fail('verts differ in len: %d, %d'
-                % (len(actual), len(expected)))
+            self.fail('verts differ in len: %d, %d\n%s'
+                % (len(actual), len(expected), message))
 
         for index in xrange(len(actual)):
             a = actual[index]
             e = expected[index]
 
             if len(a) != 2:
-                self.fail('actual verts badly formed at v%d: %s'
-                    % (index, a))
+                self.fail('actual verts badly formed at v%d: %s\n%s'
+                    % (index, a, message))
             if len(e) != 2:
-                self.fail('expected verts badly formed at v%d: %s'
-                    % (index, e))
+                self.fail('expected verts badly formed at v%d: %s\n%s'
+                    % (index, e, message))
 
             if not (
                 _compare_scalars(a[0], e[0], epsilon=10**-6)
@@ -145,7 +148,8 @@ class MyTestCase(RealTestCase):
                 _compare_scalars(a[1], e[1], epsilon=10**-6)
                 ):
 
-                self.fail('verts differ at v%d: %s, %s' % (index, a, e))
+                self.fail('verts differ at v%d: %s, %s\n%s'
+                    % (index, a, e, message))
 
 
     def _assertRaises_test_args(self, func, excClass):

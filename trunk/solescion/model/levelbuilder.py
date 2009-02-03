@@ -1,7 +1,4 @@
-from math import cos, sin, pi
 from random import randint, seed
-
-from shapely.geometry import Polygon
 
 from solescion.geom.poly import create_regular
 from solescion.model.chunk import Chunk
@@ -12,6 +9,8 @@ from solescion.model.shards.disc import Disc
 
 
 class LevelBuilder(object):
+    # pylint: disable-msg=R0201
+    #   Method could be a function: acknowledged.
 
     def __init__(self):
         self.rooms = {}

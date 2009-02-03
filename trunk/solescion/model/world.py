@@ -3,13 +3,7 @@ from math import pi, sin, cos
 
 from pymunk import Body, inf, init_pymunk, Space
 
-from solescion.model.chunk import Chunk
-from solescion.model.levelbuilder import LevelBuilder
 from solescion.model.material import Material
-from solescion.model.player import Player
-from solescion.model.room import Room
-from solescion.model.shards.block import Block
-from solescion.model.shards.disc import Disc
 
 
 def generate_circle(radius, num_segments):
@@ -25,6 +19,8 @@ class World(object):
     "Container for everything in the model, eg: Rooms and Chunks"
 
     def __init__(self):
+        # pylint: disable-msg=W0212
+        #   Access to a protected member '_space': ack
         init_pymunk()
         self.space = Space()
         self.space.gravity = (0, -10)

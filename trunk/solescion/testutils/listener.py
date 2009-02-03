@@ -13,6 +13,8 @@ class Listener(object):
         self.return_values = return_values
 
     def reset(self):
+        # pylint: disable-msg=W0201
+        #   Attribute defined outside __init__: ack
         self.args_list = []
         self.kwargs_list = []
 
