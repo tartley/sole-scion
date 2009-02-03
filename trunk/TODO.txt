@@ -7,6 +7,7 @@ Maze
     + randomly generate in-room rocks
 
 Infrastructure
+    * MUST automatically find all tests for run_test
     * remove dependancies from svn, add as dependant packages using Paver
     * Windows binary distribution, including Shapely DLL
     * Linux binary distribution

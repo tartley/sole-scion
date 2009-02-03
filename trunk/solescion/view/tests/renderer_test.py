@@ -65,8 +65,8 @@ class Renderer_test(MyTestCase):
             ("clear", world.material.color),
             ("world_proj", aspect),
             ("draw_rooms", {1: room1, 2: room2}),
-            ("draw_chunk", chunk1),
             ("draw_chunk", chunk2),
+            ("draw_chunk", chunk1),
         ]
         self.assertEquals(listener.args_list, expected,
             "draw didnt call subfns")

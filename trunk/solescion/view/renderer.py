@@ -4,7 +4,7 @@ from math import cos, sin, pi
 from pyglet.gl import (
     glBegin, glClear, glClearColor, glColor3ub, glEnd, glPopMatrix,
     glPushMatrix, glTranslatef, glRotatef, glVertex2f,
-    GL_COLOR_BUFFER_BIT, GL_TRIANGLE_FAN, GL_LINE_STRIP,
+    GL_COLOR_BUFFER_BIT, GL_TRIANGLE_FAN, GL_LINES,
 )
 
 from solescion.model.shards.block import Block
@@ -49,12 +49,14 @@ class Renderer(object):
             glEnd()
         for room in rooms.itervalues():
             glColor3ub(255, 255, 255)
-            glBegin(GL_LINE_STRIP)
-            for vert in room.verts:
-                glVertex2f(*vert)
-            glVertex2f(*room.verts[0])
+            glBegin(GL_LINES)
+            for idx in xrange(len(room.verts)):
+                if idx not in room.neighbours:
+                    glVertex2f(*room.verts[idx])
+                    nextidx = (idx + 1) % len(room.verts)
+                    glVertex2f(*room.verts[nextidx])
             glEnd()
-                
+
 
     # TODO: not tested
     def draw_chunk(self, chunk):
