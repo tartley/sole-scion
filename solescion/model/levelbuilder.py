@@ -19,12 +19,12 @@ class LevelBuilder(object):
 
 
     def create_initial_room(self):
-        verts = create_regular(randint(3, 8), (+20, -30), (-20, -30))
+        verts = create_regular(7, (+20, -30), (-20, -30))
         self.add_room(Room(verts))
 
 
     def complete(self):
-        return len(self.rooms) > 8
+        return len(self.rooms) > 9
 
 
     def select_branch_room(self):
@@ -84,10 +84,6 @@ class LevelBuilder(object):
 
     chunkbits = [
         [
-            Disc(Material.bamboo, 10, (0, 0)),
-            Disc(Material.bamboo, 0, (0, -10)),
-        ],
-        [
             Disc(Material.rubber, 5),
         ],
         [
@@ -102,8 +98,12 @@ class LevelBuilder(object):
             )
         ],
         [
-            Block(Material.gold, [(0, 0), (0, 20), (10, 20), (10, 0)]),
-            Block(Material.gold, [(0, 0), (0, 10), (20, 10), (20, 0)]),
+            Block(Material.gold, [(-15, 5), (15, 5), (15, -5), (-15, -5)]),
+            Block(Material.gold, [(-5, -15), (-5, 15), (5, 15), (5, -15)]),
+        ],
+        [
+            Disc(Material.bamboo, 5, (0, -10)),
+            Disc(Material.bamboo, 10, (0, 0)),
         ],
     ]
 
