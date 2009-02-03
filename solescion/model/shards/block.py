@@ -1,6 +1,6 @@
 from pymunk import moment_for_poly, Poly
 
-from solescion.utils.geometry import (
+from solescion.geom.poly import (
     assert_valid_poly, offset_verts, poly_area, poly_centroid,
 )
 

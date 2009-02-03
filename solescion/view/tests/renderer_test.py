@@ -53,8 +53,8 @@ class Renderer_test(MyTestCase):
             lambda *args: listener("clear", *args)
         camera.world_projection = \
             lambda *args: listener("world_proj", *args)
-        renderer.draw_room = \
-            lambda *args: listener("draw_room", *args)
+        renderer.draw_rooms = \
+            lambda *args: listener("draw_rooms", *args)
         renderer.draw_chunk = \
             lambda *args: listener("draw_chunk", *args)
 
@@ -64,10 +64,9 @@ class Renderer_test(MyTestCase):
         expected = [
             ("clear", world.material.color),
             ("world_proj", aspect),
-            ("draw_room", room1),
-            ("draw_room", room2),
-            ("draw_chunk", chunk2),
+            ("draw_rooms", {1: room1, 2: room2}),
             ("draw_chunk", chunk1),
+            ("draw_chunk", chunk2),
         ]
         self.assertEquals(listener.args_list, expected,
             "draw didnt call subfns")
@@ -85,14 +84,6 @@ class Renderer_test(MyTestCase):
 
         image = image_from_window(self.window)
         assert_entirely(image, color, "should fill with given color")
-
-
-    def test_draw_room(self):
-        self.fail("not tested")
-
-
-    def test_draw_chunk(self):
-        self.fail("not tested")
 
 
 if __name__ == "__main__":

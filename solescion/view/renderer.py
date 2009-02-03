@@ -24,8 +24,7 @@ class Renderer(object):
         "Draw the entire contents of the window"
         self.clear(world.material.color)
         self.camera.world_projection(aspect)
-        for room in world.rooms.values():
-            self.draw_room(room)
+        self.draw_rooms(world.rooms)
         for chunk in world.chunks:
             self.draw_chunk(chunk)
 
@@ -40,23 +39,25 @@ class Renderer(object):
         glClear(GL_COLOR_BUFFER_BIT)
 
 
-    def draw_room(self, room):
-        "Draw the given room"
-        glColor3ub(*room.material.color)
-        glBegin(GL_TRIANGLE_FAN)
-        for vert in room.verts:
-            glVertex2f(*vert)
-        glEnd()
-        glColor3ub(255, 255, 255)
-        glBegin(GL_LINE_STRIP)
-        for vert in room.verts:
-            glVertex2f(*vert)
-        glVertex2f(*room.verts[0])
-        glEnd()
+    # TODO: not tested
+    def draw_rooms(self, rooms):
+        for room in rooms.itervalues():
+            glColor3ub(*room.material.color)
+            glBegin(GL_TRIANGLE_FAN)
+            for vert in room.verts:
+                glVertex2f(*vert)
+            glEnd()
+        for room in rooms.itervalues():
+            glColor3ub(255, 255, 255)
+            glBegin(GL_LINE_STRIP)
+            for vert in room.verts:
+                glVertex2f(*vert)
+            glVertex2f(*room.verts[0])
+            glEnd()
+                
 
-
+    # TODO: not tested
     def draw_chunk(self, chunk):
-        "Draw the given chunk"
         glPushMatrix()
         glTranslatef(chunk.body.position.x, chunk.body.position.y, 0)
         glRotatef(chunk.body.angle * 180 / pi, 0, 0, 1)
@@ -72,8 +73,8 @@ class Renderer(object):
         glPopMatrix()
 
 
+    # TODO: not tested
     def draw_block(self, block):
-        "Draw the given polygonal chunk"
         glBegin(GL_TRIANGLE_FAN)
         glColor3ub(
             int(block.material.color[0] * 0.25),
@@ -88,8 +89,8 @@ class Renderer(object):
         glEnd()
 
 
+    # TODO: not tested
     def draw_disc(self, disc):
-        "Draw the given circular chunk"
         num_tris = 32
         x, y = disc.get_offset()
         glBegin(GL_TRIANGLE_FAN)

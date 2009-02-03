@@ -1,10 +1,14 @@
 from math import cos, sin, pi
-from random import randint
+from random import randint, seed
 
 from shapely.geometry import Polygon
 
 from solescion.geom.poly import create_regular
+from solescion.model.chunk import Chunk
+from solescion.model.material import Material
 from solescion.model.room import Room
+from solescion.model.shards.block import Block
+from solescion.model.shards.disc import Disc
 
 
 class LevelBuilder(object):
@@ -17,6 +21,10 @@ class LevelBuilder(object):
     def create_initial_room(self):
         verts = create_regular(randint(3, 8), (+20, -30), (-20, -30))
         self.add_room(Room(verts))
+
+
+    def complete(self):
+        return len(self.rooms) > 8
 
 
     def select_branch_room(self):
@@ -53,24 +61,55 @@ class LevelBuilder(object):
     def add_to_world(self, world):
         for room in self.rooms.itervalues():
             world.add_room(room)
+            self.populate(room, world)
 
 
     # TODO untested
     def build(self, world):
-        from random import seed
-        seed(1)
+        seed(5)
         self.create_initial_room()
-        for _ in xrange(5):
-            while True:
-                branch_room = self.select_branch_room()
-                branch_wall = self.select_branch_wall(branch_room)
-                if branch_wall is None:
-                    continue
-                num_verts = randint(3, 8)
-                verts = self.new_room_verts(
-                    branch_room, branch_wall, num_verts)
-                if self.new_verts_ok(verts):
-                    break
-            self.add_room(Room(verts), branch_room, branch_wall)
+        while not self.complete():
+            branch_room = self.select_branch_room()
+            branch_wall = self.select_branch_wall(branch_room)
+            if branch_wall is None:
+                continue
+            num_verts = randint(3, 8)
+            verts = self.new_room_verts(
+                branch_room, branch_wall, num_verts)
+            if self.new_verts_ok(verts):
+                self.add_room(Room(verts), branch_room, branch_wall)
+
         self.add_to_world(world)
+
+
+    chunkbits = [
+        [
+            Disc(Material.bamboo, 10, (0, 0)),
+            Disc(Material.bamboo, 0, (0, -10)),
+        ],
+        [
+            Disc(Material.rubber, 5),
+        ],
+        [
+            Block(Material.ice, [(-10, 20), (30, 20), (20, 0), (0, 0)]),
+        ],
+        [
+            Block(
+                Material.granite, [
+                    (-10, 20), (-10, 30), (10, 40), (20, 30),
+                    (20, 20), (10, 0), (0, 0)
+                ]
+            )
+        ],
+        [
+            Block(Material.gold, [(0, 0), (0, 20), (10, 20), (10, 0)]),
+            Block(Material.gold, [(0, 0), (0, 10), (20, 10), (20, 0)]),
+        ],
+    ]
+
+    # TODO: not tested
+    def populate(self, room, world):
+        if room.id > 0:
+            chunk = Chunk(*self.chunkbits[randint(0, len(self.chunkbits) - 1)])
+            world.add_chunk(chunk, room.centroid)
 
