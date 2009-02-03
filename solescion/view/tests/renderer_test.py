@@ -7,7 +7,9 @@ from solescion.testutils.listener import Listener
 from solescion.testutils.testcase import MyTestCase, run
 from solescion.testutils.testimage import assert_entirely
 
-from solescion.model.world import Chunk, Room, World
+from solescion.model.chunk import Chunk
+from solescion.model.room import Room
+from solescion.model.world import World
 from solescion.model.shards.disc import Disc
 from solescion.utils.screenshot import image_from_window
 

@@ -1,19 +1,18 @@
 from __future__ import division
-from math import pi
 
 from pymunk import Vec2d
 from pymunk.util import is_clockwise, is_convex
 
 
-def create_regular(num_faces, v1, v2):
+def create_regular(num_faces, first, second):
     if num_faces < 3:
         raise ValueError('num_faces must be >=3')
 
     internal_angle_deg = 360 / num_faces
-    wallvect = Vec2d(v2) - Vec2d(v1)
+    wallvect = Vec2d(second) - Vec2d(first)
 
     verts = []
-    vert = v1
+    vert = first
     for _ in xrange(num_faces):
         verts.append(vert)
         _vert = (wallvect + vert)

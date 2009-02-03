@@ -13,7 +13,7 @@ enable-report=R0004
 [BASIC]
 
 # Good variable names which should always be accepted, separated by a comma
-good-names=i,j,x,y,_
+good-names=i,j,x,y,id,_
 
 
 [MASTER]
