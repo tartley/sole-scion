@@ -1,6 +1,8 @@
 from math import cos, sin, pi
 from random import randint
 
+from shapely.geometry import Polygon
+
 from solescion.geom.poly import create_regular
 from solescion.model.room import Room
 
@@ -9,12 +11,12 @@ class LevelBuilder(object):
 
     def __init__(self):
         self.rooms = {}
+        self.geometry = None
 
 
     def create_initial_room(self):
         verts = create_regular(randint(3, 8), (+20, -30), (-20, -30))
-        room = Room(verts)
-        self.rooms = {room.id: room}
+        self.add_room(Room(verts))
 
 
     def select_branch_room(self):
@@ -42,9 +44,10 @@ class LevelBuilder(object):
         return True
 
 
-    def add_new_room(self, newroom, branch_room, branch_wall):
+    def add_room(self, newroom, branch_room=None, branch_wall=None):
         self.rooms[newroom.id] = newroom
-        branch_room.attach(branch_wall, newroom, 0)
+        if branch_room and branch_wall:
+            branch_room.attach(branch_wall, newroom, 0)
 
 
     def add_to_world(self, world):
@@ -68,6 +71,6 @@ class LevelBuilder(object):
                     branch_room, branch_wall, num_verts)
                 if self.new_verts_ok(verts):
                     break
-            self.add_new_room(Room(verts), branch_room, branch_wall)
+            self.add_room(Room(verts), branch_room, branch_wall)
         self.add_to_world(world)
 

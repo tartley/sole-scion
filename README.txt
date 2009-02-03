@@ -21,6 +21,8 @@ Download the [http://code.google.com/p/sole-scion/downloads/list?can=3&q=binary 
 
 ==To Play on Linux or Mac==
 
+Proper binary and source installs to make this trivially easy will be coming soon. Until then:
+
 First install Python 2.5 or 2.6 from [http://python.org python.org]. You probably already have this installed. To check, start a command-line prompt, type 'python', and check the version number displayed is 2.5.x or 2.6.x.
 
 Download the [http://code.google.com/p/sole-scion/downloads/list?can=3&q=source featured source code download].
@@ -42,12 +44,14 @@ Untar it and run the game from the command line with something like:
 
 ==Dependencies==
 
-Many thanks to the creators of the following invaluable libraries, upon which
-this project is built:
+Many thanks to the creators of the following invaluable libraries, upon which this project is built:
 
   * [http://code.google.com/p/pymunk Pymunk], Python bindings to the [http://code.google.com/p/chipmunk-physics/ Chipmunk] physics library, which provides brilliant 2D rigid body dynamics.
  
   * [http://www.pyglet.org Pyglet] game library, providing fantastic facilities for creating windows, OpenGL graphics, keyboard and mouse input, sound, etc.
+
+  * [http://trac.gispython.org/lab/wiki/Shapely Shapely], Python bindings
+to the [http://trac.osgeo.org/geos GEOS] 2D geometry library.
 
 
 ==Contact==
