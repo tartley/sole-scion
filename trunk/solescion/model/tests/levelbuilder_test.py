@@ -21,13 +21,15 @@ class LevelBuilder_test(MyTestCase):
     def test_constructor(self):
         builder = LevelBuilder()
         self.assertEquals(builder.rooms, {})
+        self.assertEquals(builder.geometry, None)
 
 
     def test_create_initial_room(self):
         builder = LevelBuilder()
         builder.create_initial_room()
-        self.assertEquals(builder.rooms.keys(), [0])
-        self.assertTrue(isinstance(builder.rooms[0], Room))
+
+        added_room = builder.rooms.values()[0]
+        self.assertEquals(builder.rooms[added_room.id], added_room)
 
 
     def test_select_branch_room(self):
@@ -95,19 +97,32 @@ class LevelBuilder_test(MyTestCase):
         self.assertEquals(builder.new_verts_ok(None), True)
 
 
-    def test_create_new_room(self):
+    def test_add_room(self):
         builder = LevelBuilder()
         branch_room = Room([(1, 0), (0, 0), (0, 1)])
         branch_wall = 5
         room = Room([(1, 0), (0, 0), (0, 1)])
         room.neighbours = {}
 
-        builder.add_new_room(room, branch_room, branch_wall)
+        builder.add_room(room, branch_room, branch_wall)
 
         self.assertEquals(len(builder.rooms), 1)
-        new_room = builder.rooms.values()[0]
-        self.assertEquals(new_room.neighbours, {0: branch_room})
-        self.assertEquals(branch_room.neighbours, {branch_wall: new_room})
+        added_room = builder.rooms.values()[0]
+        self.assertEquals(added_room.neighbours, {0: branch_room})
+        self.assertEquals(branch_room.neighbours, {branch_wall: added_room})
+
+
+    def test_add_room_no_branch(self):
+        builder = LevelBuilder()
+        room = Room([(1, 0), (0, 0), (0, 1)])
+        room.neighbours = {}
+
+        builder.add_room(room)
+
+        self.assertEquals(len(builder.rooms), 1)
+        added_room = builder.rooms.values()[0]
+        self.assertEquals(added_room.neighbours, {})
+
 
     def test_add_to_world(self):
         world = Listener()

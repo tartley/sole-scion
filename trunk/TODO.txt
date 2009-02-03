@@ -1,15 +1,15 @@
-See bottom of file for tasks that are 'done' but which have not yet been moved
-to HISTORY.txt (*=planned task, +=unexpected task)
+See bottom of file for tasks that are 'done' but which have not yet been
+moved to HISTORY.txt (*=planned task, +=unexpected task)
 
 Maze
-    * Handle multiple connected room polygons.
-    * Autogenerate a set of rooms to form a maze of sorts.
-        * create a regular poly room from num_faces and first two points
-        * choose a random wall from all existing rooms
-        * add new room onto chosen wall
-        * iterate
+    + integrate Shapely
         * test for intersections and reject
     + randomly generate in-room rocks
+
+Infrastructure
+    * remove dependancies from svn, add as dependant packages using Paver
+    * Windows binary distribution, including Shapely DLL
+    * Linux binary distribution
 
 Vehicle ?
     * keep the thrustship somewhere
@@ -110,6 +110,13 @@ Frills
 
 
 == DONE ==
+
+* Maze generation
+    * Autogenerate a set of rooms to form a maze of sorts.
+        * create a regular poly room from num_faces and first two points
+        * choose a random wall from all existing rooms
+        * add new room onto chosen wall
+        * iterate
 
 Technical Debt
     + fix failing tests
