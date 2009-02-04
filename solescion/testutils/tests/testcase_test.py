@@ -526,6 +526,7 @@ TestCase_test = combine(
     TestCase_assertEquals_test,
     TestCase_assertRaises_test,
     TestCase_assertValidColor_test,
+    TestCase_assertVertsEqual,
     combine_test,
     run_test,
 )

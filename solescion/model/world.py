@@ -6,14 +6,6 @@ from pymunk import Body, inf, init_pymunk, Space
 from solescion.model.material import Material
 
 
-def generate_circle(radius, num_segments):
-    verts = []
-    for idx in range(num_segments):
-        theta = 2*pi / num_segments * idx
-        verts.append((radius * sin(theta), radius * cos(theta)))
-    return verts
-
-
 
 class World(object):
     "Container for everything in the model, eg: Rooms and Chunks"
@@ -34,9 +26,9 @@ class World(object):
         self.material = Material.granite
 
 
-    def add_room(self, room):
-        room.add_to_body(self.space, self.static_body)
-        self.rooms[room.id] = room
+    def add_to_pymunk(self):
+        for room in self.rooms.itervalues():
+            room.add_to_body(self.space, self.static_body)
 
 
     def add_chunk(self, chunk, position, angle=0):

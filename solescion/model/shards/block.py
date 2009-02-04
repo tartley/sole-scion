@@ -1,7 +1,7 @@
 from pymunk import moment_for_poly, Poly
 
 from solescion.geom.poly import (
-    assert_valid_poly, offset_verts, poly_area, poly_centroid,
+    assert_valid, offset_verts, area, centroid,
 )
 
 
@@ -12,20 +12,20 @@ class Block(object):
     def __init__(
         self, material, verts, offset=None, center=False):
 
-        assert_valid_poly(verts)
+        assert_valid(verts)
         self.verts = verts
         if center:
             self._centralize_verts()
         if offset is not None:
             self.verts = offset_verts(self.verts, offset)
         self.material = material
-        self.mass = material.density * poly_area(verts)
+        self.mass = material.density * area(verts)
         self.shape = None
 
 
     def _centralize_verts(self):
-        centroid = poly_centroid(self.verts)
-        self.offset((-centroid[0], -centroid[1]))
+        center = centroid(self.verts)
+        self.offset((-center[0], -center[1]))
 
 
     def get_moment(self):
@@ -33,7 +33,7 @@ class Block(object):
 
 
     def get_offset(self):
-        return poly_centroid(self.verts)
+        return centroid(self.verts)
 
 
     def offset(self, offset):
