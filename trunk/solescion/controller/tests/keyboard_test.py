@@ -12,6 +12,9 @@ from solescion.controller.keyboard import Keyboard, on_key_press
 
 class Keyboard_test(MyTestCase):
 
+    def setUp(self):
+        Keyboard.handlers = {}
+
     def test_handlers(self):
         self.assertEquals(Keyboard.handlers, {},  "bad default handlers")
 

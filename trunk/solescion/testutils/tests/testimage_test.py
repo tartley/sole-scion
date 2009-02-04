@@ -6,7 +6,6 @@ from PIL import Image
 import fixpath
 
 from pyglet import gl
-from pyglet.window import Window
 
 from solescion.testutils.testcase import MyTestCase, run
 from solescion.testutils.testimage import (
