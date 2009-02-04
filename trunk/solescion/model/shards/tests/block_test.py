@@ -7,7 +7,7 @@ from pymunk import Body, moment_for_poly, Poly, Shape, Space, Vec2d
 from solescion.testutils.listener import Listener
 from solescion.testutils.testcase import MyTestCase, run
 
-from solescion.geom.poly import offset_verts, poly_area
+from solescion.geom.poly import offset_verts, area
 from solescion.model.shards.block import Block
 from solescion.model.material import Material
 
@@ -20,7 +20,7 @@ class Block_test(MyTestCase):
         self.assertEquals(block.verts, verts, "bad verts")
         self.assertEquals(block.material, Material.gold)
 
-        expectedMass = Material.gold.density * poly_area(verts)
+        expectedMass = Material.gold.density * area(verts)
         self.assertEquals(block.mass, expectedMass, "mass wrong")
         self.assertNone(block.shape, "bad shape")
 
@@ -29,8 +29,8 @@ class Block_test(MyTestCase):
         listener = Listener()
         verts = [(-1, -1), (-1, +1), (+1, +1), (+1, -1)]
         from solescion.model.shards import block as block_module
-        orig = block_module.assert_valid_poly
-        block_module.assert_valid_poly = listener
+        orig = block_module.assert_valid
+        block_module.assert_valid = listener
         try:
             block = Block(Material.gold, verts)
         finally:

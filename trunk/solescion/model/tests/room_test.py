@@ -8,7 +8,7 @@ from pymunk import Body, inf, Space
 from solescion.testutils.listener import Listener
 from solescion.testutils.testcase import MyTestCase, run
 
-from solescion.geom.poly import poly_centroid
+from solescion.geom.poly import centroid
 
 from solescion.model.room import Room
 from solescion.model.material import Material
@@ -26,7 +26,7 @@ class Room_test(MyTestCase):
         self.assertEquals(room.material, Material.air, "bad material")
         self.assertEquals(room.verts, verts, "should store verts")
         self.assertEquals(room.neighbours, {}, 'bad neighbours')
-        self.assertEquals(room.centroid, poly_centroid(room.verts),
+        self.assertEquals(room.centroid, centroid(room.verts),
             'bad centroid')
 
 
@@ -35,12 +35,12 @@ class Room_test(MyTestCase):
         color = (0.1, 0.2, 0.3)
         verts = [(-1, -2), (3, 4), (-5, 6)]
         from solescion.model import room as room_module
-        orig = room_module.assert_valid_poly
-        room_module.assert_valid_poly = listener
+        orig = room_module.assert_valid
+        room_module.assert_valid = listener
         try:
             room = Room(verts)
         finally:
-            room_module.assert_valid_poly = orig
+            room_module.assert_valid = orig
         self.assertEquals(listener.args, (verts,), "didnt validate verts")
 
 

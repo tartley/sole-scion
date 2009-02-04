@@ -44,21 +44,26 @@ class World_test(MyTestCase):
             world_module.init_pymunk = orig
 
 
-    def test_add_room(self):
-        world = World()
+    def test_add_to_pymunk(self):
         color = (50, 100, 200)
         v1, v2, v3 = (0, 0), (0, 100), (100, 0)
         verts = [v1, v2, v3]
-        room = Room(verts)
-        room.id = 9876
-        room.add_to_body = Listener()
+        room1 = Room(verts)
+        room1.id = 999
+        room1.add_to_body = Listener()
+        room2 = Room(verts)
+        room2.id = 1000
+        room2.add_to_body = Listener()
+        world = World()
+        world.rooms = {999: room1, 1000: room2}
 
-        world.add_room(room)
+        world.add_to_pymunk()
 
-        self.assertEquals(world.rooms, {room.id: room}, "room not added")
         expected = (world.space, world.static_body)
-        self.assertEquals(room.add_to_body.args, expected,
-            "room walls not added to space")
+        self.assertEquals(room1.add_to_body.args, expected,
+            "room1 walls not added to space")
+        self.assertEquals(room2.add_to_body.args, expected,
+            "room2 walls not added to space")
 
 
     def test_add_chunk(self):

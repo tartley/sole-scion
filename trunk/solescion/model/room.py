@@ -1,7 +1,7 @@
 from pymunk import Segment
 
 from solescion.model.material import Material
-from solescion.geom.poly import assert_valid_poly, poly_centroid
+from solescion.geom.poly import assert_valid, centroid
 
 
 def _add_wall_to(space, body, vert1, vert2):
@@ -22,11 +22,11 @@ class Room(object):
     def __init__(self, verts):
         self.id = Room._nextRoomId
         Room._nextRoomId += 1
-        assert_valid_poly(verts)
+        assert_valid(verts)
         self.verts = verts
         self.material = Material.air
         self.neighbours = {}
-        self.centroid = poly_centroid(verts)
+        self.centroid = centroid(verts)
 
 
     def attach(self, wall, other, otherwall):

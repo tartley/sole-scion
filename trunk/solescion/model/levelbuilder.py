@@ -1,6 +1,6 @@
 from random import randint, seed
 
-from solescion.geom.poly import create_regular
+from solescion.geom.poly import regular
 from solescion.model.chunk import Chunk
 from solescion.model.material import Material
 from solescion.model.room import Room
@@ -14,11 +14,10 @@ class LevelBuilder(object):
 
     def __init__(self):
         self.rooms = {}
-        self.geometry = None
 
 
     def create_initial_room(self):
-        verts = create_regular(7, (+20, -30), (-20, -30))
+        verts = regular(7, (+20, -30), (-20, -30))
         self.add_room(Room(verts))
 
 
@@ -43,7 +42,7 @@ class LevelBuilder(object):
         end = branch_room.verts[branch_wall]
         startidx = (branch_wall + 1) % len(branch_room.verts)
         start = branch_room.verts[startidx]
-        verts = create_regular(num_verts, start, end)
+        verts = regular(num_verts, start, end)
         return verts
 
 
@@ -55,12 +54,6 @@ class LevelBuilder(object):
         self.rooms[newroom.id] = newroom
         if branch_room and branch_wall:
             branch_room.attach(branch_wall, newroom, 0)
-
-
-    def add_to_world(self, world):
-        for room in self.rooms.itervalues():
-            world.add_room(room)
-            self.populate(room, world)
 
 
     # TODO untested
@@ -78,7 +71,11 @@ class LevelBuilder(object):
             if self.new_verts_ok(verts):
                 self.add_room(Room(verts), branch_room, branch_wall)
 
-        self.add_to_world(world)
+        world.rooms = self.rooms
+        world.add_to_pymunk()
+
+        for room in self.rooms.itervalues():
+            self.add_furniture(room, world)
 
 
     chunkbits = [
@@ -107,7 +104,7 @@ class LevelBuilder(object):
     ]
 
     # TODO: not tested
-    def populate(self, room, world):
+    def add_furniture(self, room, world):
         if room.id > 0:
             chunk = Chunk(*self.chunkbits[randint(0, len(self.chunkbits) - 1)])
             world.add_chunk(chunk, room.centroid)
