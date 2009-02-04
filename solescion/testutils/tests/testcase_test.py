@@ -368,7 +368,7 @@ class TestCase_assertVertsEqual(RealTestCase):
         self.mytestcase.assertRaises(
             lambda: self.mytestcase.assertVertsEqual(v1, v2),
             AssertionError,
-            'verts differ at v2: (4, 5), (4, 66)')
+            'verts differ at v2: (4, 5), (4, 66)\n')
 
 
     def test_assertVertsEqual_wronglen(self):
@@ -377,7 +377,7 @@ class TestCase_assertVertsEqual(RealTestCase):
         self.mytestcase.assertRaises(
             lambda: self.mytestcase.assertVertsEqual(v1, v2),
             AssertionError,
-            'verts differ in len: 2, 3')
+            'verts differ in len: 2, 3\n')
 
 
     def test_assertVertsEqual_badlyformed(self):
@@ -386,14 +386,14 @@ class TestCase_assertVertsEqual(RealTestCase):
         self.mytestcase.assertRaises(
             lambda: self.mytestcase.assertVertsEqual(v1, v2),
             AssertionError,
-            'actual verts badly formed at v1: (3,)')
+            'actual verts badly formed at v1: (3,)\n')
 
         v1 = [(1, 2), (3, 4), (5, 6)]
         v2 = [(1, 2), (3, 4), (5, 6, 7)]
         self.mytestcase.assertRaises(
             lambda: self.mytestcase.assertVertsEqual(v1, v2),
             AssertionError,
-            'expected verts badly formed at v2: (5, 6, 7)')
+            'expected verts badly formed at v2: (5, 6, 7)\n')
 
 
     def test_assertVertsEqual_degen(self):

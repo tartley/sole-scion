@@ -3,7 +3,7 @@ from __future__ import division
 
 # pylint: disable-msg=W0611
 #   unused import: acknowledged
-from . import fixpath
+import fixpath
 
 from solescion.acceptancetests.acceptancetest import AcceptanceTest, get_window
 from solescion.testutils.testcase import run

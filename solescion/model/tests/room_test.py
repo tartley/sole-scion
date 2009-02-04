@@ -2,7 +2,6 @@
 
 import fixpath
 
-from pyglet.window import Window
 from pymunk import Body, inf, Space
 
 from solescion.testutils.listener import Listener

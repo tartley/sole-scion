@@ -15,6 +15,14 @@ from solescion.utils.screenshot import _get_filename, image_from_window, save_sc
 
 class Save_screenshot_test(MyTestCase):
 
+    def setUp(self):
+        self.window = None
+
+    def tearDown(self):
+        if self.window:
+            self.window.close()
+
+
     def test_get_filename(self):
         import solescion.utils.screenshot as screenshot_module
         orig = screenshot_module.listdir
@@ -40,15 +48,17 @@ class Save_screenshot_test(MyTestCase):
 
 
     def test_save_screenshot(self):
-        window = Window(width=12, height=34, visible=False)
-
+        self.window = Window(
+            width=12, height=34, visible=False,
+            caption='test_save_screenshot',
+        )
         import solescion.utils.screenshot as screenshot_module
         orig_get = screenshot_module._get_filename
         filename = join(expanduser("~"), "test_save_screenshot.png")
         screenshot_module._get_filename = lambda *_: filename
         try:
             try:
-                save_screenshot(window)
+                save_screenshot(self.window)
             finally:
                 screenshot_module._get_filename = orig_get
 
@@ -71,7 +81,8 @@ class Image_from_window_test(MyTestCase):
         }
 
         self.window = Window(
-            width=30, height=20, visible=False, caption="TestImage_from_window")
+            width=30, height=20, visible=False,
+            caption="TestImage_from_window")
         self.window.on_resize(30, 20)
         self.window.dispatch_events()
         self.window.clear()

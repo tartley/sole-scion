@@ -21,7 +21,6 @@ class LevelBuilder_test(MyTestCase):
     def test_constructor(self):
         builder = LevelBuilder()
         self.assertEquals(builder.rooms, {})
-        self.assertEquals(builder.geometry, None)
 
 
     def test_create_initial_room(self):
@@ -122,18 +121,6 @@ class LevelBuilder_test(MyTestCase):
         self.assertEquals(len(builder.rooms), 1)
         added_room = builder.rooms.values()[0]
         self.assertEquals(added_room.neighbours, {})
-
-
-    def test_add_to_world(self):
-        world = Listener()
-        world.add_room = Listener()
-        builder = LevelBuilder()
-        r1, r2, r3 = object(), object(), object()
-        builder.rooms = {100: r1, 200: r2, 300: r3}
-        builder.add_to_world(world)
-        self.assertEquals(
-            set(world.add_room.args_list),
-            set([(r1,), (r2,), (r3,)]))
 
 
 if __name__ == "__main__":

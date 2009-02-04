@@ -107,7 +107,8 @@ class Camera_test(MyTestCase):
         # resizing the existing window doesn't work for some reason
         # even if we dispatch events. Default handlers?
         self.window.close()
-        self.window = Window(width=100, height=200, visible=False,
+        self.window = Window(
+            width=100, height=200, visible=False,
             caption="world.test_projection_strange_aspect")
         self.window.dispatch_events()
         rect = (-0.2, -0.4, +0.6, +0.8)
