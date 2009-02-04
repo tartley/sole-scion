@@ -1,10 +1,8 @@
 from __future__ import division
-from math import pi, sin, cos
 
 from pymunk import Body, inf, init_pymunk, Space
 
 from solescion.model.material import Material
-
 
 
 class World(object):
