@@ -4,6 +4,8 @@ import fixpath
 
 from pymunk import Body, inf, Space
 
+from shapely.geometry import Polygon, Point
+
 from solescion.testutils.listener import Listener
 from solescion.testutils.testcase import MyTestCase, run
 
@@ -23,10 +25,26 @@ class Room_test(MyTestCase):
         self.assertEquals(room.id, 999, "should store id")
         self.assertEquals(Room._nextRoomId, 1000, "should inc next room id")
         self.assertEquals(room.material, Material.air, "bad material")
-        self.assertEquals(room.verts, verts, "should store verts")
+        p = Polygon(verts)
+        self.assertEquals(
+            list(room.polygon.exterior.coords),
+            list(p.exterior.coords), "should store verts")
         self.assertEquals(room.neighbours, {}, 'bad neighbours')
-        self.assertEquals(room.centroid, centroid(room.verts),
-            'bad centroid')
+        self.assertEquals(
+            room.polygon.centroid.coords,
+            p.centroid.coords, 'bad centroid')
+
+
+    def test_verts(self):
+        verts = [(0, 1), (1, 0), (0, 0)]
+        room = Room(verts)
+        self.assertEquals(list(room.verts), verts)
+
+
+    def test_centroid(self):
+        verts = [(0, 0), (0, 1), (1, 1), (1, 0)]
+        room = Room(verts)
+        self.assertEquals(room.centroid, (0.5, 0.5))
 
 
     def test_constructor_validates_verts(self):
@@ -53,7 +71,7 @@ class Room_test(MyTestCase):
 
     def test_add_to_body(self):
         color = (100, 150, 200)
-        v1, v2, v3 = (0,1), (1,2), (2,0)
+        v1, v2, v3 = (0.0, 0.0), (0.0, 1.0), (1.0, 0.0)
         verts = [v1, v2, v3]
         room = Room(verts)
         space = Space()
@@ -65,7 +83,7 @@ class Room_test(MyTestCase):
             ((seg.a[0], seg.a[1]), (seg.b[0], seg.b[1]))
             for seg in space.static_shapes
         ])
-        self.assertEquals(segs, set([(v1, v2), (v2, v3), (v3, v1)]),
+        self.assertEquals(segs, set([(v1, v2), (v2, v3), (v3, v1), (v1, v2)]),
             "room walls not added to space")
 
         for seg in space.static_shapes:

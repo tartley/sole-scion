@@ -1,5 +1,7 @@
 from pymunk import Segment
 
+from shapely.geometry import Polygon
+
 from solescion.model.material import Material
 from solescion.geom.poly import assert_valid, centroid
 
@@ -23,10 +25,19 @@ class Room(object):
         self.id = Room._nextRoomId
         Room._nextRoomId += 1
         assert_valid(verts)
-        self.verts = verts
+        self.polygon = Polygon(verts)
         self.material = Material.air
         self.neighbours = {}
-        self.centroid = centroid(verts)
+
+
+    @property
+    def verts(self):
+        return list(self.polygon.exterior.coords)[:-1]
+
+
+    @property
+    def centroid(self):
+        return tuple(self.polygon.exterior.centroid.coords[0])
 
 
     def attach(self, wall, other, otherwall):
@@ -35,12 +46,9 @@ class Room(object):
 
 
     def add_to_body(self, space, body):
-        maxwall = len(self.verts) - 1
+        verts = self.polygon.exterior.coords
+        maxwall = len(verts) - 1
         for idx in xrange(maxwall):
             if idx not in self.neighbours:
-                _add_wall_to(
-                    space, body, self.verts[idx], self.verts[idx+1])
-        if maxwall not in self.neighbours:
-            _add_wall_to(space, body, self.verts[-1], self.verts[0])
-
+                _add_wall_to(space, body, verts[idx], verts[idx+1])
 

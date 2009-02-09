@@ -1,5 +1,7 @@
 from random import randint, seed
 
+from shapely.geometry import Polygon
+
 from solescion.geom.poly import regular
 from solescion.model.chunk import Chunk
 from solescion.model.material import Material
@@ -14,6 +16,7 @@ class LevelBuilder(object):
 
     def __init__(self):
         self.rooms = {}
+        self.geometry = None
 
 
     def create_initial_room(self):
@@ -22,7 +25,7 @@ class LevelBuilder(object):
 
 
     def complete(self):
-        return len(self.rooms) > 9
+        return len(self.rooms) > 11
 
 
     def select_branch_room(self):
@@ -30,15 +33,17 @@ class LevelBuilder(object):
 
 
     def select_branch_wall(self, branch_room):
-        if len(branch_room.verts) == len(branch_room.neighbours):
+        num_walls = len(branch_room.verts)
+        if num_walls == len(branch_room.neighbours):
             return None
         while True:
-            wall = randint(0, len(branch_room.verts) - 1)
+            wall = randint(0, num_walls - 1)
             if wall not in branch_room.neighbours:
                 return wall
 
 
     def new_room_verts(self, branch_room, branch_wall, num_verts):
+        branch_verts = branch_room.verts
         end = branch_room.verts[branch_wall]
         startidx = (branch_wall + 1) % len(branch_room.verts)
         start = branch_room.verts[startidx]
@@ -46,19 +51,25 @@ class LevelBuilder(object):
         return verts
 
 
-    def new_verts_ok(self, _):
-        return True
+    def new_verts_ok(self, verts):
+        if self.geometry is None:
+            return True
+        return self.geometry.touches(Polygon(verts))
 
 
     def add_room(self, newroom, branch_room=None, branch_wall=None):
         self.rooms[newroom.id] = newroom
         if branch_room and branch_wall:
             branch_room.attach(branch_wall, newroom, 0)
+        if self.geometry is None:
+            self.geometry = newroom.polygon
+        else:
+            self.geometry = self.geometry.union(newroom.polygon)
 
 
     # TODO untested
     def build(self, world):
-        seed(5)
+        seed(0)
         self.create_initial_room()
         while not self.complete():
             branch_room = self.select_branch_room()
@@ -75,7 +86,7 @@ class LevelBuilder(object):
         world.add_to_pymunk()
 
         for room in self.rooms.itervalues():
-            self.add_furniture(room, world)
+            self.furnish(room, world)
 
 
     chunkbits = [
@@ -104,7 +115,7 @@ class LevelBuilder(object):
     ]
 
     # TODO: not tested
-    def add_furniture(self, room, world):
+    def furnish(self, room, world):
         if room.id > 0:
             chunk = Chunk(*self.chunkbits[randint(0, len(self.chunkbits) - 1)])
             world.add_chunk(chunk, room.centroid)

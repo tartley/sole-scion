@@ -2,12 +2,11 @@ See bottom of file for tasks that are 'done' but which have not yet been
 moved to HISTORY.txt (*=planned task, +=unexpected task)
 
 Maze
-    + integrate Shapely
-        * test for intersections and reject
     + randomly generate in-room rocks
 
 Infrastructure
     * MUST automatically find all tests for run_test
+    + or use nose to run tests. delete 'run all tests' and the like?
     * remove dependancies from svn, add as dependant packages using Paver
     * Windows binary distribution, including Shapely DLL
     * Linux binary distribution
@@ -25,8 +24,8 @@ Interaction
     + handle window resize
 
 Testing
-    + use michael's Mock instead of our Listener
-    + use nose to run tests. delete 'all tests' and the like
+    + use michael's Mock instead of our Listener?
+    + get a monkey patcher
 
 Infrastructure
     + test failures on Windows
@@ -113,11 +112,14 @@ Frills
 == DONE ==
 
 * Maze generation
+    + integrate Shapely
     * Autogenerate a set of rooms to form a maze of sorts.
         * create a regular poly room from num_faces and first two points
         * choose a random wall from all existing rooms
         * add new room onto chosen wall
         * iterate
+        * test for intersections and reject
+    * choose a seed to generate an interesting large maze
 
 Technical Debt
     + fix failing tests

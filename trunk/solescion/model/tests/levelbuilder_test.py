@@ -61,7 +61,9 @@ class LevelBuilder_test(MyTestCase):
         for _ in xrange(32):
             walls.add(builder.select_branch_wall(room))
 
-        self.assertEquals(walls, set([1, 4]))
+        self.assertTrue(0 not in walls)
+        self.assertTrue(2 not in walls)
+        self.assertTrue(3 not in walls)
 
 
     def test_new_room_verts(self):
@@ -121,6 +123,24 @@ class LevelBuilder_test(MyTestCase):
         self.assertEquals(len(builder.rooms), 1)
         added_room = builder.rooms.values()[0]
         self.assertEquals(added_room.neighbours, {})
+
+
+    def test_add_room_unions_geometry(self):
+        builder = LevelBuilder()
+        room = Room([(0, 0), (0, 1), (1, 0)])
+        builder.add_room(room)
+        self.assertEquals(len(builder.geometry.exterior.coords), 4)
+        self.assertEqual(
+            list(builder.geometry.exterior.coords),
+            [(0, 0), (0, 1), (1, 0), (0, 0)])
+
+
+        room = Room([(1, 1), (1, 0), (0, 1)])
+        builder.add_room(room)
+        self.assertEquals(len(builder.geometry.exterior.coords), 5)
+        self.assertEqual(
+            list(builder.geometry.exterior.coords),
+            [(0, 0), (0, 1), (1, 1), (1, 0), (0, 0)])
 
 
 if __name__ == "__main__":
