@@ -1,5 +1,7 @@
 #!/usr/bin/env python -O
 
+from os import environ
+from os.path import abspath
 from sys import argv, exit, path
 
 from solescion.application import TITLE
@@ -7,6 +9,8 @@ from solescion.controller.gameloop import Gameloop
 
 
 def main():
+
+    environ['LD_LIBRARY_PATH'] += abspath('shapely')
 
     if '-v' in argv or '--version' in argv:
         print TITLE
