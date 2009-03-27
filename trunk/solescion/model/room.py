@@ -25,14 +25,17 @@ class Room(object):
         self.id = Room._nextRoomId
         Room._nextRoomId += 1
         assert_valid(verts)
+        self.verts = None
         self.polygon = Polygon(verts)
         self.material = Material.air
         self.neighbours = {}
 
 
-    @property
-    def verts(self):
-        return list(self.polygon.exterior.coords)[:-1]
+    def _set_polygon(self, poly):
+        self._polygon = poly
+        self.verts = list(self.polygon.exterior.coords)[:-1]
+
+    polygon = property(lambda self: self._polygon, _set_polygon)
 
 
     @property
