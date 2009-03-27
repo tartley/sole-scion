@@ -1,4 +1,3 @@
 PATH=%PATH%;%shapely
-echo %PATH%
-python -O run.py
+python -O solescion.py
 
