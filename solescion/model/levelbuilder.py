@@ -25,11 +25,11 @@ class LevelBuilder(object):
 
 
     def complete(self):
-        return len(self.rooms) > 11
+        return len(self.rooms) > 88
 
 
     def select_branch_room(self):
-        return self.rooms.values()[randint(0, len(self.rooms) - 1)]
+        return self.rooms.values()[len(self.rooms) - 1]
 
 
     def select_branch_wall(self, branch_room):
@@ -43,7 +43,6 @@ class LevelBuilder(object):
 
 
     def new_room_verts(self, branch_room, branch_wall, num_verts):
-        branch_verts = branch_room.verts
         end = branch_room.verts[branch_wall]
         startidx = (branch_wall + 1) % len(branch_room.verts)
         start = branch_room.verts[startidx]
@@ -69,7 +68,7 @@ class LevelBuilder(object):
 
     # TODO untested
     def build(self, world):
-        seed(0)
+        seed(2)
         self.create_initial_room()
         while not self.complete():
             branch_room = self.select_branch_room()
@@ -94,23 +93,23 @@ class LevelBuilder(object):
             Disc(Material.rubber, 5),
         ],
         [
-            Block(Material.ice, [(-10, 20), (30, 20), (20, 0), (0, 0)]),
+            Block(Material.ice, [(-10, 5), (5, 2), (2, 0), (0, 0)]),
         ],
         [
             Block(
                 Material.granite, [
-                    (-10, 20), (-10, 30), (10, 40), (20, 30),
-                    (20, 20), (10, 0), (0, 0)
+                    (-5, 10), (-5, 15), (5, 20), (10, 15),
+                    (10, 10), (5, 0), (0, 0)
                 ]
             )
         ],
         [
-            Block(Material.gold, [(-15, 5), (15, 5), (15, -5), (-15, -5)]),
-            Block(Material.gold, [(-5, -15), (-5, 15), (5, 15), (5, -15)]),
+            Block(Material.gold, [(-9, 3), (9, 3), (9, -3), (-9, -3)]),
+            Block(Material.gold, [(-3, -9), (-3, 9), (3, 9), (3, -9)]),
         ],
         [
-            Disc(Material.bamboo, 5, (0, -10)),
-            Disc(Material.bamboo, 10, (0, 0)),
+            Disc(Material.bamboo, 5, (0, -2)),
+            Disc(Material.bamboo, 2, (0, 0)),
         ],
     ]
 

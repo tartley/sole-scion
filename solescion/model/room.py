@@ -3,7 +3,7 @@ from pymunk import Segment
 from shapely.geometry import Polygon
 
 from solescion.model.material import Material
-from solescion.geom.poly import assert_valid, centroid
+from solescion.geom.poly import assert_valid
 
 
 def _add_wall_to(space, body, vert1, vert2):
@@ -26,15 +26,19 @@ class Room(object):
         Room._nextRoomId += 1
         assert_valid(verts)
         self.verts = None
-        self.polygon = Polygon(verts)
+        self._polygon = None
         self.material = Material.air
         self.neighbours = {}
+
+        self.polygon = Polygon(verts)
 
 
     def _set_polygon(self, poly):
         self._polygon = poly
         self.verts = list(self.polygon.exterior.coords)[:-1]
 
+    # pylint: disable-msg=W0212
+    #   Access to protected member ._polygon: Member of self, dummy.
     polygon = property(lambda self: self._polygon, _set_polygon)
 
 
