@@ -1,8 +1,3 @@
-"""
-Camera tracks a position, orientation and zoom level, and applies openGL
-transforms so that subsequent renders are drawn at the correct place, size
-and orientation on screen
-"""
 from __future__ import division
 from math import sin, cos
 
@@ -14,19 +9,25 @@ from pyglet.gl import (
 
 
 class Camera(object):
+    """
+    Camera tracks a position, orientation and zoom level, and applies openGL
+    transforms so that subsequent renders are drawn at the correct place, size
+    and orientation on screen
+    """
 
-    def __init__(self, offset, scale, angle=None):
-        if angle is None:
-            angle = 0.0
+    def __init__(self, offset, scale, angle=0.0):
         self.x, self.y = offset
         self.scale = scale
+        self.target_scale = scale
         self.angle = angle
 
 
     def world_projection(self, aspect):
-        """Sets OpenGL projection and modelview matrices such that the window
+        """
+        Sets OpenGL projection and modelview matrices such that the window
         is centered on self.(x,y), shows at least scale world units in every
-        direction, and is oriented by angle."""
+        direction, and is oriented by angle.
+        """
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()
         if aspect < 1:
@@ -48,4 +49,12 @@ class Camera(object):
             self.x, self.y, +1.0,
             self.x, self.y, -1.0,
             sin(self.angle), cos(self.angle), 0.0)
+
+
+    def zoom(self, factor):
+        self.target_scale *= factor
+
+
+    def update(self):
+        self.scale += (self.target_scale - self.scale) * 0.1
 

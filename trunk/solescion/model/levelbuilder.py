@@ -25,7 +25,7 @@ class LevelBuilder(object):
 
 
     def complete(self):
-        return len(self.rooms) > 88
+        return len(self.rooms) > 100
 
 
     def select_branch_room(self):

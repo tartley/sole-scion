@@ -14,7 +14,6 @@ from solescion.view.renderer import Renderer
 
 FPS_LIMIT = 60
 
-
 class Gameloop(object):
 
     instance = None
@@ -27,6 +26,8 @@ class Gameloop(object):
         self.renderer = None
         self.paused = False
         Keyboard.handlers.update({
+            key.PAGEUP: lambda: self.camera.zoom(2.0),
+            key.PAGEDOWN: lambda: self.camera.zoom(0.5),
             key.ESCAPE: self.quit_game,
             key.PAUSE: self.toggle_pause,
             key.F12: lambda: save_screenshot(self.window),
@@ -68,6 +69,7 @@ class Gameloop(object):
                 if self.world and hasattr(self.world, 'player'):
                     self.camera.x, self.camera.y = \
                         self.world.player.chunks[0].body.position
+                self.camera.update()
                 if self.renderer:
                     aspect = (
                         self.window.width / self.window.height)
