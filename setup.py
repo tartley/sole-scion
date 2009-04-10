@@ -8,7 +8,8 @@ from zipfile import ZipFile
 
 
 NAME = 'SoleScion'
-VERSION = '0.2.2dev'
+VERSION = '0.2.3'
+
 WIN_BINARY = '%s-win-binary-%s' % (NAME, VERSION)
 EXE_DIR = 'exe'
 
