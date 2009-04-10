@@ -32,7 +32,7 @@ def dumps(ob):
         return retval
     func.restype = allocated_c_char_p
     func.errcheck = errcheck
-    return lgeos.GEOSGeomToWKT(ob._geom)
+    return func(ob._geom)
 
 def dump(ob, fp):
     """Dump a geometry to an open file."""
