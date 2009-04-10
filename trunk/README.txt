@@ -8,10 +8,9 @@ Works on Windows and Macs and Linux (and under [http://codespeak.net/pypy/dist/p
 
 Currently at a very early stage of development. Only of interest to the geekiest of my friends and to enthusiastic programmers.
 
-
 ==Screenshots==
 
-Are [http://code.google.com/p/sole-scion/wiki/Screenshots here].
+are [http://code.google.com/p/sole-scion/wiki/Screenshots here].
 
 
 ==To Play on Windows==
@@ -20,8 +19,6 @@ Download the [http://code.google.com/p/sole-scion/downloads/list?can=3&q=binary 
 
 
 ==To Play on Linux or Mac==
-
-Proper binary and source installs to make this trivially easy will be coming soon. Until then:
 
 First install Python 2.5 or 2.6 from [http://python.org python.org]. You probably already have this installed. To check, start a command-line prompt, type 'python', and check the version number displayed is 2.5.x or 2.6.x.
 
@@ -42,20 +39,21 @@ Untar it and run the game from the command line with something like:
   * See the [http://code.google.com/p/sole-scion/issues/list issues page].
 
 
-==Dependencies==
+==Thanks==
 
-Many thanks to the creators of the following invaluable libraries, upon which this project is built:
+Many thanks to the creators of the following excellent libraries, upon which
+this project is built, and without which it could never have been built.
 
-  * [http://code.google.com/p/pymunk Pymunk], Python bindings to the [http://code.google.com/p/chipmunk-physics/ Chipmunk] physics library, which provides brilliant 2D rigid body dynamics.
+  * [http://code.google.com/p/pymunk Pymunk], Excellent Python bindings to the magnificent  [http://code.google.com/p/chipmunk-physics/ Chipmunk] physics library, which provides 2D rigid body dynamics.
  
   * [http://www.pyglet.org Pyglet] game library, providing fantastic facilities for creating windows, OpenGL graphics, keyboard and mouse input, sound, etc.
 
-  * [http://trac.gispython.org/lab/wiki/Shapely Shapely], Python bindings
-to the [http://trac.osgeo.org/geos GEOS] 2D geometry library.
+  * [http://pypi.python.org/pypi/Shapely/ Shapely], superb Python wrapper of [http://trac.osgeo.org/geos/ GEOS] (Geometry Engine Open Souce), which provides 2D geometry operations.
 
 
 ==Contact==
 
 Jonathan Hartley, http://tartley.com, tartley at tartley dot com, twitter:tartley
+
 
 
