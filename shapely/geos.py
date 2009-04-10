@@ -46,7 +46,7 @@ else:
         lgeos = PyDLL('libgeos_c.so.1')
     except (OSError, ImportError):
         lgeos = PyDLL('libgeos_c.so')
-    except Exception, e:
+    except:
         raise
     free = CDLL('libc.so.6').free
 
