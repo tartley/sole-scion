@@ -1,4 +1,4 @@
-#summary Screenshots.
+#summary Snapshots throughout development
 #labels Featured
 
 == Version 0.2.3 ==
