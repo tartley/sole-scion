@@ -7,9 +7,9 @@ Maze
 Infrastructure
     * MUST automatically find all tests for run_test
     + or use nose to run tests. delete 'run all tests' and the like?
-    * remove dependancies from svn, add as dependant packages using Paver
     * Windows binary distribution, including Shapely DLL
     * Linux binary distribution
+    * Mac binary distribution? Need help.
 
 Vehicle ?
     * keep the thrustship somewhere

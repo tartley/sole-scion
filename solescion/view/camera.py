@@ -51,6 +51,19 @@ class Camera(object):
             sin(self.angle), cos(self.angle), 0.0)
 
 
+    def hud_projection(self, size):
+        """
+        Sets OpenGL pojection and modelview matrices such that the window
+        renders (0,0) to (size.x, size,y)
+        """
+        glMatrixMode(GL_MODELVIEW)
+        glLoadIdentity()
+
+        glMatrixMode(GL_PROJECTION)
+        glLoadIdentity()
+        gluOrtho2D(0, size[0], 0, size[1])
+
+
     def zoom(self, factor):
         self.target_scale *= factor
 
