@@ -25,6 +25,7 @@ class Gameloop(object):
         self.world = None
         self.renderer = None
         self.paused = False
+        self.fps_display = None
         Keyboard.handlers.update({
             key.PAGEUP: lambda: self.camera.zoom(2.0),
             key.PAGEDOWN: lambda: self.camera.zoom(0.5),
@@ -36,6 +37,7 @@ class Gameloop(object):
 
     def init(self, caption):
         clock.set_fps_limit(FPS_LIMIT)
+        self.fps_display = clock.ClockDisplay()
 
         self.camera = Camera((0, 0), 50)
         self.renderer = Renderer(self.camera)
@@ -74,6 +76,9 @@ class Gameloop(object):
                     aspect = (
                         self.window.width / self.window.height)
                     self.renderer.draw(self.world, aspect)
+                self.camera.hud_projection(
+                    (self.window.width, self.window.height))
+                self.fps_display.draw()
                 self.window.flip()
         finally:
             self.dispose()
