@@ -1,48 +1,54 @@
+
 =Sole Scion=
 
 http://code.google.com/p/sole-scion/
 
 A game with 2D vector graphics and rigid body physics, and a vision to exploit the scaling, toppling, sliding and rolling of vector shapes.
 
-Works on Windows and Macs and Linux (and under [http://codespeak.net/pypy/dist/pypy/doc/home.html PyPy], with functools installed.)
+Currently at a very early stage of development. Only of interest to the geekiest of my enthusiastic programmer friends.
 
-Currently at a very early stage of development. Only of interest to the geekiest of my friends and to enthusiastic programmers.
+Works on Windows and Linux (and last I heard, under
+[http://codespeak.net/pypy/dist/pypy/doc/home.html PyPy] too, with functools
+installed.)
+
+Could easily work on Macs too, but I need a little assist from someone with a
+Mac. Can you help? See contact details below.
+
 
 ==Screenshots==
 
-are [http://code.google.com/p/sole-scion/wiki/Screenshots here].
+http://sole-scion.googlecode.com/svn/trunk/docs/screenshots/SoleScion-screenshot-v0.2.4.png
+
+More are [http://code.google.com/p/sole-scion/wiki/Screenshots here].
 
 
-==To Play on Windows==
+==To Play==
 
-Download the [http://code.google.com/p/sole-scion/downloads/list?can=3&q=binary featured Windows binary download], unzip and double-click 'run.bat'.
-
-
-==To Play on Linux or Mac==
-
-First install Python 2.5 or 2.6 from [http://python.org python.org]. You probably already have this installed. To check, start a command-line prompt, type 'python', and check the version number displayed is 2.5.x or 2.6.x.
-
-Download the [http://code.google.com/p/sole-scion/downloads/list?can=3&q=source featured source code download].
-
-Untar it and run the game from the command line with something like:
+Use subversion to check out souce from:
 
 {{{
-  tar -xzf SoleScion-X.X.X.tar.gz
-  cd SoleScion-X.X.X
-  python -O run.py
+    svn checkout http://sole-scion.googlecode.com/svn/trunk/ sole-scion
 }}}
+
+and execute {{{SoleScion.bat}}} (Windows) or {{{SoleScion.sh}}} (Linux)
+
+You will need [http://python.org/download/ Python] v2.5 or v2.6 installed. To check your installed version, type 'python' at a command-prompt and note the displayed version number.
+
+All other dependencies are included in the project.
+
+There is no installer as yet.
 
 
 ==Known Problems==
 
-  * It's still very early days. There isn't a game there yet. Lower your expectations.
+  * There isn't a game there yet. It's still very early days. Lower your expectations.
   * See the [http://code.google.com/p/sole-scion/issues/list issues page].
 
 
 ==Thanks==
 
-Many thanks to the creators of the following excellent libraries, upon which
-this project is built, and without which it could never have been built.
+Many thanks to the creators of the following excellent libraries, without
+which this project could not have been built.
 
   * [http://code.google.com/p/pymunk Pymunk], Excellent Python bindings to the magnificent  [http://code.google.com/p/chipmunk-physics/ Chipmunk] physics library, which provides 2D rigid body dynamics.
  
@@ -53,7 +59,5 @@ this project is built, and without which it could never have been built.
 
 ==Contact==
 
-Jonathan Hartley, http://tartley.com, tartley at tartley dot com, twitter:tartley
-
-
+Jonathan Hartley, tartley at tartley dot com, http://tartley.com
 
