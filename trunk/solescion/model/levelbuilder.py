@@ -90,7 +90,7 @@ class LevelBuilder(object):
             Disc(rubber, 5),
         ],
         [
-            Block(ice, [(-10, 5), (5, 2), (2, -5), (0, -5)]),
+            Block(ice, [(-7, 4), (-6, 5), (5, 2), (2, -5)]),
         ],
         [
             Block(
@@ -113,6 +113,7 @@ class LevelBuilder(object):
     # TODO: not tested
     def furnish(self, room, world):
         if 0 < room.id and room.id % 3 == 0:
-            chunk = Chunk(*self.chunkbits[randint(0, len(self.chunkbits) - 1)])
+            chunk_type = randint(0, len(self.chunkbits) - 1)
+            chunk = Chunk(*self.chunkbits[chunk_type])
             world.add_chunk(chunk, room.centroid, uniform(0, 2*pi))
 
