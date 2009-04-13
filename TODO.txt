@@ -2,7 +2,6 @@ See bottom of file for tasks that are 'done' but which have not yet been
 moved to HISTORY.txt (*=planned task, +=unexpected task)
 
 Level Builder
-    + one room is 'the surface'
     + randomly generate in-room rocks
 
 Infrastructure
@@ -107,6 +106,7 @@ Frills
         * iterate
         * test for intersections and reject
     * choose a seed to generate an interesting large maze
+    + one very large room to represent 'above ground'
 
 Technical Debt
     + fix failing tests
