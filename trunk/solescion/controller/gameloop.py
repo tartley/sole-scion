@@ -50,7 +50,7 @@ class Gameloop(object):
 
         self.world = World()
         builder = LevelBuilder()
-        seed(0)
+        seed(2)
         builder.build(self.world, 150)
 
         self.world.player = Player()

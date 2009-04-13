@@ -21,16 +21,35 @@ class LevelBuilder(object):
 
 
     def create_initial_room(self):
-        verts = regular(7, (+20, -30), (-20, -30))
+        verts = [
+            (15, 0), (-15, 0), (-100000, 1),
+            (-100000, 200000), (100000, 200000), (100000, 1)]
         self.add_room(Room(verts))
 
 
     def select_branch_room(self):
-        room_idx = randint(0, len(self.rooms) - 1)
+        if len(self.rooms) == 1:
+            room_idx = 0
+        elif len(self.rooms) == 2:
+            room_idx = 1
+        else:
+            room_idx = randint(2, len(self.rooms) - 1)
         return self.rooms.values()[room_idx]
 
+    def _lowest_vert(self, room):
+        lowest = 0
+        for idx, vert in enumerate(room.verts):
+            if vert[1] <= room.verts[lowest][1]:
+                lowest = idx
+        return lowest - 1
 
     def select_branch_wall(self, branch_room):
+        if len(self.rooms) == 1:
+            return 0
+        elif len(self.rooms) == 2:
+            return self._lowest_vert(branch_room)
+
+
         num_walls = len(branch_room.verts)
         if num_walls == len(branch_room.neighbours):
             return None
@@ -56,7 +75,7 @@ class LevelBuilder(object):
 
     def add_room(self, newroom, branch_room=None, branch_wall=None):
         self.rooms[newroom.id] = newroom
-        if branch_room and branch_wall:
+        if branch_room is not None and branch_wall is not None:
             branch_room.attach(branch_wall, newroom, 0)
         if self.geometry is None:
             self.geometry = newroom.polygon
@@ -76,8 +95,8 @@ class LevelBuilder(object):
             verts = self.new_room_verts(
                 branch_room, branch_wall, num_verts)
             if self.new_verts_ok(verts):
-                self.add_room(Room(verts), branch_room, branch_wall)
-
+                newroom = Room(verts)
+                self.add_room(newroom, branch_room, branch_wall)
         world.rooms = self.rooms
         world.add_to_pymunk()
 

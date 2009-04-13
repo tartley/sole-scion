@@ -1,12 +1,15 @@
 See bottom of file for tasks that are 'done' but which have not yet been
 moved to HISTORY.txt (*=planned task, +=unexpected task)
 
-Maze
+Level Builder
+    + one room is 'the surface'
     + randomly generate in-room rocks
 
 Infrastructure
     * MUST automatically find all tests for run_test
     + or use nose to run tests. delete 'run all tests' and the like?
+    + can we fix LD_LIBRARY_PATH from within python, dispensing with need
+      for run.sh and run.bat to set it? Would make running tests easier.
     * Windows binary distribution, including Shapely DLL
     * Linux binary distribution
     * Mac binary distribution? Need help.
@@ -24,19 +27,14 @@ Interaction
     + handle window resize
 
 Testing
-    + use michael's Mock instead of our Listener?
-    + get a monkey patcher
+    + use michael's Mock instead of our Listener, for sake of monkey
+      patching
 
 Infrastructure
-    + test failures on Windows
-    + quick architecture diagram
+    + there are some test failures on Windows
+    + quick architecture diagram. review diffs to reality.
     + consistently use either abs or rel imports for solescion packages
-    + dependancies as svn:externals ?
-    + check out wossname's cheat sheet of python standard practices,
-      http://panela.blog-city.com/more_beginner_python_cheatsheets.htm
-    + try out using virtualenv to install dependancies, and get distools
-      to find these, rather than packaging them in the svn tree?
-    + testutils as a separate package
+    + -v prints version for application and dependancies (incl python)
     + remove #! lines if tests can't be called directly, or if -O flag
       can't be used
     + auto upload source/binary distributions? set as featured downloads?
@@ -46,23 +44,16 @@ Svg Loader
     * Load svg from Inkscape to define rigid bodies and their appearance?
     (check out squirtle)
 
-Levels
-    * draw levels instead of randomising them?
-    * random levels earn resources to access drawn levels?
-
 Sound
-    * music
     * sound effects
+    * music
 
 Rendering
     * Render using GL_TRIANGLES in pyglet batches
     * Render only rooms, and their contents, that are on-screen.
-    * Read up on BSPs, scene graphs, spatial indexes.
 
 Harpoon
-    * add harpoon to vehicle
-    * rendered so you can see direction it points
-    * swivels with mouse or keys
+    * add harpoon to ship
     * fired with mousebutton or key
     * embeds on impact
     * cable rendering
@@ -70,10 +61,6 @@ Harpoon
     * first pass: vanishes when key released
     * cable reeled with up/down (mouse or keys)
     * releases & rewinds when key is released
-
-Performance
-    * measure using cProfile, gProf2dot
-    * improve
 
 Rescuees
     * guys. Physics: a disc? Render: a textured quad?

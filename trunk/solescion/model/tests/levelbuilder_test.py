@@ -134,13 +134,29 @@ class LevelBuilder_test(MyTestCase):
             list(builder.geometry.exterior.coords),
             [(0, 0), (0, 1), (1, 0), (0, 0)])
 
-
         room = Room([(1, 1), (1, 0), (0, 1)])
         builder.add_room(room)
         self.assertEquals(len(builder.geometry.exterior.coords), 5)
         self.assertEqual(
             list(builder.geometry.exterior.coords),
             [(0, 0), (0, 1), (1, 1), (1, 0), (0, 0)])
+
+
+    def test_add_room_works_on_branch_room_and_wall_zero(self):
+        builder = LevelBuilder()
+        branch_room = Room([(1, 0), (0, 0), (0, 1)])
+        branch_room.id = 0
+        branch_wall = 0
+
+        new_room = Room([(1, 0), (0, 0), (0, 1)])
+        new_room.neighbours = {}
+
+        builder.add_room(new_room, branch_room, 0)
+
+        self.assertEquals(len(builder.rooms), 1)
+        added_room = builder.rooms.values()[0]
+        self.assertEquals(added_room.neighbours, {0: branch_room})
+        self.assertEquals(branch_room.neighbours, {branch_wall: added_room})
 
 
 if __name__ == "__main__":
