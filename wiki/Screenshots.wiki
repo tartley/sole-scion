@@ -1,5 +1,12 @@
 #summary Snapshots throughout development
 
+== Version 0.2.4 ==
+
+Maze now includes one super-huge room to represent 'above ground'. Revert to a randomly branching maze, which is more interesting.
+
+http://sole-scion.googlecode.com/svn/trunk/docs/screenshots/SoleScion-screenshot-v0.2.4.png
+
+
 == Version 0.2.3 ==
 
 Maze is now procedurally constructed - a single tunnel comprised of many joined regular convex polygons.
