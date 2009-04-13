@@ -7,7 +7,7 @@ from solescion.geom.poly import assert_valid
 
 
 def _add_wall_to(space, body, vert1, vert2):
-    wall = Segment(body, vert1, vert2, 0.0)
+    wall = Segment(body, vert1, vert2, 0.1)
     wall.friction = 0.5
     wall.elasticity = 0.5
     space.add_static(wall)
