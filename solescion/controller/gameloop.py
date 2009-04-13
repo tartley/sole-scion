@@ -1,5 +1,7 @@
 from __future__ import division
 
+from random import seed
+
 from pyglet import clock
 from pyglet.window import key, Window
 
@@ -48,7 +50,8 @@ class Gameloop(object):
 
         self.world = World()
         builder = LevelBuilder()
-        builder.build(self.world)
+        seed(0)
+        builder.build(self.world, 150)
 
         self.world.player = Player()
         self.world.player.add_to_space(self.world.space, (0, 0), 0)

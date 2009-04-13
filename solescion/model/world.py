@@ -2,7 +2,7 @@ from __future__ import division
 
 from pymunk import Body, inf, init_pymunk, Space
 
-from solescion.model.material import Material
+from solescion.model.material import granite
 
 
 class World(object):
@@ -21,7 +21,7 @@ class World(object):
         self.chunks = set()
         self.player = None
 
-        self.material = Material.granite
+        self.material = granite
 
 
     def add_to_pymunk(self):

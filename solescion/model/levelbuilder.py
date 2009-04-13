@@ -1,10 +1,11 @@
-from random import randint, seed
+from math import pi
+from random import randint, uniform
 
 from shapely.geometry import Polygon
 
 from solescion.geom.poly import regular
 from solescion.model.chunk import Chunk
-from solescion.model.material import Material
+from solescion.model.material import rubber, ice, gold, granite, bamboo
 from solescion.model.room import Room
 from solescion.model.shards.block import Block
 from solescion.model.shards.disc import Disc
@@ -24,12 +25,9 @@ class LevelBuilder(object):
         self.add_room(Room(verts))
 
 
-    def complete(self):
-        return len(self.rooms) > 100
-
-
     def select_branch_room(self):
-        return self.rooms.values()[len(self.rooms) - 1]
+        room_idx = randint(0, len(self.rooms) - 1)
+        return self.rooms.values()[room_idx]
 
 
     def select_branch_wall(self, branch_room):
@@ -67,10 +65,9 @@ class LevelBuilder(object):
 
 
     # TODO untested
-    def build(self, world):
-        seed(2)
+    def build(self, world, desired_size):
         self.create_initial_room()
-        while not self.complete():
+        while len(self.rooms) < desired_size:
             branch_room = self.select_branch_room()
             branch_wall = self.select_branch_wall(branch_room)
             if branch_wall is None:
@@ -90,32 +87,32 @@ class LevelBuilder(object):
 
     chunkbits = [
         [
-            Disc(Material.rubber, 5),
+            Disc(rubber, 5),
         ],
         [
-            Block(Material.ice, [(-10, 5), (5, 2), (2, 0), (0, 0)]),
+            Block(ice, [(-10, 5), (5, 2), (2, -5), (0, -5)]),
         ],
         [
             Block(
-                Material.granite, [
+                granite, [
                     (-5, 10), (-5, 15), (5, 20), (10, 15),
                     (10, 10), (5, 0), (0, 0)
                 ]
             )
         ],
         [
-            Block(Material.gold, [(-9, 3), (9, 3), (9, -3), (-9, -3)]),
-            Block(Material.gold, [(-3, -9), (-3, 9), (3, 9), (3, -9)]),
+            Block(gold, [(-9, 3), (9, 3), (9, -3), (-9, -3)]),
+            Block(gold, [(-3, -9), (-3, 9), (3, 9), (3, -9)]),
         ],
         [
-            Disc(Material.bamboo, 5, (0, -2)),
-            Disc(Material.bamboo, 2, (0, 0)),
+            Disc(bamboo, 5, (0, 0)),
+            Disc(bamboo, 2, (0, 5)),
         ],
     ]
 
     # TODO: not tested
     def furnish(self, room, world):
-        if room.id > 0:
+        if 0 < room.id and room.id % 3 == 0:
             chunk = Chunk(*self.chunkbits[randint(0, len(self.chunkbits) - 1)])
-            world.add_chunk(chunk, room.centroid)
+            world.add_chunk(chunk, room.centroid, uniform(0, 2*pi))
 
