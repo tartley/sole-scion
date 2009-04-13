@@ -4,7 +4,7 @@ from pyglet.window import key
 
 from solescion.controller.keyboard import Keyboard
 from solescion.model.chunk import Chunk
-from solescion.model.material import Material
+from solescion.model.material import steel
 from solescion.model.shards.block import Block
 
 
@@ -17,7 +17,7 @@ class Player(object):
 
     def __init__(self):
         verts = generate_ship()
-        block = Block(Material.steel, verts)
+        block = Block(steel, verts)
         self.chunks = [Chunk(block)]
 
 

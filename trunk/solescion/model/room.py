@@ -2,7 +2,7 @@ from pymunk import Segment
 
 from shapely.geometry import Polygon
 
-from solescion.model.material import Material
+from solescion.model.material import air
 from solescion.geom.poly import assert_valid
 
 
@@ -27,7 +27,7 @@ class Room(object):
         assert_valid(verts)
         self.verts = None
         self._polygon = None
-        self.material = Material.air
+        self.material = air
         self.neighbours = {}
 
         self.polygon = Polygon(verts)
