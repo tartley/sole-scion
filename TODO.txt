@@ -1,28 +1,32 @@
 See bottom of file for tasks that are 'done' but which have not yet been
 moved to HISTORY.txt (*=planned task, +=unexpected task)
 
+Rocks
+    * Irregular shape
+    * Spawned on the ground
+
+Rescuees
+    * spawned at appropriate places in level
+    * Stand around
+    * drawn like a little guy! \o/
+    * walk back and forth
+    * walk towards landed ship
+    * climb into landed ship (ding!)
+
 Harpoon
     * fired with mousebutton or key
     * embeds on impact
     * cable rendering
-    * cable physics - first pass, no collision with walls
+    * cable physics
     * first pass: vanishes when key released
     * cable reeled with up/down (mouse or keys)
     * releases & rewinds when key is released
-
-Rescuees
-    * Stand around
-    * 
-
-Handling
-    * left/right controls stop imparting torque at fast spins
-    * Damp down the rotation just a little more
-    * Probably increase torque control a tad to compensate for that
 
 Level Builder
     + irregular shaped rooms
     + add a buffer for testing 'new_verts_ok', to prevent rooms which don't
       touch from coming too close
+    + surface mountains
 
 Furniture
     + irregular generated rocks
@@ -39,7 +43,6 @@ Infrastructure
     + startup should assert dependancies being used are local, not installed
 
 Interaction
-    + pause key
     + toggle fullscreen key
     + handle window resize
 
@@ -107,4 +110,10 @@ Keypresses:
 
 Infrastructure:
     + -v prints version of application and of pyglet, pymunk, shapely & python
+    + pause key
+
+Handling
+    * left/right controls stop imparting torque at fast spins
+    * Damp down the rotation just a little more
+    * Probably increase torque control a tad to compensate for that
 

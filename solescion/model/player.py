@@ -12,6 +12,9 @@ def generate_ship():
     verts = [(-1, 0), (-2, 1), (0, 5), (2, 1), (1, 0)]
     return verts
 
+MAX_TORQUE = 10000
+SPIN_DRAG = 1500
+
 
 class Player(object):
 
@@ -28,11 +31,13 @@ class Player(object):
     def move(self):
         body = self.chunks[0].body
         if Keyboard.keystate[key.RIGHT]:
-            torque = -3000
+            torque = max(-MAX_TORQUE,
+                min(0, -MAX_TORQUE - body.angular_velocity * SPIN_DRAG))
         elif Keyboard.keystate[key.LEFT]:
-            torque = +3000
+            torque = min(MAX_TORQUE,
+                max(0, MAX_TORQUE - body.angular_velocity * SPIN_DRAG))
         else:
-            torque = -body.angular_velocity * 1000
+            torque = -body.angular_velocity * SPIN_DRAG
         body.torque = torque
 
         if Keyboard.keystate[key.UP]:
