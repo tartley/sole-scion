@@ -1,24 +1,34 @@
 See bottom of file for tasks that are 'done' but which have not yet been
 moved to HISTORY.txt (*=planned task, +=unexpected task)
 
+Harpoon
+    * fired with mousebutton or key
+    * embeds on impact
+    * cable rendering
+    * cable physics - first pass, no collision with walls
+    * first pass: vanishes when key released
+    * cable reeled with up/down (mouse or keys)
+    * releases & rewinds when key is released
+
 Level Builder
-    + randomly generate in-room rocks
+    + irregular shaped rooms
+    + add a buffer for testing 'new_verts_ok', to prevent rooms which don't
+      touch from coming too close
+
+Furniture
+    + irregular generated rocks
+    + rocks start out resting on the floor
 
 Infrastructure
+    + -v must show version of shapely, and of python
     * MUST automatically find all tests for run_test
     + or use nose to run tests. delete 'run all tests' and the like?
     + can we fix LD_LIBRARY_PATH from within python, dispensing with need
       for run.sh and run.bat to set it? Would make running tests easier.
     * Windows binary distribution, including Shapely DLL
     * Linux binary distribution
-    * Mac binary distribution? Need help.
-
-Vehicle ?
-    * keep the thrustship somewhere
-    * vehicle: 2 wheels plus chassis
-    * drives left, right
-    * opposite direction brakes to a standstill
-    * traction / rev control
+    * Need help for Mac binary distribution.
+    + startup should assert dependancies being used are local, not installed
 
 Interaction
     + pause key
@@ -33,7 +43,6 @@ Infrastructure
     + there are some test failures on Windows
     + quick architecture diagram. review diffs to reality.
     + consistently use either abs or rel imports for solescion packages
-    + -v prints version for application and dependancies (incl python)
     + remove #! lines if tests can't be called directly, or if -O flag
       can't be used
     + auto upload source/binary distributions? set as featured downloads?
@@ -49,17 +58,8 @@ Sound
 
 Rendering
     * Render using GL_TRIANGLES in pyglet batches
+    * line-of-sight masking
     * Render only rooms, and their contents, that are on-screen.
-
-Harpoon
-    * add harpoon to ship
-    * fired with mousebutton or key
-    * embeds on impact
-    * cable rendering
-    * cable physics - first pass, no collision with walls
-    * first pass: vanishes when key released
-    * cable reeled with up/down (mouse or keys)
-    * releases & rewinds when key is released
 
 Rescuees
     * guys. Physics: a disc? Render: a textured quad?
@@ -67,33 +67,6 @@ Rescuees
     * guys wander left / right on flat surfaces
     * guys die in heavy collisions
     * guys climb into vehicle
-
-Completion / Death / Structure
-    * ?
-
-Achievements
-    * Persist highscores
-    * Achievements
-        * Longest free-fall
-        * Farthest jump (horizontal)
-        * Farthest fall (downwards)
-        * Fastest speed
-        * Hardest impact
-        * Longest balance on one wheel
-
-Frills
-    + down key grabs the ground, useful for pulling things with the cable
-    + suspension
-    + brake lights
-    + damage
-    + dents (in body and wheels)
-    + traction control
-    + cool skids
-    + smoke/dust on cool skids
-    + nitro boost
-    + harpoon laser sights
-    + harpoon collision with room walls
-
 
 == DONE ==
 
@@ -123,4 +96,7 @@ Technical Debt
 Keypresses:
     + quit (done)
     + screenshot (done)
+
+Infrastructure:
+    + -v prints version for application and dependancies
 
