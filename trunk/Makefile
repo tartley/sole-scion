@@ -20,7 +20,7 @@ winzip: dist/run.exe
 .PHONY: winzip
 
 tags:
-	(cd solescion; ctags -R .; )
+	ctags -R solescion
 
 sdist:
 	python setup.py sdist
