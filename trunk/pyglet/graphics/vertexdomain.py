@@ -197,8 +197,8 @@ class VertexDomain(object):
             if isinstance(attribute, vertexattribute.GenericAttribute):
                 index = attribute.index
                 if 'generic' not in self.attributes:
-                    self.attributes['generic'] = {}
-                assert index not in self.attributes['generic'], \
+                    self.attribute_names['generic'] = {}
+                assert index not in self.attribute_names['generic'], \
                     'More than one generic attribute with index %d' % index
                 self.attribute_names['generic'][index] = attribute
             else:
@@ -358,7 +358,13 @@ class VertexList(object):
                 new.invalidate()
         self.start = new_start
         self.count = count
+
         self._colors_cache_version = None
+        self._fog_coords_cache_version = None
+        self._edge_flags_cache_version = None
+        self._normals_cache_version = None
+        self._secondary_colors_cache_version = None
+        self._tex_coords_cache_version = None
         self._vertices_cache_version = None
 
     def delete(self):
