@@ -139,7 +139,7 @@ of the system clock.
 '''
 
 __docformat__ = 'restructuredtext'
-__version__ = '$Id: clock.py 2252 2008-09-08 05:53:44Z Alex.Holkner $'
+__version__ = '$Id: clock.py 2298 2008-10-06 09:13:09Z Alex.Holkner $'
 
 import time
 import sys
@@ -320,11 +320,13 @@ class Clock(_ClockBase):
                         # incorrect (looks like interval but actually isn't).
                         item.last_ts = item.next_ts - item.interval
                 need_resort = True
+            else:
+                item.next_ts = None
 
         # Remove finished one-shots.
         self._schedule_interval_items = \
             [item for item in self._schedule_interval_items \
-             if item.next_ts > ts]
+             if item.next_ts is not None]
 
         if need_resort:
             # TODO bubble up changed items might be faster

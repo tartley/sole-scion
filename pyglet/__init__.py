@@ -38,7 +38,7 @@ Detailed documentation is available at http://www.pyglet.org
 '''
 
 __docformat__ = 'restructuredtext'
-__version__ = '$Id: __init__.py 2284 2008-10-04 02:29:50Z Alex.Holkner $'
+__version__ = '$Id: __init__.py 2444 2009-03-22 08:51:01Z Alex.Holkner $'
 
 import os
 import sys
@@ -57,7 +57,7 @@ _is_epydoc = hasattr(sys, 'is_epydoc') and sys.is_epydoc
 #:    >>> parse_version(pyglet.version) >= parse_version('1.1')
 #:    True
 #:
-version = '1.1.2'
+version = '1.1.3'
 
 def _require_ctypes_version(version):
     # Check ctypes version
