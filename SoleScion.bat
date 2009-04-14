@@ -1,3 +1,4 @@
+@echo off
 PATH=%PATH%;%shapely
-python -O solescion.py
+python -O main.py %*
 
