@@ -10,6 +10,15 @@ Harpoon
     * cable reeled with up/down (mouse or keys)
     * releases & rewinds when key is released
 
+Rescuees
+    * Stand around
+    * 
+
+Handling
+    * left/right controls stop imparting torque at fast spins
+    * Damp down the rotation just a little more
+    * Probably increase torque control a tad to compensate for that
+
 Level Builder
     + irregular shaped rooms
     + add a buffer for testing 'new_verts_ok', to prevent rooms which don't
@@ -20,7 +29,6 @@ Furniture
     + rocks start out resting on the floor
 
 Infrastructure
-    + -v must show version of shapely, and of python
     * MUST automatically find all tests for run_test
     + or use nose to run tests. delete 'run all tests' and the like?
     + can we fix LD_LIBRARY_PATH from within python, dispensing with need
@@ -98,5 +106,5 @@ Keypresses:
     + screenshot (done)
 
 Infrastructure:
-    + -v prints version for application and dependancies
+    + -v prints version of application and of pyglet, pymunk, shapely & python
 
