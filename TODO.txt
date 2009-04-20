@@ -1,15 +1,9 @@
 See bottom of file for tasks that are 'done' but which have not yet been
 moved to HISTORY.txt (*=planned task, +=unexpected task)
 
-Rocks
-    * Irregular shape
-    * Spawned on the ground
-
 Rescuees
     * spawned at appropriate places in level
-    * Stand around
     * drawn like a little guy! \o/
-    * walk back and forth
     * walk towards landed ship
     * climb into landed ship (ding!)
 
@@ -18,22 +12,48 @@ Harpoon
     * embeds on impact
     * cable rendering
     * cable physics
-    * first pass: vanishes when key released
-    * cable reeled with up/down (mouse or keys)
-    * releases & rewinds when key is released
+    * first pass: vanishes when fire released
+    * cable reeled up/down (mouse or keys)
+    * releases & rewinds when fire is released
 
-Level Builder
+Levels
+    + level is embedded in an irregular polygon asteroid
+    + gravity is towards center of asteroid
+    + screen orientation is with gravity downwards
+
+Builder
     + irregular shaped rooms
     + add a buffer for testing 'new_verts_ok', to prevent rooms which don't
       touch from coming too close
     + surface mountains
 
+Rendering
+    * vertex array for each 
+    * colors associated with each vertex
+    * gradient filled sky
+    * stars above ground
+
+Rocks
+    * Irregular shape
+    * Spawned on the ground
+
+Rescuees
+    * walk back and forth
+    * walk away from landing ship
+    * are killed by collision with anything moving
+
 Furniture
-    + irregular generated rocks
     + rocks start out resting on the floor
+    + rocks created in precarious piles, with rescuees on top
+    + rocks created in piles blocking the corridor
+
+Rendering
+    + black-cloaks to obscure everything not in line-of-sight
 
 Infrastructure
     * MUST automatically find all tests for run_test
+    + need an autocombine that generates test suite from all test classes
+      in module.
     + or use nose to run tests. delete 'run all tests' and the like?
     + can we fix LD_LIBRARY_PATH from within python, dispensing with need
       for run.sh and run.bat to set it? Would make running tests easier.
