@@ -13,8 +13,6 @@ from solescion.testutils.testimage import (
     assert_rectangle_at, save_to_tempfile
 )
 
-from solescion.utils.screenshot import image_from_window
-
 
 def draw_rectangle(image, left, bottom, right, top, rectCol):
     for x in range(left, right+1):
