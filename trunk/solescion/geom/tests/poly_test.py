@@ -3,11 +3,13 @@ from math import cos, pi, sin, sqrt
 
 import fixpath
 
+from pymunk import Vec2d
+
 from solescion.testutils.testcase import combine, MyTestCase, run
 
 from solescion.geom.poly import (
-    assert_valid, circle, regular, offset_verts, area,
-    centroid
+    assert_valid, circle, regular, irregular, offset_verts, area,
+    centroid, rotate90, circle_center
 )
 
 
@@ -43,6 +45,7 @@ class Creation_test(MyTestCase):
         actual = regular(4, v1, v2)
         expected = [v1, v2, (0.0, 1.0), (1.0, 1.0),]
         self.assertVertsEqual(actual, expected)
+
 
 
 class Assert_valid_test(MyTestCase):
@@ -145,6 +148,7 @@ class Area_test(MyTestCase):
             msg="bad clockwise circle area")
 
 
+
 class Centroid_test(MyTestCase):
 
     def test_centroid_unit_square(self):
@@ -204,12 +208,65 @@ class Centroid_test(MyTestCase):
             "bad centroid unitsquare")
 
 
+
+class Circle_center_test(MyTestCase):
+
+    def test_rotate90(self):
+        self.assertEquals(rotate90(Vec2d(1, 2)), Vec2d(-2, 1))
+
+
+    def test_circle_center(self):
+        start = Vec2d(97, 10)
+        face = Vec2d(6, 0)
+        radius = 5
+        center = circle_center(start, face, radius)
+        self.assertEquals(center, Vec2d(100, 6))
+
+
+    def test_circle_center_impossible(self):
+        start = Vec2d(-10, 0)
+        face = Vec2d(20, 0)
+        radius = 9
+        self.assertRaises(
+            lambda: circle_center(start, face, radius), ValueError)
+
+
+
+class Irregular_test(MyTestCase):
+
+    def test_irregular(self):
+        start = Vec2d(3, -4)
+        face = Vec2d(-6, 0)
+        radius = 5
+        # irregular poly's circle center is at (0, 0)
+        num_verts = 5
+        actual = irregular(start, face, radius, num_verts)
+        print actual
+        self.assertEquals(len(actual), 5)
+        self.assertEquals(actual[0], Vec2d(+3, -4))
+        self.assertEquals(actual[1], Vec2d(-3, -4))
+        for point in actual:
+            self.assertAlmostEquals(point.get_length_sqrd(), 25.0)
+
+
+    def test_irregular_impossible(self):
+        start = Vec2d(-10, -0)
+        face = Vec2d(20, 0)
+        radius = 9
+        num_verts = 3
+        self.assertRaises(
+            lambda: irregular(start, face, radius, num_verts), ValueError)
+
+
+
 Poly_test = combine(
     Creation_test,
     Assert_valid_test,
     Offset_verts_test,
     Area_test,
     Centroid_test,
+    Circle_center_test,
+    Irregular_test,
 )
 
 if __name__ == "__main__":
