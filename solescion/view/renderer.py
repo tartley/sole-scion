@@ -42,7 +42,7 @@ class Renderer(object):
     # TODO: not tested
     def draw_rooms(self, rooms):
         for room in rooms.itervalues():
-            glColor3ub(*room.material.color)
+            glColor3ub(*room.color)
             glBegin(GL_TRIANGLE_FAN)
             for vert in room.verts:
                 glVertex2f(*vert)
