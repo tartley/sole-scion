@@ -1,8 +1,9 @@
 from __future__ import division
-from math import cos, pi, sin
+from math import atan2, cos, degrees, pi, sin, sqrt
+from random import uniform
 
-from pymunk import Vec2d
 from pymunk.util import is_clockwise, is_convex
+from pymunk import Vec2d
 
 
 def circle(radius, num_segments):
@@ -28,6 +29,54 @@ def regular(num_faces, first, second):
         vert = _vert.x, _vert.y
         wallvect.rotate(-internal_angle_deg)
 
+    return verts
+
+
+def rotate90(vec):
+    return Vec2d(-vec.y, vec.x)
+
+
+def circle_center(start, face, radius):
+    """
+    Given two points that lie on the boundary of a circle of given radius,
+    return the center of the circle. Of the two possible such circles,
+    the one on the left of the line from first to second is returned.
+    """
+    print start, face, radius
+    adj_len = sqrt(radius*radius - face.get_length_sqrd() / 4)
+    adj = rotate90(face.normalized()) * adj_len
+    return start + face / 2 - adj
+
+
+def irregular(start, face, radius, num_verts):
+    next = start + face
+    center = circle_center(start, face, radius)
+    print 'center', center
+    radia = next - center
+    print 'radia', radia
+    theta_radia = atan2(radia[1], radia[0])
+    print 'theta_radia', theta_radia
+    end_radia = start - center
+    theta_min = atan2(end_radia[1], end_radia[0])
+    print 'theta_min', theta_min
+    if theta_min > theta_radia:
+        theta_min -= 2 * pi
+        print 'adjusted theta_min', theta_min
+    verts = [start, next]
+    while len(verts) < num_verts:
+        walls_remain = num_verts - len(verts) + 1
+        print 'walls_remain', walls_remain
+        max_dtheta = -0.5
+        min_dtheta = theta_min - theta_radia - max_dtheta * walls_remain
+        print min_dtheta
+        dtheta = uniform(min_dtheta, max_dtheta)
+        print 'dtheta', dtheta
+        radia.rotate(degrees(dtheta))
+        theta_radia += dtheta
+        print 'radia', radia
+        print 'vert', center + radia
+        verts.append(center + radia)
+        print
     return verts
 
 
