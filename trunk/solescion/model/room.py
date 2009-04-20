@@ -2,14 +2,14 @@ from pymunk import Segment
 
 from shapely.geometry import Polygon
 
-from solescion.model.material import air
+from solescion.model.material import air, granite
 from solescion.geom.poly import assert_valid
 
 
 def _add_wall_to(space, body, vert1, vert2):
     wall = Segment(body, vert1, vert2, 0.1)
-    wall.friction = 0.5
-    wall.elasticity = 0.5
+    wall.friction = granite.friction
+    wall.elasticity = granite.elasticity
     space.add_static(wall)
 
 
