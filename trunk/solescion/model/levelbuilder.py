@@ -1,9 +1,10 @@
 from math import pi
 from random import randint, uniform
 
+from pymunk import Vec2d
 from shapely.geometry import Polygon
 
-from solescion.geom.poly import regular
+from solescion.geom.poly import irregular, regular
 from solescion.model.chunk import Chunk
 from solescion.model.material import rubber, ice, gold, granite, bamboo
 from solescion.model.room import Room
@@ -46,9 +47,8 @@ class LevelBuilder(object):
     def select_branch_wall(self, branch_room):
         if len(self.rooms) == 1:
             return 0
-        elif len(self.rooms) == 2:
+        elif len(self.rooms) % 2 == 0:
             return self._lowest_vert(branch_room)
-
 
         num_walls = len(branch_room.verts)
         if num_walls == len(branch_room.neighbours):
@@ -60,10 +60,17 @@ class LevelBuilder(object):
 
 
     def new_room_verts(self, branch_room, branch_wall, num_verts):
-        end = branch_room.verts[branch_wall]
+        end = Vec2d(branch_room.verts[branch_wall])
         startidx = (branch_wall + 1) % len(branch_room.verts)
-        start = branch_room.verts[startidx]
-        verts = regular(num_verts, start, end)
+        start = Vec2d(branch_room.verts[startidx])
+        face = end - start
+        verts = irregular(
+            start, face, uniform(face.get_length() / 2, 50), num_verts)
+        print 'irr', verts
+        #verts = regular(num_verts, start, end)
+        #verts = [Vec2d(vert) for vert in verts]
+        #print 'reg', verts
+        print
         return verts
 
 
