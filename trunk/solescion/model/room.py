@@ -1,15 +1,17 @@
+from random import randint 
+
 from pymunk import Segment
 
 from shapely.geometry import Polygon
 
-from solescion.model.material import air, granite
+from solescion.model.material import granite
 from solescion.geom.poly import assert_valid
 
 
-def _add_wall_to(space, body, vert1, vert2):
+def _add_wall_to(space, body, vert1, vert2, material):
     wall = Segment(body, vert1, vert2, 0.1)
-    wall.friction = granite.friction
-    wall.elasticity = granite.elasticity
+    wall.friction = material.friction
+    wall.elasticity = material.elasticity
     space.add_static(wall)
 
 
@@ -27,9 +29,9 @@ class Room(object):
         assert_valid(verts)
         self.verts = None
         self._polygon = None
-        self.material = air
+        self.material = granite
         self.neighbours = {}
-
+        self.color = (randint(0, 31), randint(0, 63), randint(0, 127))
         self.polygon = Polygon(verts)
 
 
@@ -57,5 +59,6 @@ class Room(object):
         maxwall = len(verts) - 1
         for idx in xrange(maxwall):
             if idx not in self.neighbours:
-                _add_wall_to(space, body, verts[idx], verts[idx+1])
+                _add_wall_to(space, body,
+                    verts[idx], verts[idx+1], self.material)
 
