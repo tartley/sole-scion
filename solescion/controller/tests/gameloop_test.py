@@ -1,8 +1,6 @@
 #!/usr/bin/python -O
 from __future__ import division
 
-from PIL import Image
-
 import fixpath
 
 from pyglet import clock
