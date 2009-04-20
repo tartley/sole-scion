@@ -13,7 +13,7 @@ class World(object):
         #   Access to a protected member '_space': ack
         init_pymunk()
         self.space = Space()
-        self.space.gravity = (0, -10)
+        self.space.gravity = (0, -20)
         self.space._space.contents.elasticIterations = 10
         self.static_body = Body(inf, inf)
 
