@@ -15,7 +15,6 @@ from solescion.testutils.testimage import assert_rectangle_at
 from solescion.testutils.testcase import MyTestCase, run
 
 from solescion.model.world import World
-from solescion.utils.screenshot import image_from_window
 from solescion.view.camera import Camera
 
 
@@ -67,24 +66,6 @@ class Camera_test(MyTestCase):
         for vert in verts:
             glVertex2f(*vert)
         glEnd()
-
-
-    def assert_world_projection(self, drawnRect, expectedRect):
-        # Python Imaging Library Image object measures Y from top,
-        # so expectedRect has y-axis inverted
-        left, bottom, right, top = expectedRect
-        expectedRect = left, bottom, right, top
-        aspect = self.window.width / self.window.height
-        self.camera.world_projection(aspect)
-
-        backColor = (0, 0, 255)
-        polyColor = (255, 255, 0)
-        self._draw_rect(backColor, polyColor, *drawnRect)
-        image = image_from_window(self.window)
-        # expectedRect[1] = self.window.height - expectedRect[3] - 1
-        # expectedRect[2] = expectedRect[2] - 1
-        # expectedRect[3] = self.window.height - expectedRect[1]
-        assert_rectangle_at(image, expectedRect, polyColor, backColor)
 
 
     def test_world_projection_default(self):

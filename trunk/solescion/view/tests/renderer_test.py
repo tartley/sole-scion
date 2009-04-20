@@ -11,7 +11,6 @@ from solescion.model.chunk import Chunk
 from solescion.model.room import Room
 from solescion.model.world import World
 from solescion.model.shards.disc import Disc
-from solescion.utils.screenshot import image_from_window
 
 from solescion.view.camera import Camera
 from solescion.view.renderer import Renderer
@@ -72,20 +71,6 @@ class Renderer_test(MyTestCase):
         ]
         self.assertEquals(listener.args_list, expected,
             "draw didnt call subfns")
-
-
-    def test_clear_fills_back_buffer_with_color(self):
-        self.window = Window(
-            width=20, height=10, visible=False,
-            caption="renderer.test_clear_fills_back_buffer_with_color")
-        self.window.dispatch_events()
-        color = (100, 150, 200)
-        renderer = Renderer(None)
-
-        renderer.clear(color)
-
-        image = image_from_window(self.window)
-        assert_entirely(image, color, "should fill with given color")
 
 
 if __name__ == "__main__":
