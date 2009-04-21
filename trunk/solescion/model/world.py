@@ -13,7 +13,7 @@ class World(object):
         #   Access to a protected member '_space': ack
         init_pymunk()
         self.space = Space()
-        self.space.gravity = (0, -20)
+        self.space.gravity = (0, 0)
         self.space._space.contents.elasticIterations = 10
         self.static_body = Body(inf, inf)
 
@@ -37,5 +37,7 @@ class World(object):
     def tick(self, delta_t):
         if hasattr(self, 'player'):
             self.player.move()
+        for chunk in self.chunks:
+            chunk.body.apply_impulse(-chunk.position/10.0, (0,0))
         self.space.step(delta_t)
 

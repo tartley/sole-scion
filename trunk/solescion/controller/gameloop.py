@@ -1,5 +1,6 @@
 from __future__ import division
 
+from math import atan2
 from random import seed
 
 from pyglet import clock
@@ -54,7 +55,7 @@ class Gameloop(object):
         builder.build(self.world, 130)
 
         self.world.player = Player()
-        self.world.player.add_to_space(self.world.space, (0, 0), 0)
+        self.world.player.add_to_space(self.world.space, (0, 200), 0)
         self.world.chunks.update(self.world.player.chunks)
 
 
@@ -72,8 +73,12 @@ class Gameloop(object):
                 if self.world and not self.paused:
                     self.world.tick(1/FPS_LIMIT)
                 if self.world and hasattr(self.world, 'player'):
-                    self.camera.x, self.camera.y = \
-                        self.world.player.chunks[0].body.position
+                    player_position = self.world.player.chunks[0].body.position
+                    self.camera.x, self.camera.y = player_position
+                    self.camera.angle = atan2(
+                        player_position.x,
+                        player_position.y)
+
                 self.camera.update()
                 if self.renderer:
                     aspect = (
