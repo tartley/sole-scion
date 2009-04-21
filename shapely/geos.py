@@ -31,6 +31,7 @@ elif sys.platform == 'darwin':
             "/Library/Frameworks/GEOS.framework/Versions/Current/GEOS",
             # macports
             '/opt/local/lib/libgeos_c.dylib',
+            os.path.abspath('./shapely'),
         ]
         for path in lib_paths:
             if os.path.exists(path):

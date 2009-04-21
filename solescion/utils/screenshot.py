@@ -4,8 +4,6 @@ from tempfile import mkstemp
 
 from pyglet.image import get_buffer_manager
 
-from setup import NAME
-
 
 def _get_filename(prefix, extension):
     homedir = expanduser("~")
@@ -25,7 +23,7 @@ def _create_tempfile():
 
 
 def save_screenshot(window):
-    filename = _get_filename("%s-screenshot-" % NAME, ".png")
+    filename = _get_filename("screenshot-", ".png")
     if filename:
         image = get_buffer_manager().get_color_buffer()
         image.save(filename)

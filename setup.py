@@ -6,9 +6,8 @@ from sys import argv
 from shutil import copy, move, rmtree
 from zipfile import ZipFile
 
+from solescion.application import NAME, VERSION
 
-NAME = 'SoleScion'
-VERSION = '0.2.4'
 
 WIN_BINARY = '%s-win-binary-%s' % (NAME, VERSION)
 EXE_DIR = 'exe'
