@@ -31,7 +31,7 @@ class Room(object):
         self._polygon = None
         self.material = granite
         self.neighbours = {}
-        self.color = (0, 0, randint(0, 64))
+        self.color = (0, 0, 64)
         self.polygon = Polygon(verts)
 
 
