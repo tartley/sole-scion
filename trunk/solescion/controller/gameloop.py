@@ -50,8 +50,8 @@ class Gameloop(object):
 
         self.world = World()
         builder = LevelBuilder()
-        seed(2)
-        builder.build(self.world, 150)
+        seed(0)
+        builder.build(self.world, 130)
 
         self.world.player = Player()
         self.world.player.add_to_space(self.world.space, (0, 0), 0)

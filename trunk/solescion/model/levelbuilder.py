@@ -37,12 +37,14 @@ class LevelBuilder(object):
             room_idx = randint(2, len(self.rooms) - 1)
         return self.rooms.values()[room_idx]
 
+
     def _lowest_vert(self, room):
         lowest = 0
         for idx, vert in enumerate(room.verts):
             if vert[1] <= room.verts[lowest][1]:
                 lowest = idx
         return lowest - 1
+
 
     def select_branch_wall(self, branch_room):
         if len(self.rooms) == 1:
@@ -60,17 +62,15 @@ class LevelBuilder(object):
 
 
     def new_room_verts(self, branch_room, branch_wall, num_verts):
+        WALL_MIN = 10
+        WALL_MAX = 50
         end = Vec2d(branch_room.verts[branch_wall])
         startidx = (branch_wall + 1) % len(branch_room.verts)
         start = Vec2d(branch_room.verts[startidx])
-        face = end - start
-        verts = irregular(
-            start, face, uniform(face.get_length() / 2, 50), num_verts)
-        print 'irr', verts
-        #verts = regular(num_verts, start, end)
-        #verts = [Vec2d(vert) for vert in verts]
-        #print 'reg', verts
-        print
+        gap = (start - end).get_length()
+        room_radius = uniform(max(WALL_MIN, gap / 2), WALL_MAX)
+        num_verts = int(max(4, 4 * room_radius / WALL_MIN / 2))
+        verts = irregular(start, end, room_radius, num_verts)
         return verts
 
 
@@ -98,7 +98,7 @@ class LevelBuilder(object):
             branch_wall = self.select_branch_wall(branch_room)
             if branch_wall is None:
                 continue
-            num_verts = randint(3, 8)
+            num_verts = randint(4, 8)
             verts = self.new_room_verts(
                 branch_room, branch_wall, num_verts)
             if self.new_verts_ok(verts):

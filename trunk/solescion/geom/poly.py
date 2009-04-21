@@ -32,51 +32,40 @@ def regular(num_faces, first, second):
     return verts
 
 
-def rotate90(vec):
-    return Vec2d(-vec.y, vec.x)
-
-
 def circle_center(start, face, radius):
     """
     Given two points that lie on the boundary of a circle of given radius,
     return the center of the circle. Of the two possible such circles,
-    the one on the left of the line from first to second is returned.
+    choose the one on the left of the line from start to (start+face).
     """
-    print start, face, radius
     adj_len = sqrt(radius*radius - face.get_length_sqrd() / 4)
-    adj = rotate90(face.normalized()) * adj_len
+    adj = face.perpendicular_normal() * adj_len
     return start + face / 2 - adj
 
 
-def irregular(start, face, radius, num_verts):
-    next = start + face
+
+def irregular(start, next, radius, num_verts):
+    face = next - start
     center = circle_center(start, face, radius)
-    print 'center', center
     radia = next - center
-    print 'radia', radia
-    theta_radia = atan2(radia[1], radia[0])
-    print 'theta_radia', theta_radia
+    theta_max = atan2(radia[1], radia[0])
     end_radia = start - center
     theta_min = atan2(end_radia[1], end_radia[0])
-    print 'theta_min', theta_min
-    if theta_min > theta_radia:
+    if theta_min > theta_max:
         theta_min -= 2 * pi
-        print 'adjusted theta_min', theta_min
+
+    MIN_DTHETA = (theta_max - theta_min) / num_verts / 4
+    theta_min += MIN_DTHETA
+    theta_max -= MIN_DTHETA
+    thetas = set()
+    while len(thetas) < num_verts:
+        theta = uniform(theta_min, theta_max)
+        if not thetas or min(abs(t - theta) for t in thetas) > MIN_DTHETA:
+            thetas.add(theta)
+    
     verts = [start, next]
-    while len(verts) < num_verts:
-        walls_remain = num_verts - len(verts) + 1
-        print 'walls_remain', walls_remain
-        max_dtheta = -0.5
-        min_dtheta = theta_min - theta_radia - max_dtheta * walls_remain
-        print min_dtheta
-        dtheta = uniform(min_dtheta, max_dtheta)
-        print 'dtheta', dtheta
-        radia.rotate(degrees(dtheta))
-        theta_radia += dtheta
-        print 'radia', radia
-        print 'vert', center + radia
-        verts.append(center + radia)
-        print
+    for theta in sorted(thetas, reverse=True):
+        verts.append(center + Vec2d(radius, 0).rotated(degrees(theta)))
     return verts
 
 

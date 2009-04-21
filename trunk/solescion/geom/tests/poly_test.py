@@ -241,7 +241,6 @@ class Irregular_test(MyTestCase):
         # irregular poly's circle center is at (0, 0)
         num_verts = 5
         actual = irregular(start, face, radius, num_verts)
-        print actual
         self.assertEquals(len(actual), 5)
         self.assertEquals(actual[0], Vec2d(+3, -4))
         self.assertEquals(actual[1], Vec2d(-3, -4))
