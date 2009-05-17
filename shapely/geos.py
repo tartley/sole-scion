@@ -23,23 +23,9 @@ if sys.platform == 'win32':
             # XXX: See http://trac.gispython.org/projects/PCL/ticket/149
             pass
 elif sys.platform == 'darwin':
-    lib = find_library('geos_c')
-    if lib is None:
-        ## try a few more locations
-        lib_paths = [
-            # The Framework build from Kyng Chaos:
-            "/Library/Frameworks/GEOS.framework/Versions/Current/GEOS",
-            # macports
-            '/opt/local/lib/libgeos_c.dylib',
-            os.path.abspath('./shapely'),
-        ]
-        for path in lib_paths:
-            if os.path.exists(path):
-                lib = path
-                break
-    if lib is None:
-        raise ImportError, "Could not find geos_c library"
-    lgeos = PyDLL(lib)
+    # customised for SoleScion
+    # don't use installed versions of libGEOS, just our embedded one
+    lgeos = PyDLL(os.path.abspath('./shapely/GEOS'))
     free = CDLL(find_library('libc')).free
 else:
     # Try the major versioned name first, falling back on the unversioned name.
