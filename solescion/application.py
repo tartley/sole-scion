@@ -31,7 +31,6 @@ def print_version_info():
 
 
 def main():
-
     profile = False
     if '-v' in sys.argv or '--version' in sys.argv:
         print_version_info()
@@ -51,5 +50,4 @@ def main():
             gameloop.run()
     finally:
         gameloop.dispose()
-
 

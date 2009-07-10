@@ -9,7 +9,7 @@ from solescion.testutils.testcase import combine, MyTestCase, run
 
 from solescion.geom.poly import (
     assert_valid, circle, regular, irregular, offset_verts, area,
-    centroid, rotate90, circle_center
+    centroid, circle_center
 )
 
 
@@ -210,9 +210,6 @@ class Centroid_test(MyTestCase):
 
 
 class Circle_center_test(MyTestCase):
-
-    def test_rotate90(self):
-        self.assertEquals(rotate90(Vec2d(1, 2)), Vec2d(-2, 1))
 
 
     def test_circle_center(self):

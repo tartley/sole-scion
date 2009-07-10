@@ -1,65 +1,46 @@
 See bottom of file for tasks that are 'done' but which have not yet been
 moved to HISTORY.txt (*=planned task, +=unexpected task)
 
-Rescuees
-    * spawned at appropriate places in level
-    * drawn like a little guy! \o/
-    * walk towards landed ship
-    * climb into landed ship (ding!)
-
-Harpoon
-    * fired with mousebutton or key
-    * embeds on impact
-    * cable rendering
-    * cable physics
-    * first pass: vanishes when fire released
-    * cable reeled up/down (mouse or keys)
-    * releases & rewinds when fire is released
-
-Levels
-    + level is embedded in an irregular polygon asteroid
-    + gravity is towards center of asteroid
-    + screen orientation is with gravity downwards
-
-Builder
-    + irregular shaped rooms
-    + add a buffer for testing 'new_verts_ok', to prevent rooms which don't
-      touch from coming too close
-    + surface mountains
+Tests
+    * can't run tests on windows!
+    + can we fix LD_LIBRARY_PATH from within python, dispensing with need
+      for run.sh and run.bat to set it? Would make running tests easier.
+    * must automatically find all tests for run_test
+    + there are some test failures on Windows
 
 Rendering
-    * vertex array for each 
+    * Render using GL_TRIANGLES in pyglet batches
+
+Svg Loader
+    * Load svg from Inkscape to define rigid bodies and their appearance
+    (check out squirtle)
+
+Builder
+    + add corridors between rooms
+    + add a buffer for testing 'new_verts_ok', to prevent rooms which don't
+      touch from coming too close
+
+Rendering
     * colors associated with each vertex
     * gradient filled sky
     * stars above ground
 
 Rocks
     * Irregular shape
-    * Spawned on the ground
-
-Rescuees
-    * walk back and forth
-    * walk away from landing ship
-    * are killed by collision with anything moving
-
-Furniture
-    + rocks start out resting on the floor
-    + rocks created in precarious piles, with rescuees on top
-    + rocks created in piles blocking the corridor
+    * Spawned in rooms - if in walls, then attach them to the static body
 
 Rendering
     + black-cloaks to obscure everything not in line-of-sight
 
 Infrastructure
-    * MUST automatically find all tests for run_test
     + need an autocombine that generates test suite from all test classes
       in module.
     + or use nose to run tests. delete 'run all tests' and the like?
-    + can we fix LD_LIBRARY_PATH from within python, dispensing with need
-      for run.sh and run.bat to set it? Would make running tests easier.
     * Windows binary distribution, including Shapely DLL
     * Linux binary distribution
     * Need help for Mac binary distribution.
+    + auto upload source/binary distributions? set as featured downloads?
+      http://code.google.com/p/support/source/browse/trunk/scripts/googlecode_distutils_upload.py
     + startup should assert dependancies being used are local, not installed
 
 Interaction
@@ -71,33 +52,18 @@ Testing
       patching
 
 Infrastructure
-    + there are some test failures on Windows
     + quick architecture diagram. review diffs to reality.
     + consistently use either abs or rel imports for solescion packages
-    + remove #! lines if tests can't be called directly, or if -O flag
-      can't be used
-    + auto upload source/binary distributions? set as featured downloads?
-      http://code.google.com/p/support/source/browse/trunk/scripts/googlecode_distutils_upload.py
-
-Svg Loader
-    * Load svg from Inkscape to define rigid bodies and their appearance?
-    (check out squirtle)
+    + make sure tests can be called directly from vim
+    + make sure tests can be called directly from command line
 
 Sound
     * sound effects
     * music
 
 Rendering
-    * Render using GL_TRIANGLES in pyglet batches
     * line-of-sight masking
-    * Render only rooms, and their contents, that are on-screen.
-
-Rescuees
-    * guys. Physics: a disc? Render: a textured quad?
-    * Scatter maze with guys to rescue
-    * guys wander left / right on flat surfaces
-    * guys die in heavy collisions
-    * guys climb into vehicle
+    * Render only rooms, and their contents, that are on-screen and visible.
 
 == DONE ==
 

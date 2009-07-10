@@ -1,4 +1,4 @@
 @echo off
-PATH=%PATH%;%shapely
+PATH=%PATH%;shapely
 python -O main.py %*
 
