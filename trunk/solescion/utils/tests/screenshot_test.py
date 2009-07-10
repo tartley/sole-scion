@@ -12,7 +12,7 @@ from solescion.testutils.testcase import MyTestCase, run
 from solescion.utils.screenshot import _get_filename, save_screenshot
 
 
-class Save_screenshot_test(MyTestCase):
+class Screenshot_test(MyTestCase):
 
     def setUp(self):
         self.window = None

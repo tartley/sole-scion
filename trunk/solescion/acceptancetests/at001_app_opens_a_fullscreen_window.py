@@ -8,15 +8,17 @@ import fixpath
 from solescion.acceptancetests.acceptancetest import AcceptanceTest, get_window
 from solescion.testutils.testcase import run
 
-from run_solescion import main
+from solescion.application import main
 
 
 def is_window_visible():
+    print 'is_visible'
     win = get_window()
     return win and win.visible
 
 
 def is_window_fullscreen():
+    print 'is_fullscreen'
     win = get_window()
     return win and win.fullscreen
 
