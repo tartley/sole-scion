@@ -4,7 +4,6 @@ from sys import stdout
 from solescion.testutils.TerminalController import TerminalController
 
 
-
 class ColoredStream(object):
 
     def __init__(self, highlights, stream=stdout):
@@ -18,4 +17,7 @@ class ColoredStream(object):
         for regex, highlight in self.highlights:
             text = regex.sub(highlight + '\g<1>' + self.term.NORMAL, text)
         self.stream.write(text, *args)
+
+    def flush(self):
+        pass
 
