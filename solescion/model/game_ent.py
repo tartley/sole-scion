@@ -20,9 +20,6 @@ class GameEnt(object):
 
 
     def set_graphic(self, graphic):
-        # TODO: We need to offset_to_origin before creating the batch
-        # how about as soon as we load the svg?
-        # that implies svgbatch should use Loop, GeomPath.
         self.batch = Batch()
         graphic.add_to_batch(self.batch)
 

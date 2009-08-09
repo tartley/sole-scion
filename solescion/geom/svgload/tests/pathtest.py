@@ -1,6 +1,6 @@
 from mock import Mock, RunTests, TestCase
 
-from svgbatch.path import Path, PathDataParser, ParseError, SvgLoopTracer
+from svgload.path import Path, PathDataParser, ParseError, SvgLoopTracer
 
 
 class PathDataTest(TestCase):

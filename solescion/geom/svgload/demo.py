@@ -9,20 +9,22 @@ from random import uniform
 
 from pyglet import app, clock
 from pyglet.event import EVENT_HANDLED
-from pyglet.window import key, Window
+from pyglet.graphics import Batch
 from pyglet.gl import (
     glClear, glClearColor, glLoadIdentity, glMatrixMode, gluLookAt,
     GL_COLOR_BUFFER_BIT, GL_MODELVIEW, GL_PROJECTION, GL_TRIANGLES
 )
 from pyglet.gl.glu import gluOrtho2D
+from pyglet.window import key, Window
 
-from svgbatch import SvgBatch
+from svgparser import SvgParser
 
 
 class SvgFiles(object):
 
     def __init__(self):
-        self.filenames = self.get_filenames(join('svgbatch', 'testdata'))
+        datadir = join('solescion', 'geom', 'svgload', 'demodata')
+        self.filenames = self.get_filenames(datadir)
         if len(self.filenames) == 0:
             raise Exception('no testdata svg files found')
 
@@ -41,8 +43,9 @@ class SvgFiles(object):
         self.number = (self.number + 1) % len(self.filenames)
         filename = self.filenames[self.number]
         print filename
-        self.current = SvgBatch(filename)
-        self.current.create_batch()
+        self.current = SvgParser(filename)
+        self.batch = Batch()
+        self.current.add_to_batch(self.batch)
 
         glClearColor(
             uniform(0.0, 1.0),
@@ -51,7 +54,7 @@ class SvgFiles(object):
             1.0)
 
     def draw(self):
-        self.current.create_batch().draw()
+        self.batch.draw()
 
 
 
@@ -68,9 +71,9 @@ class PygletApp(object):
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
         gluLookAt(
-            0.0, -0.0, 1.0,  # eye
-            0.0, -0.0, -1.0, # lookAt
-            0.0, 1.0, 0.0)  # up
+            0.0, -0.0,  1.0, # eye
+            0.0, -0.0, -1.0, # look at
+            0.0,  1.0,  0.0) # up
 
 
     def on_draw(self):
