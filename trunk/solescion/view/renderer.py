@@ -2,7 +2,7 @@ from __future__ import division
 from math import cos, sin, pi
 
 from pyglet.gl import (
-    glBegin, glClear, glClearColor, glColor3ub, glEnd, glPopMatrix,
+    glBegin, glClear, glClearColor, glColor3ub, glEnd, glScalef, glPopMatrix,
     glPushMatrix, glTranslatef, glRotatef, glVertex2f,
     GL_COLOR_BUFFER_BIT, GL_TRIANGLE_FAN, GL_LINES,
 )
@@ -27,6 +27,7 @@ class Renderer(object):
         self.draw_rooms(world.rooms)
         for chunk in world.chunks:
             self.draw_chunk(chunk)
+        self.draw_ents(world.ents)
 
 
     def clear(self, color):
@@ -73,6 +74,15 @@ class Renderer(object):
                 raise TypeError("renderer cannot draw %s" % (type(chunk),))
 
         glPopMatrix()
+
+
+    def draw_ents(self, ents):
+        for ent in ents:
+            glPushMatrix()
+            glTranslatef(ent.body.position.x, ent.body.position.y, 0)
+            glRotatef(ent.body.angle * 180 / pi, 0, 0, 1)
+            ent.batch.draw()
+            glPopMatrix()
 
 
     # TODO: not tested
