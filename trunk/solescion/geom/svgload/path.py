@@ -1,4 +1,5 @@
 
+from solescion.geom.loop import Loop
 from solescion.geom.path import ColoredPath
 
 
@@ -78,7 +79,7 @@ class PathDataParser(object):
         return parsed
 
 
-class SvgLoopTracer(object):
+class LoopTracer(object):
 
     def __init__(self):
         self.loops = []
@@ -150,7 +151,6 @@ class PathParser(object):
     '''
     parse(path_tag) returns an SvgPath object()
     '''
-
     next_id = 1
 
 
@@ -208,8 +208,11 @@ class PathParser(object):
         path_data = tag.attributes['d'].value
         path_tuple = parser.to_tuples(path_data)
 
-        tracer = SvgLoopTracer()
-        path.loops = tracer.to_loops(path_tuple)
+        tracer = LoopTracer()
+        path.loops = [
+            Loop(loop)
+            for loop in tracer.to_loops(path_tuple)
+        ]
 
         return id, path
 

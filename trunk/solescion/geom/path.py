@@ -12,7 +12,11 @@ class GeomPath(object):
     def __init__(self, loops=None):
         if loops is None:
             loops = []
-        self.loops = [Loop(loop) for loop in loops]
+        self.loops = []
+        for loop in loops:
+            if not isinstance(loop, Loop):
+                loop = Loop(loop)
+            self.loops.append(loop)
 
 
     def get_area(self):
@@ -41,8 +45,8 @@ class GeomPath(object):
 
 
     def offset(self, x, y):
-        for loop in loops:
-            loop.offset(offset)
+        for loop in self.loops:
+            loop.offset(x, y)
 
 
     def offset_to_origin(self):
@@ -70,7 +74,7 @@ class ColoredPath(GeomPath):
         indexed array of verts forming GL_TRIANGLES.
         '''
         if self.color:
-            triangles = tessellate(self.loops)
+            triangles = tessellate(loop.verts for loop in self.loops)
             num_verts = len(triangles)
             serial_verts = list(self._serialise_verts(triangles))
             colors = self.color * num_verts

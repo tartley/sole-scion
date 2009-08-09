@@ -34,7 +34,13 @@ class SvgParser(object):
             id, path = parser.parse(path_tag)
             self.paths[id] = path
             self.path_order.append(id)
-        
+
+        boundary = self.paths['boundary']
+        print boundary
+        x, y = boundary.get_centroid()
+        for path in self.paths.values():
+            path.offset(-x, -y)
+
 
     def add_to_batch(self, batch):
         '''
