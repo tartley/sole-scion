@@ -66,9 +66,8 @@ class ColoredPath(GeomPath):
 
     def add_to_batch(self, batch):
         '''
-        Adds itself to the given batch, as as single primitive of indexed
-        GL_TRIANGLES. Note that Batch will aggregate all such additions into
-        a single large primitive.
+        Tessellate loops and add them to the given pyglet Batch as an
+        indexed array of verts forming GL_TRIANGLES.
         '''
         if self.color:
             triangles = tessellate(self.loops)
