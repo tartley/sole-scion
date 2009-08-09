@@ -3,7 +3,7 @@ import xml.dom.minidom
 from pyglet.graphics import Batch
 
 from bounds import Bounds
-from path import SvgPath, PathParser
+from path import PathParser
 
 
 
@@ -62,7 +62,6 @@ class SvgBatch(object):
             id, path = parser.parse(path_tag)
             self.paths.append(path)
             self.path_by_id[id] = path
-            self.bounds.add_bounds(path.bounds)
 
 
     def create_batch(self):

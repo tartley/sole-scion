@@ -19,7 +19,7 @@ from pyglet.gl import (
 )
 
 
-class TesselateError(Exception):
+class TessellateError(Exception):
     pass
 
 
@@ -47,8 +47,8 @@ callback_types = {
 }
 
 
-def tesselate(loops):
-    return Tesselate().tesselate(loops)
+def tessellate(loops):
+    return Tessellate().tessellate(loops)
 
 
 def set_tess_callback(which):
@@ -59,7 +59,7 @@ def set_tess_callback(which):
     return set_call
 
 
-class Tesselate(object):
+class Tessellate(object):
 
     def fan_to_triangles(self):
         c = self.curr_shape.pop(0)
@@ -78,7 +78,7 @@ class Tesselate(object):
             p1 = p2
             p2 = p3
 
-    def tesselate(self, looplist):
+    def tessellate(self, looplist):
         self.tlist = []
         self.curr_shape = []
         spareverts = []
@@ -146,5 +146,5 @@ class Tesselate(object):
         return self.tlist       
 
     def warn(self, message):
-        raise TesselateError(message)
+        raise TessellateError(message)
 
