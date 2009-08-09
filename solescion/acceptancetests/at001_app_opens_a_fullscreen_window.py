@@ -8,7 +8,7 @@ import fixpath
 from solescion.acceptancetests.acceptancetest import AcceptanceTest, get_window
 from solescion.testutils.testcase import run
 
-from solescion.application import main
+from solescion.controller.application import main
 
 
 def is_window_visible():
