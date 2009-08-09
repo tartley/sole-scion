@@ -23,7 +23,7 @@ class GameEnt(object):
         self.batch = Batch()
         graphic.add_to_batch(self.batch)
 
-        boundary = graphic.paths['boundary']
+        boundary = graphic.get_boundary()
         self.body = Body(boundary.get_mass(), boundary.get_moment())
         self.shapes = [loop.get_shape(self.body) for loop in boundary.loops]
 
