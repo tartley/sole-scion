@@ -2,7 +2,7 @@
 from os import listdir
 from os.path import join
 
-from svgbatch.svgbatch import SvgBatch
+from solescion.geom.svgload.svgbatch import SvgBatch
 
 def load_graphics():
     graphics = {}

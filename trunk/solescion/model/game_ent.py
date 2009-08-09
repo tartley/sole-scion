@@ -23,7 +23,7 @@ class GameEnt(object):
         # that implies svgbatch should use Loop, GeomPath.
         self.batch = graphic.create_batch()
 
-        boundary = GeomPath(graphic['boundary'].loops)
+        boundary = GeomPath(graphic.paths['boundary'].loops)
         boundary.offset_to_origin()
         self.body = Body(boundary.get_mass(), boundary.get_moment())
         self.shapes = [self.make_shape(loop) for loop in boundary.loops]

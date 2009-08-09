@@ -6,7 +6,7 @@ from shapely.geometry import Polygon
 
 from solescion.geom.poly import irregular, regular
 from solescion.model.chunk import Chunk
-from solescion.model.gameent import GameEnt
+from solescion.model.game_ent import GameEnt
 from solescion.model.material import rubber, ice, gold, granite, bamboo
 from solescion.model.room import Room
 from solescion.model.shards.block import Block
