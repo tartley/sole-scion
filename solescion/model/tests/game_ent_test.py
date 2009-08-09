@@ -1,6 +1,6 @@
 from pymunk.vec2d import Vec2d
 
-from solescion.model.gameent import GameEnt
+from solescion.model.game_ent import GameEnt
 from solescion.testutils.testcase import MyTestCase, run
 
 

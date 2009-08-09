@@ -28,8 +28,8 @@ class SvgBatch(object):
         filename: string, absolute or relative filename of an SVG file
         '''
         self.filename = filename
-        self.paths = []
-        self.path_by_id = {}
+        self.paths = {}
+        self.path_order = []
         self.bounds = Bounds()
         self.batch = None
 
@@ -42,15 +42,6 @@ class SvgBatch(object):
         return self.bounds.height
 
 
-    def __getattr__(self, name):
-        if hasattr(self.path_by_id, name):
-            return getattr(self.path_by_id, name)
-        raise AttributeError(name)
-
-    def __getitem__(self, index):
-        return self.path_by_id[index]
-
-
     def parse_svg(self):
         '''
         Populates self.paths from the <path> tags in the svg file.
@@ -60,8 +51,8 @@ class SvgBatch(object):
         for path_tag in path_tags:
             parser = PathParser()
             id, path = parser.parse(path_tag)
-            self.paths.append(path)
-            self.path_by_id[id] = path
+            self.paths[id] = path
+            self.path_order.append(id)
 
 
     def create_batch(self):
@@ -71,7 +62,8 @@ class SvgBatch(object):
         if self.batch is None:
             self.batch = Batch()
             self.parse_svg()
-            for path in self.paths:
+            for name in self.path_order:
+                path = self.paths[name]
                 path.add_to_batch(self.batch)
         return self.batch    
 
