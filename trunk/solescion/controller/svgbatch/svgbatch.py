@@ -3,7 +3,7 @@ import xml.dom.minidom
 from pyglet.graphics import Batch
 
 from bounds import Bounds
-from path import Path
+from path import SvgPath, PathParser
 
 
 
@@ -58,20 +58,11 @@ class SvgBatch(object):
         doc = xml.dom.minidom.parse(self.filename)       
         path_tags = doc.getElementsByTagName('path')
         for path_tag in path_tags:
-            path = Path(path_tag)
+            parser = PathParser()
+            id, path = parser.parse(path_tag)
             self.paths.append(path)
-            self.path_by_id[path.id] = path
+            self.path_by_id[id] = path
             self.bounds.add_bounds(path.bounds)
-
-
-    def center(self):
-        '''
-        Offset all verts put center of svg at the origin
-        '''
-        center = self.bounds.get_center()
-        for path in self.paths:
-            path.offset(-center[0], -center[1])
-        self.bounds.offset(-center[0], -center[1])
 
 
     def create_batch(self):
@@ -81,9 +72,7 @@ class SvgBatch(object):
         if self.batch is None:
             self.batch = Batch()
             self.parse_svg()
-            self.center()
             for path in self.paths:
-                path.tessellate()
                 path.add_to_batch(self.batch)
         return self.batch    
 
