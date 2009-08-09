@@ -1,5 +1,5 @@
 
-from pyglet.gl import GL_TRIANGLES
+from pyglet.gl import GL_TRIANGLES, GL_LINES
 
 from loop import Loop
 from tessellate import tessellate
@@ -28,11 +28,14 @@ class GeomPath(object):
 
 
     def get_centroid(self):
+        print '  path.get_centroid()'
         x, y = 0, 0
         for loop in self.loops:
-            offset = loop.get_centroid()
-            x += offset[0] * loop.get_mass()
-            y += offset[1] * loop.get_mass()
+            print '  loop', loop
+            loopx, loopy = loop.get_centroid()
+            print '  offset', loopx, loopy
+            x += loopx * loop.get_mass()
+            y += loopy * loop.get_mass()
         if len(self.loops) > 0:
             area = self.get_area()
             x /= area

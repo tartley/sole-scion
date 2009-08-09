@@ -91,19 +91,22 @@ class LoopTracer(object):
 
     def onMove(self, command):
         x, y = self.get_point(command)
-        self.current_path = [(x, y)]
+        self.current_loop = [(x, y)]
 
     def onLine(self, command):
         x, y = self.get_point(command)
-        self.current_path.append((x, y))
+        self.current_loop.append((x, y))
 
     def onClose(self, command):
-        if self.current_path[0] == self.current_path[-1]:
-            self.current_path = self.current_path[:-1]
-        if len(self.current_path) < 3:
+        if self.current_loop[0] == self.current_loop[-1]:
+            self.current_loop = self.current_loop[:-1]
+        if len(self.current_loop) < 3:
             raise ParseError('loop needs 3 or more verts')
-        self.loops.append(self.current_path)
-        self.current_path = None
+        loop = Loop(self.current_loop)
+        if not loop.is_clockwise():
+            loop.verts.reverse()
+        self.loops.append(loop)
+        self.current_loop = None
 
     def onBadCommand(self, action):
         msg = 'unsupported svg path command: %s' % (action,)
@@ -135,7 +138,7 @@ class LoopTracer(object):
             'z': self.onClose,
         }
         self.loops = []
-        self.current_path = None
+        self.current_loop = None
 
         for command in commands:
             action = command[0]
@@ -209,10 +212,7 @@ class PathParser(object):
         path_tuple = parser.to_tuples(path_data)
 
         tracer = LoopTracer()
-        path.loops = [
-            Loop(loop)
-            for loop in tracer.to_loops(path_tuple)
-        ]
+        path.loops = tracer.to_loops(path_tuple)
 
         return id, path
 
