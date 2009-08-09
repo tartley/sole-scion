@@ -2,7 +2,7 @@
 from os import listdir
 from os.path import join
 
-from solescion.geom.svgload.svgparser import SvgParser
+from solescion.geom.svgload.svg_parser import SvgParser
 
 def load_graphics():
     graphics = {}

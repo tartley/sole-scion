@@ -1,7 +1,7 @@
 
 import xml.dom.minidom
 
-from path import PathParser
+from path_parser import PathParser
 
 
 class SvgParser(object):

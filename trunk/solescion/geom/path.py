@@ -9,9 +9,7 @@ class Path(object):
     '''
     A Path is a list of loops.
     '''
-    def __init__(self, loops=None):
-        if loops is None:
-            loops = []
+    def __init__(self, loops):
         self.loops = []
         for loop in loops:
             if not isinstance(loop, Loop):
@@ -57,8 +55,8 @@ class Path(object):
 
 class ColoredPath(Path):
 
-    def __init__(self):
-        Path.__init__(self)
+    def __init__(self, loops):
+        Path.__init__(self, loops)
         self.color = (0, 0, 0)
 
 

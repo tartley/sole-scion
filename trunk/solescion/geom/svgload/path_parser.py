@@ -198,19 +198,19 @@ class PathParser(object):
         where:  'id' is the path tag's id attribute
                 'path' is a populated instance of SvgPath
         '''
-        path = ColoredPath()
         id = self.get_id(tag.attributes)
-
-        if 'style' in tag.attributes.keys():
-            style_data = tag.attributes['style'].value
-            path.color = self.parse_style(style_data)
         
         parser = PathDataParser()
         path_data = tag.attributes['d'].value
         path_tuple = parser.to_tuples(path_data)
 
         tracer = LoopTracer()
-        path.loops = tracer.to_loops(path_tuple)
+        loops = tracer.to_loops(path_tuple)
+        path = ColoredPath(loops)
+
+        if 'style' in tag.attributes.keys():
+            style_data = tag.attributes['style'].value
+            path.color = self.parse_style(style_data)
 
         return id, path
 
