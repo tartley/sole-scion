@@ -5,7 +5,7 @@ from loop import Loop
 from tessellate import tessellate
 
 
-class GeomPath(object):
+class Path(object):
     '''
     A Path is a list of loops.
     '''
@@ -55,10 +55,10 @@ class GeomPath(object):
             loop.offset(-x, -y)
 
 
-class ColoredPath(GeomPath):
+class ColoredPath(Path):
 
     def __init__(self):
-        GeomPath.__init__(self)
+        Path.__init__(self)
         self.color = (0, 0, 0)
 
 
