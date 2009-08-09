@@ -4,7 +4,7 @@ from pyglet.graphics import Batch
 from pymunk import Body, moment_for_poly
 from pymunk.vec2d import Vec2d
 
-from solescion.geom.path import GeomPath
+from solescion.geom.path import Path
 
 class GameEnt(object):
 
@@ -23,7 +23,7 @@ class GameEnt(object):
         self.batch = Batch()
         graphic.add_to_batch(self.batch)
 
-        boundary = GeomPath(graphic.paths['boundary'].loops)
+        boundary = graphic.paths['boundary']
         self.body = Body(boundary.get_mass(), boundary.get_moment())
         self.shapes = [loop.get_shape(self.body) for loop in boundary.loops]
 
