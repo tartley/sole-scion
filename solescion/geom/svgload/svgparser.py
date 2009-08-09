@@ -4,10 +4,6 @@ import xml.dom.minidom
 from path import PathParser
 
 
-class Svg(object):
-    pass
-
-
 class SvgParser(object):
     '''
     Maintains an ordered list of paths, each one corresponding to a path tag
@@ -35,20 +31,25 @@ class SvgParser(object):
             self.paths[id] = path
             self.path_order.append(id)
 
+        print
         boundary = self.paths['boundary']
-        print boundary
+        print 'boundary', boundary
+        print '  ', [loop for loop in boundary.loops]
         x, y = boundary.get_centroid()
+        print 'centroid', x, y
         for path in self.paths.values():
+            print 'offsetting', path
             path.offset(-x, -y)
+        x, y = boundary.get_centroid()
+        print 'new centroid %f, %f' % (x, y)
 
 
     def add_to_batch(self, batch):
         '''
         Adds paths to the given batch object. They are all added as
         GL_TRIANGLES, so the batch will aggregate them all into a single OpenGL
-        primitive. '''
-
-        self.parse_svg()
+        primitive.
+        '''
         for name in self.path_order:
             path = self.paths[name]
             path.add_to_batch(batch)

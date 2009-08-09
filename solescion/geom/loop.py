@@ -1,33 +1,53 @@
 
-from pymunk import moment_for_poly
+from pymunk import moment_for_poly, Poly
 
 
 class Loop(object):
 
+    density = 1
+
     def __init__(self, verts=None):
-        print 'Loop', type(verts)
         if verts is None:
             verts = []
         self.verts = verts
-        self.density = 1
 
 
     def get_area(self):
         """
         Return area of a simple (ie. non-self-intersecting) polygon.
         If poly does intersect, the actual area will be smaller than this.
-        Will return negative for counterclockwise winding.
         """
+        print '  loop.get_area()'
+        print self.verts
         accum = 0.0
         for i in range(len(self.verts)):
             j = (i + 1) % len(self.verts)
             accum += (
                 self.verts[j][0] * self.verts[i][1] -
                 self.verts[i][0] * self.verts[j][1])
-        return accum / 2
+        return abs(accum / 2)
 
 
+    def is_clockwise(self):
+        '''
+        assume y-axis points up
+        '''
+        print 'is_clockwise'
+        print ['%2f, %2f' % (x, y) for x, y in self.verts]
+
+        accum = 0.0
+        for i in range(len(self.verts)):
+            j = (i + 1) % len(self.verts)
+            accum += (
+                self.verts[j][0] * self.verts[i][1] -
+                self.verts[i][0] * self.verts[j][1])
+        print accum > 0
+
+        return accum > 0
+
+        
     def get_mass(self):
+        print '  loop.get_mass', self.get_area() * self.density
         return self.get_area() * self.density
 
 
@@ -47,6 +67,7 @@ class Loop(object):
 
 
     def get_moment(self):
+        print '  loop.get_moment', self.get_area() * self.density
         return moment_for_poly(self.get_mass(), self.verts, (0, 0))
 
 
@@ -57,7 +78,9 @@ class Loop(object):
         ]
 
 
-    def offset_to_origin(self):
-        x, y = self.get_centroid()
-        self.offset(-x, -y)
+    def get_shape(self, body):
+        shape = Poly(body, self.verts, (0, 0))
+        shape.elasticity = 0.5
+        shape.friction = 10.0
+        return shape
 
