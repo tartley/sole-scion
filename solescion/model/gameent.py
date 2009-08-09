@@ -1,7 +1,8 @@
 
-from pymunk import Body, Circle
+from pymunk import Body, moment_for_poly, Poly
 from pymunk.vec2d import Vec2d
 
+from solescion.geom.path import GeomPath
 
 class GameEnt(object):
 
@@ -11,20 +12,26 @@ class GameEnt(object):
         self.shapes = []
         self.set_graphic(graphic)
 
+    position = property(lambda self: self.body.position)
 
-    def _set_position(self, position):
-        self.body.position = position
-    position = property(lambda self: self.body.position, _set_position)
     angle = property(lambda self: self.body.angle)
 
 
     def set_graphic(self, graphic):
+        # TODO: We need to offset_to_origin before creating the batch
+        # how about as soon as we load the svg?
+        # that implies svgbatch should use Loop, GeomPath.
         self.batch = graphic.create_batch()
 
-        self.body = Body(100, 1000)
-        shape = Circle(self.body, 250, (0, 0))
-        shape.elasticity = 0.5
-        shape.friction = 100.0
-        self.shapes = [shape]
+        boundary = GeomPath(graphic['boundary'].loops)
+        boundary.offset_to_origin()
+        self.body = Body(boundary.get_mass(), boundary.get_moment())
+        self.shapes = [self.make_shape(loop) for loop in boundary.loops]
 
+
+    def make_shape(self, loop):
+        shape = Poly(self.body, loop.verts, (0, 0))
+        shape.elasticity = 0.5
+        shape.friction = 10.0
+        return shape
 

@@ -1,4 +1,6 @@
+
 from pymunk import Body
+
 
 class Chunk(object):
     """
@@ -17,24 +19,18 @@ class Chunk(object):
 
 
     def get_mass(self):
-        mass = 0.0
-        for shard in self.shards:
-            mass += shard.mass
-        return mass
+        return sum(shard.mass for shard in self.shards)
 
 
     def get_moment(self):
-        moment = 0.0
-        for shard in self.shards:
-            moment += shard.get_moment()
-        return moment
+        return sum(shard.get_moment() for shard in self.shards)
 
 
     def _center_of_gravity(self):
         x, y = 0, 0
         mass = self.get_mass()
         for shard in self.shards:
-            offset = shard.get_offset()
+            offset = shard.get_centroid()
             x += offset[0] * shard.mass
             y += offset[1] * shard.mass
         if len(self.shards) > 0:

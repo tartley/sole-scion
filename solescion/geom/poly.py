@@ -82,6 +82,7 @@ def assert_valid(verts):
         raise TypeError('anticlockwise winding: %s' % (verts,))
 
 
+# TODO: obseleted by loop.get_area()
 def offset_verts(verts, offset):
     return type(verts)(
         (verts[i][0] + offset[0], verts[i][1] + offset[1])
@@ -89,6 +90,7 @@ def offset_verts(verts, offset):
     )
 
 
+# TODO: obseleted by loop.get_area()
 def area(verts):
     """
     Return area of a simple (ie. non-self-intersecting) polygon.
@@ -101,6 +103,7 @@ def area(verts):
     return accum / 2
 
 
+# TODO: obseleted by loop.get_centroid()
 def centroid(verts):
     x, y = 0, 0
     for i in range(len(verts)):

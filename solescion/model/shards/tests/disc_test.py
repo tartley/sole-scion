@@ -42,15 +42,15 @@ class Disc_test(MyTestCase):
         self.assertEquals(disc.get_moment(), expected, "bad moment")
 
 
-    def test_get_offset(self):
+    def test_get_centroid(self):
         disc = Disc(gold, 10, (111, 222))
-        self.assertEquals(disc.get_offset(), (111, 222), "bad offset")
+        self.assertEquals(disc.get_centroid(), (111, 222), "bad offset")
 
 
     def test_offset(self):
         disc = Disc(gold, 10, (11, 22))
         disc.offset((100, 200))
-        self.assertEquals(disc.get_offset(), (111, 222), "didnt apply offset")
+        self.assertEquals(disc.get_centroid(), (111, 222), "didnt apply offset")
 
 
     def test_add_to_body(self):

@@ -18,7 +18,7 @@ class Disc(object):
         self.shape = None
 
 
-    def get_offset(self):
+    def get_centroid(self):
         return self.center
 
 
