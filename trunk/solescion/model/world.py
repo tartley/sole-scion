@@ -34,10 +34,14 @@ class World(object):
         self.chunks.add(chunk)
 
 
+    def gravity(self):
+        for chunk in self.chunks:
+            chunk.body.apply_impulse(-chunk.position/10.0, (0,0))
+
+
     def tick(self, delta_t):
         if hasattr(self, 'player'):
             self.player.move()
-        for chunk in self.chunks:
-            chunk.body.apply_impulse(-chunk.position/10.0, (0,0))
+        self.gravity()
         self.space.step(delta_t)
 
