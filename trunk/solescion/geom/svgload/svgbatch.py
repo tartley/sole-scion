@@ -1,7 +1,5 @@
 import xml.dom.minidom
 
-from pyglet.graphics import Batch
-
 from path import PathParser
 
 
@@ -28,7 +26,7 @@ class SvgBatch(object):
         self.filename = filename
         self.paths = {}
         self.path_order = []
-        self.batch = None
+
 
     def parse_svg(self):
         '''
@@ -43,15 +41,14 @@ class SvgBatch(object):
             self.path_order.append(id)
 
 
-    def create_batch(self):
+    def add_to_batch(self, batch):
         '''
-        Returns a new pyglet Batch object populated with indexed GL_TRIANGLES
+        Adds this svgbatch paths to the given batch object. They are all
+        added as GL_TRIANGLES, so the batch will aggregate them all into
+        a single OpenGL primitive.
         '''
-        if self.batch is None:
-            self.batch = Batch()
-            self.parse_svg()
-            for name in self.path_order:
-                path = self.paths[name]
-                path.add_to_batch(self.batch)
-        return self.batch    
+        self.parse_svg()
+        for name in self.path_order:
+            path = self.paths[name]
+            path.add_to_batch(batch)
 

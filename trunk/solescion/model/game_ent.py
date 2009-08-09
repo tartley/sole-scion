@@ -1,4 +1,6 @@
 
+from pyglet.graphics import Batch
+
 from pymunk import Body, moment_for_poly, Poly
 from pymunk.vec2d import Vec2d
 
@@ -21,7 +23,8 @@ class GameEnt(object):
         # TODO: We need to offset_to_origin before creating the batch
         # how about as soon as we load the svg?
         # that implies svgbatch should use Loop, GeomPath.
-        self.batch = graphic.create_batch()
+        self.batch = Batch()
+        graphic.add_to_batch(self.batch)
 
         boundary = GeomPath(graphic.paths['boundary'].loops)
         boundary.offset_to_origin()
