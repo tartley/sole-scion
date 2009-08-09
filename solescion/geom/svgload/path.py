@@ -103,8 +103,6 @@ class LoopTracer(object):
         if len(self.current_loop) < 3:
             raise ParseError('loop needs 3 or more verts')
         loop = Loop(self.current_loop)
-        if not loop.is_clockwise():
-            loop.verts.reverse()
         self.loops.append(loop)
         self.current_loop = None
 
