@@ -2,9 +2,7 @@ import xml.dom.minidom
 
 from pyglet.graphics import Batch
 
-from bounds import Bounds
 from path import PathParser
-
 
 
 def svg2batch(filename):
@@ -30,17 +28,7 @@ class SvgBatch(object):
         self.filename = filename
         self.paths = {}
         self.path_order = []
-        self.bounds = Bounds()
         self.batch = None
-
-    @property
-    def width(self):
-        return self.bounds.width
-
-    @property
-    def height(self):
-        return self.bounds.height
-
 
     def parse_svg(self):
         '''
