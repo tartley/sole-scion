@@ -6,10 +6,18 @@ from shapely.geometry import Polygon
 
 from solescion.geom.poly import irregular, regular
 from solescion.model.chunk import Chunk
+from solescion.model.gameent import GameEnt
 from solescion.model.material import rubber, ice, gold, granite, bamboo
 from solescion.model.room import Room
 from solescion.model.shards.block import Block
 from solescion.model.shards.disc import Disc
+
+
+def choose_random(collection):
+    index = randint(0, len(collection)-1)
+    if isinstance(collection, dict):
+        index = collection.keys()[index]
+    return collection[index]
 
 
 class LevelBuilder(object):
@@ -23,8 +31,8 @@ class LevelBuilder(object):
 
     def create_initial_room(self):
         verts = [
-            (15, 200), (-15, 200), (-100000, 201),
-            (-100000, 200000), (100000, 200000), (100000, 201)]
+            (1500, 20000), (-1500, 20000), (-10000000, 20001),
+            (-10000000, 20000000), (10000000, 20000000), (10000000, 20001)]
         self.add_room(Room(verts))
 
 
@@ -62,8 +70,8 @@ class LevelBuilder(object):
 
 
     def new_room_verts(self, branch_room, branch_wall, num_verts):
-        WALL_MIN = 10
-        WALL_MAX = 50
+        WALL_MIN = 1000
+        WALL_MAX = 5000
         end = Vec2d(branch_room.verts[branch_wall])
         startidx = (branch_wall + 1) % len(branch_room.verts)
         start = Vec2d(branch_room.verts[startidx])
@@ -91,7 +99,7 @@ class LevelBuilder(object):
 
 
     # TODO untested
-    def build(self, world, desired_size):
+    def build(self, world, desired_size, graphics):
         self.create_initial_room()
         while len(self.rooms) < desired_size:
             branch_room = self.select_branch_room()
@@ -108,38 +116,11 @@ class LevelBuilder(object):
         world.add_to_pymunk()
 
         for room in self.rooms.itervalues():
-            self.furnish(room, world)
+            self.furnish(room, world, graphics)
 
 
-    chunkbits = [
-        [
-            Disc(rubber, 5),
-        ],
-        [
-            Block(ice, [(-7, 4), (-6, 5), (5, 2), (2, -5)]),
-        ],
-        [
-            Block(
-                granite, [
-                    (-5, 10), (-5, 15), (5, 20), (10, 15),
-                    (10, 10), (5, 0), (0, 0)
-                ]
-            )
-        ],
-        [
-            Block(gold, [(-9, 3), (9, 3), (9, -3), (-9, -3)]),
-            Block(gold, [(-3, -9), (-3, 9), (3, 9), (3, -9)]),
-        ],
-        [
-            Disc(bamboo, 5, (0, 0)),
-            Disc(bamboo, 2, (0, 5)),
-        ],
-    ]
-
-    # TODO: not tested
-    def furnish(self, room, world):
-        if 0 < room.id and room.id % 3 == 0:
-            chunk_type = randint(0, len(self.chunkbits) - 1)
-            chunk = Chunk(*self.chunkbits[chunk_type])
-            world.add_chunk(chunk, room.centroid, uniform(0, 2*pi))
+    def furnish(self, room, world, graphics):
+        if room.id % 3 == 1:
+            graphic = choose_random(graphics)
+            world.add_ent(GameEnt(graphic), room.centroid, uniform(0, 2*pi))
 

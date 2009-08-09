@@ -18,6 +18,7 @@ class World(object):
         self.static_body = Body(inf, inf)
 
         self.rooms = {}
+        self.ents = set()
         self.chunks = set()
         self.player = None
 
@@ -34,9 +35,20 @@ class World(object):
         self.chunks.add(chunk)
 
 
+    def add_ent(self, ent, position, angle=0.0):
+        ent.body.position = position
+        ent.body.angle = angle
+        self.space.add(ent.body)
+        for shape in ent.shapes:
+            self.space.add(shape)
+        self.ents.add(ent)
+
+
     def gravity(self):
         for chunk in self.chunks:
             chunk.body.apply_impulse(-chunk.position/10.0, (0,0))
+        for ent in self.ents:
+            ent.body.apply_impulse(-ent.position/10.0, (0,0))
 
 
     def tick(self, delta_t):
