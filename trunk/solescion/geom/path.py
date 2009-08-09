@@ -28,12 +28,9 @@ class GeomPath(object):
 
 
     def get_centroid(self):
-        print '  path.get_centroid()'
         x, y = 0, 0
         for loop in self.loops:
-            print '  loop', loop
             loopx, loopy = loop.get_centroid()
-            print '  offset', loopx, loopy
             x += loopx * loop.get_mass()
             y += loopy * loop.get_mass()
         if len(self.loops) > 0:

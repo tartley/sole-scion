@@ -14,42 +14,38 @@ class Loop(object):
             self.verts.reverse()
 
 
-    def get_area(self):
+    def get_signed_area(self):
         """
         Return area of a simple (ie. non-self-intersecting) polygon.
-        If poly does intersect, the actual area will be smaller than this.
+        If verts wind anti-clockwise, this returns a negative number.
+        Assume y-axis points up.
         """
-        print '  loop.get_area()'
-        print self.verts
         accum = 0.0
         for i in range(len(self.verts)):
             j = (i + 1) % len(self.verts)
             accum += (
                 self.verts[j][0] * self.verts[i][1] -
                 self.verts[i][0] * self.verts[j][1])
-        return abs(accum / 2)
+        return accum / 2
+
+
+    def get_area(self):
+        '''
+        Always returns a positive number. If poly is self-intersecting, the
+        actual area will be smaller than this.
+        '''
+        return abs(self.get_signed_area())
 
 
     def is_clockwise(self):
         '''
-        assume y-axis points up
+        Assume y-axis points up
         '''
-        print 'is_clockwise'
-        print ['%2f, %2f' % (x, y) for x, y in self.verts]
-
-        accum = 0.0
-        for i in range(len(self.verts)):
-            j = (i + 1) % len(self.verts)
-            accum += (
-                self.verts[j][0] * self.verts[i][1] -
-                self.verts[i][0] * self.verts[j][1])
-        print accum > 0
-
-        return accum > 0
+        retval = self.get_signed_area() > 0
+        return self.get_signed_area() > 0
 
         
     def get_mass(self):
-        print '  loop.get_mass', self.get_area() * self.density
         return self.get_area() * self.density
 
 
@@ -69,7 +65,6 @@ class Loop(object):
 
 
     def get_moment(self):
-        print '  loop.get_moment', self.get_area() * self.density
         return moment_for_poly(self.get_mass(), self.verts, (0, 0))
 
 

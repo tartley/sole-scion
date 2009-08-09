@@ -31,17 +31,10 @@ class SvgParser(object):
             self.paths[id] = path
             self.path_order.append(id)
 
-        print
         boundary = self.paths['boundary']
-        print 'boundary', boundary
-        print '  ', [loop for loop in boundary.loops]
         x, y = boundary.get_centroid()
-        print 'centroid', x, y
         for path in self.paths.values():
-            print 'offsetting', path
             path.offset(-x, -y)
-        x, y = boundary.get_centroid()
-        print 'new centroid %f, %f' % (x, y)
 
 
     def add_to_batch(self, batch):

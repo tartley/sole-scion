@@ -8,7 +8,6 @@ def load_graphics():
     graphics = {}
     for file in listdir('data'):
         if file.endswith('.svg'):
-            print 'FILE', file
             svg = SvgParser(join('data', file))
             svg.parse_svg()
             graphics[file[:-4]] = svg
