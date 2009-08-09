@@ -10,6 +10,8 @@ class Loop(object):
         if verts is None:
             verts = []
         self.verts = verts
+        if not self.is_clockwise():
+            self.verts.reverse()
 
 
     def get_area(self):
