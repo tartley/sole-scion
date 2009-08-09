@@ -9,12 +9,12 @@ from solescion.model.shards.block import Block
 
 
 def generate_ship():
-    verts = [(-1, 0), (-2, 1), (0, 5), (2, 1), (1, 0)]
+    verts = [(-10, 00), (-20, 10), (00, 50), (20, 10), (10, 00)]
     return verts
 
-MAX_TORQUE = 10000
-SPIN_DRAG = 1500
-
+MAX_TORQUE = 90000000
+SPIN_DRAG =  15000000
+THRUST = 150000
 
 class Player(object):
 
@@ -41,7 +41,11 @@ class Player(object):
         body.torque = torque
 
         if Keyboard.keystate[key.UP]:
-            body.apply_impulse(body.rotation_vector.rotated(90) * 150, (0, 0))
+            body.apply_impulse(
+                body.rotation_vector.rotated(90) * THRUST,
+                (0, 0))
         elif Keyboard.keystate[key.DOWN]:
-            body.apply_impulse(body.rotation_vector.rotated(-90) * 100, (0, 0))
+            body.apply_impulse(
+                body.rotation_vector.rotated(-90) * THRUST * .6,
+                (0, 0))
 

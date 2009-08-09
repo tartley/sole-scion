@@ -31,8 +31,8 @@ class LevelBuilder(object):
 
     def create_initial_room(self):
         verts = [
-            (1500, 20000), (-1500, 20000), (-10000000, 20001),
-            (-10000000, 20000000), (10000000, 20000000), (10000000, 20001)]
+            (150, 2000), (-150, 2000), (-1000000, 2001),
+            (-1000000, 2000000), (1000000, 2000000), (1000000, 2001)]
         self.add_room(Room(verts))
 
 
@@ -70,8 +70,8 @@ class LevelBuilder(object):
 
 
     def new_room_verts(self, branch_room, branch_wall, num_verts):
-        WALL_MIN = 1000
-        WALL_MAX = 5000
+        WALL_MIN = 100
+        WALL_MAX = 500
         end = Vec2d(branch_room.verts[branch_wall])
         startidx = (branch_wall + 1) % len(branch_room.verts)
         start = Vec2d(branch_room.verts[startidx])
@@ -120,7 +120,7 @@ class LevelBuilder(object):
 
 
     def furnish(self, room, world, graphics):
-        if room.id % 3 == 1:
+        if room.id != 0:
             graphic = choose_random(graphics)
             world.add_ent(GameEnt(graphic), room.centroid, uniform(0, 2*pi))
 

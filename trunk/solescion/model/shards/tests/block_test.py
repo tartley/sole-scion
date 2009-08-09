@@ -70,10 +70,10 @@ class Block_test(MyTestCase):
         self.assertEquals(block.get_moment(), expected, "moment wrong")
 
 
-    def test_get_offset(self):
+    def test_get_centroid(self):
         verts = [(10, 20), (10, 24), (12, 24), (12, 20)]
         block = Block(gold, verts, (100, 200))
-        self.assertEquals(block.get_offset(), (111, 222), "bad offset")
+        self.assertEquals(block.get_centroid(), (111, 222), "bad offset")
 
 
     def test_offset(self):

@@ -88,9 +88,9 @@ class Chunk_test(MyTestCase):
 
         chunk._offset_shards((+2, -3))
 
-        offset1 = chunk.shards[0].get_offset()
+        offset1 = chunk.shards[0].get_centroid()
         self.assertEquals(offset1, (12, 17), "bad shard1 offset")
-        offset2 = chunk.shards[1].get_offset()
+        offset2 = chunk.shards[1].get_centroid()
         self.assertEquals(offset2, (32, 37), "bad shard2 offset")
 
 
@@ -126,7 +126,7 @@ class Chunk_test(MyTestCase):
 
         self.assertEquals(chunk.shards, (disc,), "bad shards")
         shard = chunk.shards[0]
-        self.assertEquals(shard.get_offset(), (0, 0))
+        self.assertEquals(shard.get_centroid(), (0, 0))
 
 
     def test_set_shards_two_discs(self):
@@ -136,10 +136,10 @@ class Chunk_test(MyTestCase):
         chunk = Chunk()
         chunk.set_shards(disc1, disc2)
         self.assertEquals(chunk.shards, (disc1, disc2), "bad shards")
-        shard1offset = chunk.shards[0].get_offset()
+        shard1offset = chunk.shards[0].get_centroid()
         self.assertAlmostEquals(shard1offset[0], -3.0, msg="bad offset1 x")
         self.assertAlmostEquals(shard1offset[1], -5.0, msg="bad offset1 y")
-        shard2offset = chunk.shards[1].get_offset()
+        shard2offset = chunk.shards[1].get_centroid()
         self.assertAlmostEquals(shard2offset[0], +12.0, msg="bad offset2 x")
         self.assertAlmostEquals(shard2offset[1], +20.0, msg="bad offset2 y")
 
@@ -148,14 +148,14 @@ class Chunk_test(MyTestCase):
         verts = [(0, 0), (0, 1), (1, 1), (1, 0)]
         offset = (10, 20)
         block = Block(gold, verts, offset)
-        self.assertEquals(block.get_offset(), (10.5, 20.5), "bad offset")
+        self.assertEquals(block.get_centroid(), (10.5, 20.5), "bad offset")
 
         chunk = Chunk()
         chunk.set_shards(block)
 
         self.assertEquals(chunk.shards, (block,), "bad shards")
         shard = chunk.shards[0]
-        self.assertEquals(shard.get_offset(), (0, 0), "bad offset")
+        self.assertEquals(shard.get_centroid(), (0, 0), "bad offset")
 
 
     def test_set_shards_two_blocks(self):
@@ -166,8 +166,8 @@ class Chunk_test(MyTestCase):
         chunk = Chunk(block1, block2)
 
         self.assertEquals(chunk.shards, (block1, block2,), "shards not added")
-        self.assertEquals(block1.get_offset(), (+3, -3), "bad offset1")
-        self.assertEquals(block2.get_offset(), (-1, +1), "bad offset2")
+        self.assertEquals(block1.get_centroid(), (+3, -3), "bad offset1")
+        self.assertEquals(block2.get_centroid(), (-1, +1), "bad offset2")
 
 
     def DONTtest_add_to_space_blocks(self):

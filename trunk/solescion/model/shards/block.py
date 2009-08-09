@@ -32,7 +32,7 @@ class Block(object):
         return moment_for_poly(self.mass, self.verts, (0, 0))
 
 
-    def get_offset(self):
+    def get_centroid(self):
         return centroid(self.verts)
 
 
