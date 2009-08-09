@@ -20,15 +20,10 @@ class GameEnt(object):
 
 
     def set_graphic(self, graphic):
-        print
-        print 'set_graphic', graphic
         self.batch = Batch()
         graphic.add_to_batch(self.batch)
 
         boundary = GeomPath(graphic.paths['boundary'].loops)
-        print 'boundary', len(boundary.loops)
         self.body = Body(boundary.get_mass(), boundary.get_moment())
-        print 'body.mass', self.body.mass
-        print 'body.moment', self.body.moment
         self.shapes = [loop.get_shape(self.body) for loop in boundary.loops]
 
