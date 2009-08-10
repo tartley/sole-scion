@@ -23,7 +23,10 @@ class GameEnt(object):
         self.batch = Batch()
         graphic.add_to_batch(self.batch)
 
+        # TODO: can we not do this on load_graphics()?
         boundary = graphic.get_boundary()
+        print
+        print boundary.loops
         self.body = Body(boundary.get_mass(), boundary.get_moment())
         self.shapes = [loop.get_shape(self.body) for loop in boundary.loops]
 
