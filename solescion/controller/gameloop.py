@@ -43,7 +43,7 @@ class Gameloop(object):
         clock.set_fps_limit(FPS_LIMIT)
         self.fps_display = clock.ClockDisplay()
 
-        self.camera = Camera((0, 0), 5000)
+        self.camera = Camera((0, 0), 800)
         self.renderer = Renderer(self.camera)
         caption = '%s v%s' % (name, version)
         self.window = Window(
