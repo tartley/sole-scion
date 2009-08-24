@@ -6,8 +6,9 @@ from sys import argv
 from shutil import copy, move, rmtree
 from zipfile import ZipFile
 
-from solescion.application import NAME, VERSION
-
+from solescion.utils.environment import init
+init()
+from solescion.controller.application import NAME, VERSION
 
 WIN_BINARY = '%s-win-binary-%s' % (NAME, VERSION)
 EXE_DIR = 'exe'
@@ -52,20 +53,6 @@ def other():
             'run_tests',
         ],
         packages = [
-            'pyglet',
-            'pyglet.app',
-            'pyglet.font',
-            'pyglet.gl',
-            'pyglet.graphics',
-            'pyglet.image',
-            'pyglet.image.codecs',
-            'pyglet.text',
-            'pyglet.text.formats',
-            'pyglet.window',
-            'pyglet.window.carbon',
-            'pyglet.window.win32',
-            'pyglet.window.xlib',
-            'pymunk',
             'solescion',
             'solescion.acceptancetests',
             'solescion.acceptancetests.tests',
