@@ -8,7 +8,7 @@ def append(var, value):
     value += 'shapely'
     environ[var] = value
 
-def init():
+def add_lib_to_path():
     'required for shapely to find its own DLL files'
 
     append('PATH', 'solescion\\lib') # for mswin

@@ -1,16 +1,15 @@
 from __future__ import with_statement
-from distutils.core import setup
 from os import listdir, mkdir
 from os.path import isdir, join
 from sys import argv
 from shutil import copy, move, rmtree
 from zipfile import ZipFile
 
-from solescion.utils.environment import init
-init()
-from solescion.controller.application import NAME, VERSION
+from setuptools import setup, find_packages
 
-WIN_BINARY = '%s-win-binary-%s' % (NAME, VERSION)
+from solescion import name, version
+
+WIN_BINARY = '%s-win-binary-%s' % (name, version)
 EXE_DIR = 'exe'
 
 
@@ -40,8 +39,8 @@ def py2exe():
 def other():
 
     setup(
-        name = NAME,
-        version = VERSION,
+        name = name,
+        version = version,
         url = 'http://code.google.com/p/sole-scion/',
         author = 'Jonathan Hartley',
         author_email = 'tartley@tartley.com',
@@ -73,7 +72,7 @@ def other():
 
 
 def create_batch_file():
-    batch_file = join('dist', WIN_BINARY, '%s.bat' % (NAME,))
+    batch_file = join('dist', WIN_BINARY, '%s.bat' % (name,))
     with open(batch_file, 'w') as f:
         f.write('@echo off\n%s\\run.exe\n' % EXE_DIR)
 
