@@ -2,11 +2,8 @@ from os import curdir
 from os.path import abspath, dirname
 import sys
 
+from solescion import name, version
 from solescion.controller.gameloop import Gameloop
-
-
-NAME = 'SoleScion'
-VERSION = '0.2.5-svn'
 
 
 def relpath(path):
@@ -33,7 +30,7 @@ class Application(object):
 
 
     def print_version_info(self):
-        print NAME, VERSION
+        print name, version
         import platform
         print 'Python %s, %s' % (platform.python_version(), platform.platform())
         import pyglet
@@ -59,7 +56,7 @@ class Application(object):
     def run(self):
         self.parse_args(sys.argv)
         self.gameloop = Gameloop()
-        self.gameloop.init(NAME, VERSION)
+        self.gameloop.init(name, version)
         try:
             self.run_gameloop()
         finally:
