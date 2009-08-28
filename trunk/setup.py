@@ -1,6 +1,8 @@
 from __future__ import with_statement
+
+from glob import glob
 from os import listdir, mkdir
-from os.path import isdir, join
+from os.path import dirname, isdir, join
 from sys import argv
 from shutil import copy, move, rmtree
 from zipfile import ZipFile
@@ -9,29 +11,39 @@ from setuptools import setup, find_packages
 
 from solescion import name, version
 
-WIN_BINARY = '%s-win-binary-%s' % (name, version)
-EXE_DIR = 'exe'
+WIN_BINARY = '%s-Windows-%s' % (name, version)
+EXE_DIR = 'bin'
 
 
 def py2exe():
 
     import py2exe
+    import pymunk
+    pymunk_dir = dirname(pymunk.__file__)
 
     setup(
-        windows=['run.py'],
+        windows=[r'main.py'],
         options={
             'py2exe':{
-                'dist_dir': join('dist', WIN_BINARY, EXE_DIR),
+                'dist_dir': r'dist\%s\%s' % (WIN_BINARY, EXE_DIR),
                 'excludes': [
+                    'dummy.Process',
                     'email',
-                    'email.Utils',
+                    'email.utils',
+                    'Image',
+                    'multiprocessing',
                     'Tkinter',
+                    '_hashlib',
+                    '_ssl',
                 ],
                 'optimize': 2,
             }
         },
         data_files = [
-            ('', ['pymunk/chipmunk.dll']),
+            ('', [r'solescion/lib/geos.dll']),
+            ('', [r'solescion/lib/libgeos-3-0-0.dll']),
+            ('', [r'%s/chipmunk.dll' % (pymunk_dir,)]),
+            ('../data', glob(r'data/*.svg')),
         ],
     )
 
@@ -39,14 +51,12 @@ def py2exe():
 def other():
 
     setup(
-        name = name,
-        version = version,
-        url = 'http://code.google.com/p/sole-scion/',
-        author = 'Jonathan Hartley',
-        author_email = 'tartley@tartley.com',
-        description =
-            'A game with 2D vector graphics and rigid body physics.',
-
+        name=name,
+        version=version,
+        url='http://code.google.com/p/sole-scion/',
+        author='Jonathan Hartley',
+        author_email='tartley@tartley.com',
+        description='A 2D vector graphic rigid body dynamics Roguelike.',
         py_modules = [
             'run',
             'run_tests',
@@ -74,7 +84,7 @@ def other():
 def create_batch_file():
     batch_file = join('dist', WIN_BINARY, '%s.bat' % (name,))
     with open(batch_file, 'w') as f:
-        f.write('@echo off\n%s\\run.exe\n' % EXE_DIR)
+        f.write('@echo off\n%s\\main.exe\n' % EXE_DIR)
 
 
 def zip_directory():
