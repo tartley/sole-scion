@@ -1,16 +1,28 @@
 
 from os import environ
+from os.path import join
+from platform import system
 
-def append(var, value):
-    values = environ.get(var, '')
+
+if system() == 'Windows':
+    separator = ';'
+    var_name = 'PATH'
+else:
+    separator = ':'
+    var_name = 'LD_LIBRARY_PATH'
+
+
+def append(name, suffix):
+    print 'append', name, suffix
+    value = environ.get(name, '')
+    print 'orig', value
     if value:
-        value += ';'
-    value += 'shapely'
-    environ[var] = value
+        value += separator
+    value += suffix
+    environ[name] = value
+    print 'set', name, '=', value
+
 
 def add_lib_to_path():
-    'required for shapely to find its own DLL files'
-
-    append('PATH', 'solescion\\lib') # for mswin source
-    # append('LD_LIBRARY_PATH', 'solescion\\lib') # for linux
+    append(var_name, join('solescion', 'lib'))
 

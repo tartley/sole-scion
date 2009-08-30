@@ -57,26 +57,18 @@ def other():
         author='Jonathan Hartley',
         author_email='tartley@tartley.com',
         description='A 2D vector graphic rigid body dynamics Roguelike.',
+        scripts = [
+            'bin/run.bat',
+            'bin/run.sh',
+        ],
         py_modules = [
-            'run',
+            'main',
             'run_tests',
         ],
-        packages = [
-            'solescion',
-            'solescion.acceptancetests',
-            'solescion.acceptancetests.tests',
-            'solescion.controller',
-            'solescion.controller.tests',
-            'solescion.model',
-            'solescion.model.tests',
-            'solescion.model.shards',
-            'solescion.model.shards.tests',
-            'solescion.testutils',
-            'solescion.testutils.tests',
-            'solescion.utils',
-            'solescion.utils.tests',
-            'solescion.view',
-            'solescion.view.tests',
+        packages = find_packages(),
+        data_files = [
+            ('', [r'solescion/lib/geos.dll']),
+            ('', [r'solescion/lib/libgeos-3-0-0.dll']),
         ],
     )
 
