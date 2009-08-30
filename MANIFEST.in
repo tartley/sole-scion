@@ -1,3 +1,4 @@
 include Makefile
 include pylintrc
+include main.py
 
