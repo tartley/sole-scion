@@ -1,4 +1,4 @@
 #!/bin/bash
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:solescion/lib
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:shapely
 python -O main.py $*
 

@@ -32,9 +32,6 @@ install:
 
 clean:
 	rm -rf build dist tags
-	-find . \( \
-		-name '*.pyc' -o \
-		-name '*.pyo' \
-		\) -exec rm {} \;
+	-find . -name '*.py[oc]' -exec rm {} \;
 .PHONY: clean
 
